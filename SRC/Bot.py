@@ -1,13 +1,37 @@
+##############################################
+##       __      _____  ___        __       ##
+##      /""\    (\"   \|"  \      /""\      ##
+##     /    \   |.\\   \    |    /    \     ##
+##    /' /\  \  |: \.   \\  |   /' /\  \    ##
+##   //  __'  \ |.  \    \. |  //  __'  \   ##
+##  /   /  \\  \|    \    \ | /   /  \\  \  ##
+## (___/    \___)\___|\____\)(___/    \___) ##
+##                                          ##
+##         It's a palindrome name <3        ##  
+##                                          ##
+##############################################     
+
+import Commands
 from time import sleep
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 
 class Bot:
+    
+    def __init__(self):
+        self.ComandManager = Commands.CommandManager()
+        
+    def Welcome(self, WebDriver):
+        self.WriteMessage(WebDriver, "Welcome, I'm {undifine}")
+        self.SendMessage(WebDriver)
 
     def ReadMessage(self, WebDriver):
+        
+        # self.Welcome(WebDriver)
 
         ClassGlobalMessageBox = '_1Ilru'
         
@@ -17,22 +41,37 @@ class Bot:
                 Messages = WebDriver.find_elements_by_class_name(ClassGlobalMessageBox)
                 
                 if Messages:
-                    LastMessage = Messages.pop().text.split('\n')
-                    if(LastMessage[0] == '/message'):
+                    
+                    Message = Messages.pop().text.split('\n')
+                    
+                    Command = self.ComandManager.Read(Message[0])
+                    
+                    if(Command[0] == True and Command[1] is None):  
                         
-                        self.SendMessage(WebDriver, '\033[92mResponse to command')
+                        commandInfo = self.ComandManager.Response()                  
+                        
+                        self.WriteMessage(WebDriver, commandInfo)
+                        self.SendMessage(WebDriver)
+                            
+                        print("Command responde successfully")
+                        sleep(3)
+                    
+                    elif(Command[0] == True and Command[1] is not None):
+                        
+                        # self.SendMessage(WebDriver, 'TEST'+ Keys.SHIFT + Keys.ENTER +'TEST')
+                        self.WriteMessage(WebDriver, Command[1])
+                        self.SendMessage(WebDriver)
                         
                         print("Command responde successfully")
-                        sleep(1.5)
+                        sleep(3)
                         
                     # Testing (Delete)
                     else:
-                        print('Reading Message (Not Command)')
-                        sleep(0.8)
+                        sleep(2)
                         
                 else:
                     print('Reading Message (Empty)')
-                    sleep(0.8)
+                    sleep(2)
                     pass
                 
             except TimeoutException:
@@ -42,21 +81,23 @@ class Bot:
                 print("Element not found")
                 pass
             
-    def SendMessage(self, WebDriver, msg):
+    def SendMessage(self, WebDriver):
         
         ClassButton_Send = "_4sWnG"
         
-        # msg_box = WebDriver.find_element_by_xpath('/html/body/div/div[1]/div[1]/div[4]/div[1]/footer/div[1]/div[2]/div/div[1]')  # /html/body/div/div[1]/div[1]/div[4]/div[1]/footer/div[1]/div[2]/div/div[1]
-        
-        msg_box = WebDriverWait(WebDriver, 5).until(EC.presence_of_element_located((By.XPATH, '/html/body/div/div[1]/div[1]/div[4]/div[1]/footer/div[1]/div[2]/div/div[1]')))
-        msg_box.send_keys(msg)
-        
-        sleep(0.5)
-        # msg_box.send_keys(Keys.ENTER)
-        # sleep(0.7)
-        
         button = WebDriverWait(WebDriver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, ClassButton_Send)))
-        # # Dice que no lo encuentra porque efectivamente no puso ningun mensaje
+
         button = WebDriver.find_element_by_class_name(ClassButton_Send)
         button.click()
-        # sleep(0.7)
+        
+    def WriteMessage(self, WebDriver, msg):
+        
+        if(type(msg) == str):
+            msg = [msg]
+        
+        msg_box = WebDriverWait(WebDriver, 5).until(EC.presence_of_element_located((By.XPATH, '/html/body/div/div[1]/div[1]/div[4]/div[1]/footer/div[1]/div[2]/div/div[1]')))
+        msg_box.click()
+        
+        for i in msg:
+            msg_box.send_keys(i + (Keys.SHIFT + Keys.ENTER))
+            sleep(0.20)
