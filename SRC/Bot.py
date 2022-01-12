@@ -7,97 +7,115 @@
 ##  /   /  \\  \|    \    \ | /   /  \\  \  ##
 ## (___/    \___)\___|\____\)(___/    \___) ##
 ##                                          ##
-##         It's a palindrome name <3        ##  
+##       It's a palindrome name  <3         ##  
 ##                                          ##
 ##############################################     
 
+import Log
 import Commands
+import Communicator
 from time import sleep
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 
+
 class Bot:
-    
-    def __init__(self):
-        self.ComandManager = Commands.CommandManager()
-        
-    def Welcome(self, WebDriver):
-        self.WriteMessage(WebDriver, "Welcome, I'm {undifine}")
-        self.SendMessage(WebDriver)
+
+    def __init__(self, WebDriver):
+        # Prepare the log to save the messages error
+        self.Log = Log.Generate()
+        # Prepare the Communicator
+        self.Communicate = Communicator.Communicate(WebDriver)
+        # Prepare the Commands Manager and pass the Communicator to write and send messages in whatsapp
+        self.CommandManager = Commands.CommandManager(self.Communicate)
+
+    def Welcome(self):
+
+        """[summary]
+        """
+        # BotName = "ANA"
+        BotName = "A | v0.1 | undefined"
+        Message = [f"Welcome, I'm {BotName}!! ヽ(´▽`)/", "This a WBB Project",
+                   "- if you need to know all the commands","- type (/help -c)"]
+
+        self.Communicate.WriteMessage(Message)
+
+        if self.Communicate.SendMessage():
+            return True
 
     def ReadMessage(self, WebDriver):
-        
-        # self.Welcome(WebDriver)
+
+        """[summary]
+        """
 
         ClassGlobalMessageBox = '_1Ilru'
-        
-        while True:
-            
-            try:
-                Messages = WebDriver.find_elements_by_class_name(ClassGlobalMessageBox)
-                
-                if Messages:
-                    
-                    Message = Messages.pop().text.split('\n')
-                    
-                    Command = self.ComandManager.Read(Message[0])
-                    
-                    if(Command[0] == True and Command[1] is None):  
-                        
-                        commandInfo = self.ComandManager.Response()                  
-                        
-                        self.WriteMessage(WebDriver, commandInfo)
-                        self.SendMessage(WebDriver)
-                            
-                        print("Command responde successfully")
-                        sleep(3)
-                    
-                    elif(Command[0] == True and Command[1] is not None):
-                        
-                        # self.SendMessage(WebDriver, 'TEST'+ Keys.SHIFT + Keys.ENTER +'TEST')
-                        self.WriteMessage(WebDriver, Command[1])
-                        self.SendMessage(WebDriver)
-                        
-                        print("Command responde successfully")
-                        sleep(3)
-                        
-                    # Testing (Delete)
-                    else:
-                        sleep(2)
-                        
-                else:
-                    print('Reading Message (Empty)')
-                    sleep(2)
-                    pass
-                
-            except TimeoutException:
-                print("Timeout")
-                pass
-            except NoSuchElementException:
-                print("Element not found")
-                pass
-            
-    def SendMessage(self, WebDriver):
-        
-        ClassButton_Send = "_4sWnG"
-        
-        button = WebDriverWait(WebDriver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, ClassButton_Send)))
 
-        button = WebDriver.find_element_by_class_name(ClassButton_Send)
-        button.click()
-        
-    def WriteMessage(self, WebDriver, msg):
-        
-        if(type(msg) == str):
-            msg = [msg]
-        
-        msg_box = WebDriverWait(WebDriver, 5).until(EC.presence_of_element_located((By.XPATH, '/html/body/div/div[1]/div[1]/div[4]/div[1]/footer/div[1]/div[2]/div/div[1]')))
-        msg_box.click()
-        
-        for i in msg:
-            msg_box.send_keys(i + (Keys.SHIFT + Keys.ENTER))
-            sleep(0.20)
+        while True:
+
+            try:
+                # Get the message box
+                Messages = WebDriver.find_elements_by_class_name(ClassGlobalMessageBox)
+
+                if Messages:
+
+                    # Get the last message
+                    Message = Messages.pop().text.split('\n')
+
+                    # Obtiene una lista con el comando y posibles argumentos a ejecutar
+                    Message = Message[0].split(" ")
+
+                    # Send the command to the CommandManager
+                    Command = self.CommandManager.Read(Message)
+
+                    if(Command[0] == True and Command[1] is None):
+
+                        ExecutResult, _error = self.CommandManager.Execute()
+
+                        if(_error is None):
+                            print("Command responded with not error")
+                            self.Communicate.WriteMessage(ExecutResult)
+                        else:
+                            print("Command responded with error")
+                            self.Communicate.WriteMessage(_error)
+
+                        if(self.Communicate.SendMessage()):
+                            print("Command responde successfully")
+                            sleep(3)
+
+                    elif(Command[0] == True and Command[1] is not None):
+
+                        self.Communicate.WriteMessage(Command[1])
+                        self.Communicate.SendMessage()
+
+                        print("Command responde successfully")
+                        sleep(3)
+
+                    # Testing (Delete)
+                    elif(Command[0] == False and Command[1] is not None):
+                        self.Communicate.WriteMessage(Command[1])
+                        self.Communicate.SendMessage()
+
+                        print("Command responde successfully")
+                        sleep(3)
+
+                    else:
+                        print('Reading Message')
+                        sleep(1)
+
+                else:
+                    print('Reading Message (Empty chat)')
+                    if self.Welcome():
+                        sleep(1)
+                    else:
+                        return False
+
+            except TimeoutException as error:
+                self.Log.Write("Bot.py # "+str(error))
+                return False
+            except NoSuchElementException as error:
+                self.Log.Write("Bot.py # "+str(error))
+                return False

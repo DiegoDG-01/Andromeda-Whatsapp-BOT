@@ -16,14 +16,30 @@
 ########################################################
 ########################################################
 
+########################################################
+#                    DEBUGGER = True                   #
+########################################################
+import pydevd_pycharm
+pydevd_pycharm.settrace('localhost', port=9999, stdoutToServer=True, stderrToServer=True)
+########################################################
+#                    DEBUGGER = True                   #
+########################################################
+
+
 import Bot
+import Log
 import Config
 from os import getcwd
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
-
 def InitWebDriver():
+
+    """[summary]
+
+    Returns:
+        [type]: [description]
+    """
     
     URL = 'https://web.whatsapp.com/'
     
@@ -45,22 +61,43 @@ def InitWebDriver():
         WebDriver.get(URL)
         
         return WebDriver
-    except:
+    except Exception as error:
+        Log.Write("entrypoint.py # " + error)
         WebDriver.quit()
-        print('Error')
 
 if(__name__ == '__main__'):
     
-    try:
+    Log = Log.Generate()
     
+    try:
+
+        # Initialize WebDriver connection
         WebDriver = InitWebDriver()
-        
-        Bot = Bot.Bot()
+
+        # Initialize Bot and pass WebDriver to get access to the browser
+        Bot = Bot.Bot(WebDriver)
+        # Initialize Config and pass WebDriver to get access to the browser
         Config = Config.Config(WebDriver)
-        
-        Bot.ReadMessage(WebDriver)
-        
+
+
+        # Start Configurator
+        if(Config.Initialize()):
+            # Start Bot
+            Bot.ReadMessage(WebDriver)
+        else:
+            print(Config.GetError()) # Get the error to debug
+            # if Configurator is not initialized and occurs an error save the error in the log
+            Log.Write("Config # " + str(Config.GetError()))
+
+        print("exist error ")
+        # is ended the program, close the WebDriver
         WebDriver.quit()
+
+    # if occurs an error save the error in the log
+    except UnboundLocalError as error:
+        Log.Write("entrypoint.py | UnboundLocalError # "+ str(error))
+    except TypeError as error:
+        Log.Write("entrypoint.py | TypeError # "+ str(error))
     except KeyboardInterrupt:
-        print('\nInterrupted By Keyboard')
+        # if the user press Ctrl+C, close the WebDriver
         WebDriver.quit()

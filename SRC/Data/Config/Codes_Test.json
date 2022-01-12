@@ -1,0 +1,72 @@
+{
+    "Active":{
+        "/help": {
+            "Desc":["Permite obtener comandos disponibles así como información especifica de un comando"],
+            "Args": [
+                {
+                    "-d": "Descripción del comando",
+                    "-l": "Listar los comandos disponibles",
+                    "-c": "Listar los argumentos del comando"
+                }
+            ]
+        },
+        "/test": {
+            "Desc":["Comando de prueba"],
+            "Args": [
+                {
+                    "-d": "Descripción del comando",
+                    "-l": "Listar los comandos disponibles",
+                    "-c": "Listar los argumentos del comando"
+                }
+            ]
+        }
+    },
+    "Development":{
+        "/list": {
+            "Desc": "No sé que poner aquí",
+            "Args": ["-d","-A"]
+        },
+        "/check":{
+            "Desc": ["Y tampoco aquí"],
+            "Args": ["-d"]
+        },
+        "/clean":{
+            "Desc": ["Aquí menos"],
+            "Args": ["-d"]
+        },
+        "/config":{
+            "Desc": ["Lo anterior pero con más palabras"],
+            "Args": ["-d"]
+        },
+        "/orders": {
+            "Desc": [" Y aquí ni te digo, chido si leíste todo 🤣"],
+            "Args": ["-d"]
+        },
+        "/reboot":{
+            "Desc": [""],
+            "Args": ["-d"]
+        },
+        "/log":{
+            "Desc": [""],
+            "Args": ["-d"]
+        }
+    },
+    "Admin": {
+        "/add": {
+            "Desc": [""],
+            "Args": ["-d"]
+        },
+        "/del": {
+            "Desc": [""],
+            "Args": ["-d"]
+        },
+        "/edit": {
+            "Desc": [""],
+            "Args": ["-d"]
+        },
+        "/list": {
+            "Desc": [""],
+            "Args": ["-d"]
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "main":{
+        "username":"diego",
+        "Password":"Password_Hash",
+        "telephone": "1022453265",
+        "WhatsappName":"Testing",
+        "permissions": "simple"
+    }
+}

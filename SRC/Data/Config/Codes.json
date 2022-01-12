@@ -1,0 +1,19 @@
+{
+    "Active":{
+        "/help": {
+            "Desc":["Permite obtener comandos disponibles así como información especifica de un comando"],
+            "Args": ["-i", "-d"]
+        },
+        "/ctm": {
+            "Desc":["Te manda a CTM con estilo"],
+            "Args":[]
+        }
+    },
+    "Development":{
+        "/check":["Revisa el status del bot"],
+        "/clean":["Elimina el historial de la conversación"],
+        "/config":["Cambiar los ajustes del bot"],
+        "/reboot":["Reinicial el proceso del bot"],
+        "/log":["Activa/Desactiva el log de errores"]
+    }
+}
