@@ -15,10 +15,6 @@ import Log
 import Commands
 import Communicator
 from time import sleep
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.common.keys import Keys
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 
@@ -33,16 +29,12 @@ class Bot:
         # Prepare the Commands Manager and pass the Communicator to write and send messages in whatsapp
         self.CommandManager = Commands.CommandManager(self.Communicate)
 
+    def SetWelcomeMessage(self, Message):
+        self.MessageWelcome = [Message[i] for i in Message.keys()]
+
+
     def Welcome(self):
-
-        """[summary]
-        """
-        # BotName = "ANA"
-        BotName = "A | v0.1 | undefined"
-        Message = [f"Welcome, I'm {BotName}!! ヽ(´▽`)/", "This a WBB Project",
-                   "- if you need to know all the commands","- type (/help -c)"]
-
-        self.Communicate.WriteMessage(Message)
+        self.Communicate.WriteMessage(self.MessageWelcome)
 
         if self.Communicate.SendMessage():
             return True

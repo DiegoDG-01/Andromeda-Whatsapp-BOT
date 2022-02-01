@@ -19,8 +19,8 @@
 ########################################################
 #                    DEBUGGER = True                   #
 ########################################################
-import pydevd_pycharm
-pydevd_pycharm.settrace('localhost', port=9999, stdoutToServer=True, stderrToServer=True)
+# import pydevd_pycharm
+# pydevd_pycharm.settrace('localhost', port=9999, stdoutToServer=True, stderrToServer=True)
 ########################################################
 #                    DEBUGGER = True                   #
 ########################################################
@@ -62,7 +62,7 @@ def InitWebDriver():
         
         return WebDriver
     except Exception as error:
-        Log.Write("entrypoint.py # " + error)
+        Log.Write("entrypoint.py # " + str(error))
         WebDriver.quit()
 
 if(__name__ == '__main__'):
@@ -78,6 +78,12 @@ if(__name__ == '__main__'):
         Bot = Bot.Bot(WebDriver)
         # Initialize Config and pass WebDriver to get access to the browser
         Config = Config.Config(WebDriver)
+
+        # Welcome message
+        Welcome = Config.GetWelcome()
+
+        # Seter the welcome message
+        Bot.SetWelcomeMessage(Welcome)
 
 
         # Start Configurator
