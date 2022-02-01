@@ -5,6 +5,25 @@ from os import getcwd, remove
 
 class Generate:
 
+    def GetLog(self, lines = None):
+        LogPath = getcwd() + '/Data/Log/Log.txt'
+
+        with open(LogPath, 'r') as File:
+
+            CompleteLog = File.readlines()
+
+            if len(CompleteLog) <= 0:
+                Log = ">> No Logs Found"
+            else:
+                if(lines != None):
+                    Log = CompleteLog[-lines:]
+                else:
+                    Log = CompleteLog
+
+            File.close()
+
+        return Log
+
     def Write(self, error):
         DateTime = self.__GetDateTime()
 

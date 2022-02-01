@@ -14,7 +14,10 @@ from re import match
 from os import getcwd
 from json import load
 from json import JSONDecodeError
+
+# Modules to import
 import Functions.Help
+import Functions.Configure
 
 
 class CommandManager:
@@ -30,9 +33,9 @@ class CommandManager:
         self.commands = None
         self.commandargs = None
         self.commandInfo = None
-        Path = getcwd() + '/Data/Config/Codes_Test.json'
+        self.Path = getcwd() + '/Data/Config/Codes.json'
 
-        with open(Path, 'r') as File:
+        with open(self.Path, 'r') as File:
             try:
                 self.commands = load(File)
             except JSONDecodeError as err:
@@ -41,11 +44,15 @@ class CommandManager:
             finally:
                 File.close()
 
+        # Load module help
         self.Help = Functions.Help.Help(self.commands, Communicate)
+        # Load module config
+        self.Config = Functions.Configure.Configure(self.commands, Communicate)
 
+        # List of all modules loaded
         self.ListAction = {
             "/help": self.Help.EntryPoint,
-            # "/start": self.Start.EntryPoint,
+            "/config": self.Config.EntryPoint
         }
 
     def Read(self, command):

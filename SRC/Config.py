@@ -15,29 +15,38 @@ class Config():
     def __init__(self, Driver):
         self.Log = Log.Generate()
         self.WebDriver = Driver
-        self.PathUser = getcwd() + '/Data/Config/User.json'
+        self.PathUser = getcwd() + '/Data/Config/Config.json'
         self.Validate = None
+        self.UserFileConfig = None
+
+        with open(self.PathUser, 'r') as UserFileConfig:
+            self.AllConfig = load(UserFileConfig)
+
+            self.UFC = self.AllConfig['main']
+            self.Welcome = self.AllConfig['welcome']
+
+            UserFileConfig.close()
 
 
     def Initialize(self):
 
-        with open(self.PathUser, 'r') as UserFileConfig:
-
             if(self.__SessionActive()):
                 try:
-                    Data = load(UserFileConfig)
 
-                    User = WebDriverWait(self.WebDriver, 60).until(ec.presence_of_element_located((By.XPATH, '//span[@title = "{}"]'.format(Data['main']['WhatsappName']))))
+                    User = WebDriverWait(self.WebDriver, 60).until(ec.presence_of_element_located((By.XPATH, '//span[@title = "{}"]'.format(self.UFC['Default']["WhatsappName"]))))
                     User.click()
 
                     return True
 
-                except:
+                except Exception as error:
+                    self.Log.Write("Config.py | GenericErr # "+ str(error))
                     self.Error = "Error: To initialize bot"
                     return False
             else:
                 self.__CreateSession()
 
+    def GetWelcome(self):
+        return self.Welcome
 
     def __SessionActive(self):
 

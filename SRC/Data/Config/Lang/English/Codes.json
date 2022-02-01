@@ -1,24 +1,24 @@
 {
     "Active":{
         "/help": {
-            "Desc":["Permite obtener comandos disponibles así como información especifica de un comando"],
+            "Desc":["Allows to obtain available commands as well as specific information of a command"],
             "Args": [
                 {
-                    "-d": "Descripción del comando",
-                    "-l": "Listar los comandos disponibles",
-                    "-c": "Listar los argumentos del comando"
+                    "-d": "Command Description",
+                    "-l": "List available commands",
+                    "-c": "List command arguments"
                 }
             ]
         },
         "/config": {
-            "Desc":["Permite obtener información de configuración del bot actual ademas de cambiar algunas de sus parametros"],
+            "Desc":["It allows to obtain configuration information of the current bot in addition to changing some of its parameters"],
             "Args": [
                 {
-                    "-d": "Descripción del comando",
-                    "-l": "Listar los argumentos del comando",
-                    "-log": "Listar los logs del bot",
-                    "-c": "Mostrar la configuración actual del bot",
-                    "-L": "Cambiar el lenguaje del bot"
+                    "-d": "Command Description",
+                    "-l": "List command arguments",
+                    "-log": "List the bot logs",
+                    "-c": "Show current bot settings",
+                    "-L": "Change the language of the bot"
                 }
             ]
         }

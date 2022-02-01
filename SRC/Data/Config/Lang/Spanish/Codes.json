@@ -10,13 +10,15 @@
                 }
             ]
         },
-        "/test": {
-            "Desc":["Comando de prueba"],
+        "/config": {
+            "Desc":["Permite obtener información de configuración del bot actual ademas de cambiar algunas de sus parametros"],
             "Args": [
                 {
                     "-d": "Descripción del comando",
-                    "-l": "Listar los comandos disponibles",
-                    "-c": "Listar los argumentos del comando"
+                    "-l": "Listar los argumentos del comando",
+                    "-log": "Listar los logs del bot",
+                    "-c": "Mostrar la configuración actual del bot",
+                    "-L": "Cambiar el lenguaje del bot"
                 }
             ]
         }
@@ -34,21 +36,22 @@
             "Desc": ["Aquí menos"],
             "Args": ["-d"]
         },
-        "/config":{
+        "/orders":{
             "Desc": ["Lo anterior pero con más palabras"],
-            "Args": ["-d"]
-        },
-        "/orders": {
-            "Desc": [" Y aquí ni te digo, chido si leíste todo 🤣"],
             "Args": ["-d"]
         },
         "/reboot":{
             "Desc": [""],
             "Args": ["-d"]
         },
-        "/log":{
-            "Desc": [""],
-            "Args": ["-d"]
+        "/config": {
+            "Args": [
+                {
+                    "-s": "Cambiar la configuración del bot",
+                    "-i": "Mostrar la información del bot",
+                    "-log-clear": "Limpiar los logs del bot"
+                }
+            ]
         }
     },
     "Admin": {

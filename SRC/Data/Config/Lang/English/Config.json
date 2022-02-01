@@ -1,0 +1,43 @@
+{
+    "metadata": {
+        "version": "0.1.0",
+        "name": "I don't know what :c",
+        "internalName": "Aurora",
+        "description": "El proyecto Aurora es una BOT de WhatsApp, el cual esta elaborado para llevar a cabo diversas funciones.",
+        "author": "Diego DG",
+        "email": "contacto@diegodg.com.mx",
+        "website": "diegodg.com.mx",
+        "license": "TO DEFINE"
+    },
+
+    "config":{
+        "language": "English"
+    },
+
+    "welcome": {
+        "first": "## BIENVENIDO, soy Aurora!!! ヽ(´▽`)/",
+        "second": ">> Here you can find all the functions you need.",
+        "third": ">> To know the available commands type (/help -c)",
+        "fourth": ">> For more information, you can visit my website.",
+        "fifth": ">> If you have any questions, you can send a message to my developer."
+    },
+
+    "main":{
+
+        "Local": {
+            "name": "",
+            "description": "",
+            "username": "",
+            "email": "diego",
+            "password": "Password_Hash",
+            "permissions": "admin",
+            "telephone": "1022453265"
+        },
+
+        "Default": {
+            "WhatsappName":"Testing",
+            "WhatsappNumber":"",
+            "WhatsappGroupName":""
+        }
+    }
+}
