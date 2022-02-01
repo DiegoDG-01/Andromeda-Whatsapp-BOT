@@ -1,0 +1,5 @@
+Pillow == 8.4.0
+selenium == 4.0.0
+flask == 2.0.2
+virtualenv == 20.13.0
+psutil == 5.9.0
