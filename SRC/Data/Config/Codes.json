@@ -1,24 +1,40 @@
 {
     "Active":{
         "/help": {
-            "Desc":["Permite obtener comandos disponibles así como información especifica de un comando"],
+            "Desc":["Allows to obtain available commands as well as specific information of a command"],
             "Args": [
                 {
-                    "-d": "Descripción del comando",
-                    "-l": "Listar los comandos disponibles",
-                    "-c": "Listar los argumentos del comando"
+                    "-d": "Command Description",
+                    "-l": "List available commands",
+                    "-c": "List command arguments"
                 }
             ]
         },
         "/config": {
-            "Desc":["Permite obtener información de configuración del bot actual ademas de cambiar algunas de sus parametros"],
+            "Desc":["It allows to obtain configuration information of the current bot in addition to changing some of its parameters"],
             "Args": [
                 {
-                    "-d": "Descripción del comando",
-                    "-l": "Listar los argumentos del comando",
-                    "-log": "Listar los logs del bot",
-                    "-c": "Mostrar la configuración actual del bot",
-                    "-L": "Cambiar el lenguaje del bot"
+                    "-d": "Command Description",
+                    "-l": "List command arguments",
+                    "-log": "List the bot logs",
+                    "-c": "Show current bot settings",
+                    "-L": "Change the language of the bot"
+                }
+            ]
+        },
+        "/AutoMessage": {
+            "Desc":["This module allows to send messages to the users automatically"],
+            "Args": [
+                {
+                    "-d": "Command Description",
+                    "-l": "List command arguments",
+                    "-set": "Set a message sent to the user or group",
+                    "-send": "Send a message to the user or group",
+                    "-del": "Delete a automated message sent to the user or group",
+                    "-list": "List all the automated messages sent to the user or group",
+                    "-add": "Add a new automated message sent to the user or group",
+                    "-edit": "Edit an automated message sent to the user or group",
+                    "-delall": "Delete all the automated messages sent to the user or group"
                 }
             ]
         }

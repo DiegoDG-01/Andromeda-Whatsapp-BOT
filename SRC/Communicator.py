@@ -79,6 +79,7 @@ class Communicate:
 
     def ReadResponse(self):
 
+
         try:
 
             "USE THIS METHOD TO READ ONLY LAST MESSAGE IN THE BOT file"
@@ -87,7 +88,12 @@ class Communicate:
             LastMessage = self.WebDriver.find_elements_by_xpath(XPath)[-1:]
 
             if LastMessage:
-                return LastMessage.pop().text.split("\n")[0]
+                LastMessage = LastMessage.pop().text.split("\n")[0]
+
+                if(LastMessage[0] != "#" and LastMessage[0] != ">"):
+                    return LastMessage
+                else:
+                    return False
             else:
                 return False
 
