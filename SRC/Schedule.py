@@ -19,10 +19,15 @@ from time import sleep
 
 class Schedule:
 
-    def __init__(self, list_action):
+    def __init__(self):
         self.Events = {}
         self.Log = Log.Generate()
         self.DB = DataBase.SQLite()
+        self.ListAction = None
+
+
+    # Iinit function is used to load all the modules
+    def init(self, list_action):
 
         # Is the list to all commands to be executed
         self.ListAction = list_action
@@ -34,6 +39,7 @@ class Schedule:
             # print(self.get_event())
         else:
             self.Log.Write("Schedule.py | Warning # Not data found in database to enable events")
+
 
     def background_set(self, interval=1):
 
@@ -70,6 +76,27 @@ class Schedule:
         except Exception as e:
             self.Log.Write("Schedule.py | Error # " + str(e))
             # schedule.every().days.at(event[3]).do(self.job, name=event[0], Message=event[1], time=event[3])
+
+    def reset_event(self):
+
+        try:
+            self.del_event()
+
+            self.consult_database_event()
+
+            if len(self.Events) > 0:
+                self.set_event()
+                # print(self.get_event())
+            else:
+                self.Log.Write("Schedule.py | Warning # Not data found in database to enable events")
+        except Exception as e:
+            self.Log.Write("Schedule.py | Error # " + str(e))
+
+    def del_event(self):
+        try:
+            schedule.clear()
+        except Exception as e:
+            self.Log.Write("Schedule.py | Error # " + str(e))
 
     def get_info_to_event(self, id_event):
 

@@ -12,7 +12,7 @@ from json import JSONDecodeError
 
 class AutomatedMessages:
 
-    def __init__(self, commandsFile, Communicate, InterfaceControl):
+    def __init__(self, commandsFile, Communicate, InterfaceControl, Schedule):
 
         # It's used to identify the module in the database
         # Not modified this value
@@ -28,6 +28,7 @@ class AutomatedMessages:
 
         try:
             self.InterfaceControl = InterfaceControl
+            self.Schedule = Schedule
         except Exception as error:
             self.log.Write("Configure.py | JSONDecodeError # " + str(error))
 
@@ -163,6 +164,7 @@ class AutomatedMessages:
             created_automation = self.DB.insert_data('Automation_Event', ['ID_Type_Event', 'ID_Automation_Module', 'Status'], ['1', ID, '1'])
 
             if created_automation:
+                self.Schedule.reset_event()
                 return self.AutomatedMessages['success']['Set']
             else:
                 return self.AutomatedMessages['error']['Set']

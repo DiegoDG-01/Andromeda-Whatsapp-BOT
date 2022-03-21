@@ -33,6 +33,10 @@ import Schedule
 class Bot:
 
     def __init__(self, WebDriver):
+
+        # Load module Schedule
+        # Firts create a new instance of the class schedule to initialize the basic variables
+        self.Schedule = Schedule.Schedule()
         # Load Interface Controller
         self.InterfaceControl = InterfaceControl.Interface(WebDriver)
         # Prepare the log to save the messages error
@@ -40,12 +44,14 @@ class Bot:
         # Prepare the Communicator
         self.Communicate = Communicator.Communicate(WebDriver)
         # Prepare the Commands Manager and pass the Communicator to write and send messages in whatsapp
-        self.CommandManager = Commands.CommandManager(self.Communicate, self.InterfaceControl)
+        # and send the instance schedule to command manager (this instance not contains the action list)
+        # the action list is loaded in the function more below
+        self.CommandManager = Commands.CommandManager(self.Communicate, self.InterfaceControl, self.Schedule)
 
-        # Load module Schedule
+        # Load the list of actions in the instance schedule
         # Send list of commands to the module Schedule
         # To execute them automatically
-        self.Schedule = Schedule.Schedule(self.CommandManager.Get_List_of_Functions())
+        self.Schedule.init(self.CommandManager.Get_List_of_Functions())
         # This function is used to keep schedule in background and
         # to check if there is a new command to execute
         self.BackgroundSchedule = self.Schedule.background_set()
@@ -87,22 +93,22 @@ class Bot:
                     # Send the command to the CommandManager
                     Command = self.CommandManager.Read(Message)
 
-                    if(Command[0] == True and Command[1] is None):
+                    if Command[0] is True and Command[1] is None:
 
                         ExecutResult, _error = self.CommandManager.Execute()
 
-                        if(_error is None):
+                        if _error is None:
                             print("Command responded with not error")
                             self.Communicate.WriteMessage(ExecutResult)
                         else:
                             print("Command responded with error")
                             self.Communicate.WriteMessage(_error)
 
-                        if(self.Communicate.SendMessage()):
+                        if self.Communicate.SendMessage():
                             print("Command responde successfully")
                             sleep(3)
 
-                    elif(Command[0] == True and Command[1] is not None):
+                    elif Command[0] is True and Command[1] is not None:
 
                         self.Communicate.WriteMessage(Command[1])
                         self.Communicate.SendMessage()
@@ -111,7 +117,7 @@ class Bot:
                         sleep(3)
 
                     # Testing (Delete)
-                    elif(Command[0] == False and Command[1] is not None):
+                    elif Command[0] is False and Command[1] is not None:
                         self.Communicate.WriteMessage(Command[1])
                         self.Communicate.SendMessage()
 
@@ -130,8 +136,8 @@ class Bot:
                         return False
 
             except TimeoutException as error:
-                self.Log.Write("Bot.py # "+str(error))
+                self.Log.Write("Bot.py # " + str(error))
                 return False
             except NoSuchElementException as error:
-                self.Log.Write("Bot.py # "+str(error))
+                self.Log.Write("Bot.py # " + str(error))
                 return False

@@ -28,7 +28,7 @@ class CommandManager:
     # (InterfaceController) Interface instance to control the web whatsapp interface
     # this instance is only used to some modules
     # Is added from the line #56 and onwards
-    def __init__(self, Communicate, InterfaceController):
+    def __init__(self, Communicate, InterfaceController, Schedule):
 
         # Log instance
         self.Log = Log.Generate()
@@ -56,7 +56,10 @@ class CommandManager:
         self.Config = Functions.Configure.Configure(self.commands, Communicate)
         # Load module automated messages
         # Add the interface controller to the automated messages
-        self.AutomatedMessages = Functions.AutomatedMessages.AutomatedMessages(self.commands, Communicate, InterfaceController)
+        # and the pass the schedule to used function to reset the schedule and
+        # load the new schedule
+        # (Schedule) Schedule is only used to reset the schedule in necessary modules
+        self.AutomatedMessages = Functions.AutomatedMessages.AutomatedMessages(self.commands, Communicate, InterfaceController, Schedule)
 
         # List of all modules loaded
         self.ListAction = {
