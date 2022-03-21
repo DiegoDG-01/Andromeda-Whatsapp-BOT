@@ -9,25 +9,49 @@
 ##                                          ##
 ##       It's a palindrome name  <3         ##  
 ##                                          ##
-##############################################     
+##############################################
 
+# Module to control the web whatsapp interface
+import InterfaceControl
+
+# Modules to import from the project
 import Log
 import Commands
 import Communicator
+
+# Module imported from the main python library
 from time import sleep
+
+# Modules to import from selenium
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
+
+# Module to check if exists a command automatically
+import Schedule
 
 
 class Bot:
 
     def __init__(self, WebDriver):
+        # Load Interface Controller
+        self.InterfaceControl = InterfaceControl.Interface(WebDriver)
         # Prepare the log to save the messages error
         self.Log = Log.Generate()
         # Prepare the Communicator
         self.Communicate = Communicator.Communicate(WebDriver)
         # Prepare the Commands Manager and pass the Communicator to write and send messages in whatsapp
-        self.CommandManager = Commands.CommandManager(self.Communicate)
+        self.CommandManager = Commands.CommandManager(self.Communicate, self.InterfaceControl)
+
+        # Load module Schedule
+        # Send list of commands to the module Schedule
+        # To execute them automatically
+        self.Schedule = Schedule.Schedule(self.CommandManager.Get_List_of_Functions())
+        # This function is used to keep schedule in background and
+        # to check if there is a new command to execute
+        self.BackgroundSchedule = self.Schedule.background_set()
+
+        # Delete this file the InterfaceControl.Interface object to free memory
+        del self.InterfaceControl
 
     def SetWelcomeMessage(self, Message):
         self.MessageWelcome = [Message[i] for i in Message.keys()]

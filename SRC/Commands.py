@@ -9,20 +9,26 @@
 ##                                          ##
 ##############################################
 ##############################################
+
+# Module imported from the main python library
 import Log
 from re import match
 from os import getcwd
 from json import load
 from json import JSONDecodeError
 
-# Modules to import
+# Modules to import from the project
 import Functions.Help
 import Functions.Configure
+import Functions.AutomatedMessages
 
 
 class CommandManager:
 
-    def __init__(self, Communicate):
+    # (InterfaceController) Interface instance to control the web whatsapp interface
+    # this instance is only used to some modules
+    # Is added from the line #56 and onwards
+    def __init__(self, Communicate, InterfaceController):
 
         # Log instance
         self.Log = Log.Generate()
@@ -48,12 +54,20 @@ class CommandManager:
         self.Help = Functions.Help.Help(self.commands, Communicate)
         # Load module config
         self.Config = Functions.Configure.Configure(self.commands, Communicate)
+        # Load module automated messages
+        # Add the interface controller to the automated messages
+        self.AutomatedMessages = Functions.AutomatedMessages.AutomatedMessages(self.commands, Communicate, InterfaceController)
 
         # List of all modules loaded
         self.ListAction = {
             "/help": self.Help.EntryPoint,
-            "/config": self.Config.EntryPoint
+            "/config": self.Config.EntryPoint,
+            "/AutoMessage": self.AutomatedMessages.EntryPoint
         }
+
+    def Get_List_of_Functions(self):
+        return self.ListAction
+
 
     def Read(self, command):
 
