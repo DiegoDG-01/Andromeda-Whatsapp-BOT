@@ -57,6 +57,37 @@ class Schedule:
 
         return ThreadBackground
 
+    def set_events_parameters(self, event, days, time, args, data):
+
+        try:
+
+
+            days = days.split(',')
+
+            days_dict = {
+                "M": 'monday', "T": 'tuesday', "W": 'wednesday',
+                "TH": 'thursday', "F": 'friday', "S": 'saturday', "SU": 'sunday'
+            }
+
+            if isinstance(days, list):
+                for i in range(len(days)):
+                    if days[i] == "M":
+                        schedule.every().monday.at(time).do(self.ListAction[event], args=args, data=data)
+                    elif days[i] == "T":
+                        schedule.every().tuesday.at(time).do(self.ListAction[event], args=args, data=data)
+                    elif days[i] == "W":
+                        schedule.every().wednesday.at(time).do(self.ListAction[event], args=args, data=data)
+                    elif days[i] == "TH":
+                        schedule.every().thursday.at(time).do(self.ListAction[event], args=args, data=data)
+                    elif days[i] == "F":
+                        schedule.every().friday.at(time).do(self.ListAction[event], args=args, data=data)
+                    elif days[i] == "S":
+                        schedule.every().saturday.at(time).do(self.ListAction[event], args=args, data=data)
+                    elif days[i] == "SU":
+                        schedule.every().sunday['SU'].at(time).do(self.ListAction[event], args=args, data=data)
+        except Exception as e:
+            self.Log.Write("Schedule.py | Error # " + str(e))
+
     def set_event(self):
 
         try:
@@ -66,16 +97,24 @@ class Schedule:
                     if data is not None:
                         for i in range(len(data)):
                             # the parameters is inside the list because the function waiting for a list
-                            schedule.every().days.at(data[i][2]).do(self.ListAction[event], args=['-send'],
-                                                                    data=[data[i][0], data[i][1], data[i][2], data[i][3]])
 
+                            args = data[i][0]
+                            days = data[i][1]
+                            time = data[i][2]
+
+                            data[i].pop(0)
+                            data[i].pop(0)
+                            data[i].pop(0)
+
+                            alldata = [value for value in data[i]]
+
+                            self.set_events_parameters(event, days, time, args, alldata)
                 else:
                     print("Evento no encontrado")
         except TypeError as e:
             self.Log.Write("Schedule.py | TypeError # " + str(e))
         except Exception as e:
             self.Log.Write("Schedule.py | Error # " + str(e))
-            # schedule.every().days.at(event[3]).do(self.job, name=event[0], Message=event[1], time=event[3])
 
     def reset_event(self):
 
@@ -104,9 +143,10 @@ class Schedule:
         This dictionary content the name tables used in the database to get the information
         if add more modules to the system then add the name of the table in the dictionary
         """
-        dict_to_get_data = {1: {"table": "M_AutomatedMessage", "data": ['WhatsappName', 'Date', 'Time', 'Message']},
-                            2: {"table": "M_Crypto", "data": ['CriptoName', 'Date', 'Time']}
-                            }
+        dict_to_get_data = {
+            1: {"table": "M_AutomatedMessage", "data": ['args', 'Date', 'Time', 'WhatsappName', 'Message']},
+            2: {"table": "M_Crypto", "data": ['args', 'Date', 'Time', 'CriptoName']}
+        }
 
         if id_event in dict_to_get_data:
             table = dict_to_get_data[id_event]['table']

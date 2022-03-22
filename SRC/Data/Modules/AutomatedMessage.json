@@ -36,7 +36,7 @@
      "Date": {
       "message": [
         "## Note: Select day of the week",
-        "## M = Mon, T = Tues, W = Wed, R = Thu, F = Fri, S = Sat, U = Sun",
+        "## M = Mon, T = Tues, W = Wed, TH = Thu, F = Fri, S = Sat, SU = Sun",
         "## use , as separator for multiple days, not use space",
         ">> Please enter a valid date: "
       ],

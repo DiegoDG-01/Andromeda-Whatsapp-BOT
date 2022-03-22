@@ -42,7 +42,7 @@ class Interface:
 
             for Chat in Chat_List:
 
-                user = Chat.find_element_by_class_name("zoWT4").text
+                user = Chat.find_element(By.CLASS_NAME, "zoWT4").text
 
                 if user == Tag:
 
@@ -50,7 +50,7 @@ class Interface:
 
                     return True
                 else:
-                    print(f"Not Found {Tag}")
+                    return False
 
             return False
 

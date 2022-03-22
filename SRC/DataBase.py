@@ -48,7 +48,12 @@ class SQLite:
 
         self.cursor.execute(Query)
 
-        return self.cursor.fetchall()
+        rows = self.cursor.fetchall()
+
+        # Convert tuple to list
+        data = [list(row) for row in rows]
+
+        return data
 
     def update_data(self, table_name, columns, data):
         self.cursor.execute("UPDATE {} SET {} WHERE {}".format(table_name, columns, data))

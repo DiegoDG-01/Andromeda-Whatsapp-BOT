@@ -48,6 +48,11 @@ class AutomatedMessages:
 
     # Function to prepare info to argument
     def __PrepareArgs(self, args):
+        # Check if args is a valid argument
+
+        if not isinstance(args, list):
+            args = args.split()
+
         if args[0] in self.commandsFile['Active']['/AutoMessage']['Args'][0].keys():
             self.Argument = args[0]
             return True
@@ -183,7 +188,7 @@ class AutomatedMessages:
 
             if self.InterfaceControl.change_view(self.Data[0]):
 
-                self.Communicate.WriteMessage(self.Data[3])
+                self.Communicate.WriteMessage(self.Data[1])
                 self.Communicate.SendMessage()
 
                 self.InterfaceControl.return_to_bot()
