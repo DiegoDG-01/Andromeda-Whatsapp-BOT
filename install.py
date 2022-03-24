@@ -1,8 +1,8 @@
 import os
 import subprocess
-import time # DELETE THIS AFTER TESTING
 import platform
 from pathlib import Path
+from os import getcwd
 
 def __ColorsInit():
     # Colors for the terminal
@@ -18,21 +18,23 @@ def __ColorsInit():
         'end2': '\033[0m'
     }
 
+
 def __delete_files():
     # Delete the file
     os.remove(__get_paths("main"))
     print(Colors['green'] + '\nThe all files was deleted' + Colors['end'])
 
-def __get_paths(Type):
 
+def __get_paths(Type):
     MainPath = os.getcwd()
 
-    if(Type == 'requirements'):
-        return MainPath+"/requirements.txt"
-    elif(Type == 'SRC'):
-        return MainPath+"/SRC/"
-    elif(Type == 'homeUser'):
+    if (Type == 'requirements'):
+        return MainPath + "/requirements.txt"
+    elif (Type == 'SRC'):
+        return MainPath + "/SRC/"
+    elif (Type == 'homeUser'):
         return str(Path.home())
+
 
 def __install_virtualenv():
     # Install the virtualenv
@@ -41,13 +43,21 @@ def __install_virtualenv():
 
     if subprocess.run("pip3 list | grep 'virtualenv'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL):
         print(Colors['white'] + '>> The virtualenv was installed' + Colors['end'])
+
+        # Create the virtualenv
+        print(Colors['white'] + '>> Creating the virtualenv' + Colors['end'])
+        subprocess.run('virtualenv -p python3 .venv', shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        # Activate the virtualenv
+        print(Colors['white'] + '>> Activating the virtualenv' + Colors['end'])
+        subprocess.run('source .venv/bin/activate', shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+
         return True
     else:
         print(Colors['red'] + '\nError: The virtualenv was not installed' + Colors['end'])
         return False
 
-def __install_dependencies():
 
+def __install_dependencies():
     # Dependencies for the bot
     requirements = __get_paths("requirements")
 
@@ -57,10 +67,8 @@ def __install_dependencies():
         # Waiting in the terminal instalation of the dependencies
         print(Colors['white'] + '>> Installing the dependencies')
         print(">> Wait in terminal while the dependencies are installed" + Colors['end'])
-        time.sleep(2)
         # Check if the dependencies are installed
-        # subprocess.run('pip3 install -r ' + requirements, shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-
+        subprocess.run('pip3 install -r ' + requirements, shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
         if __check_dependencies():
             return True
@@ -70,8 +78,8 @@ def __install_dependencies():
         print(Colors['red'] + '\nError: The requirements.txt file does not exist' + Colors['end'])
         return False
 
-def __check_dependencies():
 
+def __check_dependencies():
     depNotInstalled = 0
 
     # Check if the dependencies are installed
@@ -83,37 +91,44 @@ def __check_dependencies():
             # print("pip3 list | grep '"+line.split()[0]+"' | awk '{print $1}' > /dev/null")
 
             # Check if the package is installed or not
-            package = subprocess.run("pip3 list | grep '"+line.split()[0]+"' | awk '{print $1}'", shell=True, stdout=subprocess.PIPE).stdout.decode('utf-8')
+            package = subprocess.run("pip3 list | grep '" + line.split()[0] + "' | awk '{print $1}'", shell=True,
+                                     stdout=subprocess.PIPE).stdout.decode('utf-8')
 
             if package == '':
-                print(Colors['white'] + '>> The package ' + line.strip() + Colors['red'] + ' is not installed' + Colors['end'])
+                print(Colors['white'] + '>> The package ' + line.strip() + Colors['red'] + ' is not installed' + Colors[
+                    'end'])
                 depNotInstalled += 1
             else:
-                print(Colors['white'] + '>> The package ' + line.strip() + Colors['green'] + ' is installed' + Colors['end'])
+                print(Colors['white'] + '>> The package ' + line.strip() + Colors['green'] + ' is installed' + Colors[
+                    'end'])
 
     if depNotInstalled != 0:
-        cont = str.lower(input(Colors['yellow'] + '\n% Not all dependencies are installed, are you continue to installation? (y/n):' + Colors['end']))
+        cont = str.lower(input(
+            Colors['yellow'] + '\n% Not all dependencies are installed, are you continue to installation? (y/n):' +
+            Colors['end']))
 
         if cont == 'y':
             return True
         else:
             return False
+    else:
+        return True
 
 
 def __install_bot():
-
     # Install the bot
     pathHome = __get_paths("homeUser")
-    pathSRC = __get_paths("SRC");
+    pathSRC = __get_paths("SRC")
     pathInstall = __get_paths("install")
+    pathEnv = getcwd() + "/.venv"
 
+    print(Colors['yellow'] + '\n% Directory base: ' + pathHome + '/' + Colors['end'])
     customInstall = input(Colors['yellow'] + '\n% Enter the custom path(enter for default path): ' + Colors['end'])
 
     if customInstall != '':
         pathInstall = pathHome + '/' + customInstall
     else:
-        pathInstall = pathHome+"/WBB/"
-
+        pathInstall = pathHome + "/WBB/"
 
     if os.path.exists(pathSRC):
         print(Colors['green'] + '\n# The bot source is found' + Colors['end'])
@@ -133,14 +148,86 @@ def __install_bot():
             os.system('cp -r ' + pathSRC + ' ' + pathInstall)
             print(Colors['white'] + '>> Copied complete' + Colors['end'])
 
-            return True
+        if os.path.exists(pathEnv):
+            print(Colors['green'] + '\n# The virtualenv folder is found' + Colors['end'])
+            print(Colors['white'] + '>> Directory: ' + pathEnv + Colors['end'])
+            os.system('cp -r ' + pathEnv + ' ' + pathInstall)
+            print(Colors['white'] + '>> Copied complete' + Colors['end'])
+
+        return pathInstall
 
     else:
         print(Colors['red'] + '\nError: The bot source does not exist' + Colors['end'])
         return False
 
-def __get_general_info():
 
+def __create_alias(pathInstall):
+    alias = f'alias andromeda="cd {pathInstall} && source .venv/bin/activate && python3 entrypoint.py"'
+
+    # shell = os.system('echo $SHELL')
+    shell = subprocess.run("echo $SHELL", shell=True, stdout=subprocess.PIPE).stdout.decode('utf-8').strip('\n')
+
+    if shell == '/bin/zsh':
+        shell = 'zsh'
+    elif shell == '/bin/bash':
+        shell = 'bash'
+    else:
+        shell = None
+
+    if shell != None:
+
+        try:
+            print(Colors['green'] + '\n# Creating the alias to: ' + shell + Colors['end'])
+            print(Colors['white'] + '>> Alias: ' + alias + Colors['end'])
+
+            command = f"echo '{alias}' >> ~/.{shell}rc"
+
+            os.system(command)
+
+            return True
+
+        except Exception as e:
+            return False
+    else:
+        print(Colors['red'] + '\nError: The shell was not found' + Colors['end'])
+        return False
+
+def __config_language(pathInstall):
+
+    while True:
+        try:
+
+            print(Colors['yellow'] + '\n% List of languages:' + Colors['end'])
+            print(Colors['white'] + '>> 1 - Spanish' + Colors['end'])
+            print(Colors['white'] + '>> 2 - English' + Colors['end'])
+            language = int(input(Colors['yellow'] + '\n% Select the language of the bot: ' + Colors['end']))
+
+            if language == 1:
+                language = 'Spanish'
+            elif language == 2:
+                language = 'English'
+            else:
+                print(Colors['red'] + '\nError: The language was not found' + Colors['end'])
+                continue
+
+            commnad = "cp -r " + pathInstall + "/Data/Config/Lang/" + language + " " + pathInstall + "/Data/Config/"
+
+            if subprocess.run(commnad, shell=True , stdout=subprocess.PIPE):
+                print(Colors['green'] + '\n# The language was selected' + Colors['end'])
+                return True
+            else:
+                print(Colors['red'] + '\nError to copy file languages' + Colors['end'])
+                return False
+
+        except ValueError:
+            print(Colors['red'] + '\nError: The language must be a number' + Colors['end'])
+            continue
+
+
+def __config_chat(pathInstall):
+    pass
+
+def __get_general_info():
     # Only this Package Manager is required
     Managers = {
         'brew': 'brew',
@@ -168,8 +255,8 @@ def __get_general_info():
     # Return the dictionary with the general info
     return Global
 
-def __welcome(Colors):
 
+def __welcome(Colors):
     # Show welcome message with a nice ASCII art :)
     message = Colors['green'] + '''
                 ██╗  ██╗  █████╗  ██╗       ██████╗ 
@@ -184,14 +271,14 @@ def __welcome(Colors):
     # Show the message
     print(message)
 
-def main(Info, Colors):
 
+def main(Info, Colors):
     # Show welcome message
     __welcome(Colors)
 
     # Show general info about the system
     for key, value in Info.items():
-        if(key != 'Checked'):
+        if (key != 'Checked'):
             print(Colors['purple'] + key + ': ' + Colors['end'] + value)
 
     while (True):
@@ -199,13 +286,33 @@ def main(Info, Colors):
             # Ask for the Package Manager
             # if is not valid finish the installer
             if Info['Checked'] is True:
-                install = str.lower(input(Colors['cyan'] + '''\nYour system is compatible.\nDo you want to install the bot? (y/n): ''' +Colors['end']))
+                install = str.lower(input(
+                    Colors['cyan'] + '''\nYour system is compatible.\nDo you want to install the bot? (y/n): ''' +
+                    Colors['end']))
 
                 # If the answer is yes, start the installer
                 if install == 'y':
                     if __install_virtualenv():
                         if __install_dependencies():
-                            if __install_bot():
+
+                            pathInstall = __install_bot()
+
+                            if pathInstall != False:
+                                if __create_alias(pathInstall):
+                                    print(Colors['green'] + '\n# Alias created' + Colors['end'])
+                                else:
+                                    print(Colors['red'] + '\n# Error: Alias not created' + Colors['end'])
+
+                                if __config_language(pathInstall):
+                                    print(Colors['green'] + '\n# Language configured' + Colors['end'])
+                                else:
+                                    print(Colors['red'] + '\n# Error: Language not configured' + Colors['end'])
+
+                                if __config_chat(pathInstall):
+                                    print(Colors['green'] + '\n# Chat configured' + Colors['end'])
+                                else:
+                                    print(Colors['red'] + '\n# Error: Chat not configured' + Colors['end'])
+
                                 print(Colors['green'] + '\nThe bot was installed successfully' + Colors['end'])
                             else:
                                 print(Colors['red'] + '\nError: The bot was not installed' + Colors['end'])
@@ -227,9 +334,7 @@ def main(Info, Colors):
             break
 
 
-
 if __name__ == '__main__':
-
     os.system('clear')
 
     Colors = __ColorsInit()
