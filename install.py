@@ -3,6 +3,7 @@ import subprocess
 import platform
 from pathlib import Path
 from os import getcwd
+from json import load, dump
 
 def __ColorsInit():
     # Colors for the terminal
@@ -128,7 +129,7 @@ def __install_bot():
     if customInstall != '':
         pathInstall = pathHome + '/' + customInstall
     else:
-        pathInstall = pathHome + "/WBB/"
+        pathInstall = pathHome + "/Andromeda-Whatsapp_BOT/"
 
     if os.path.exists(pathSRC):
         print(Colors['green'] + '\n# The bot source is found' + Colors['end'])
@@ -210,7 +211,7 @@ def __config_language(pathInstall):
                 print(Colors['red'] + '\nError: The language was not found' + Colors['end'])
                 continue
 
-            commnad = "cp -r " + pathInstall + "/Data/Config/Lang/" + language + " " + pathInstall + "/Data/Config/"
+            commnad = "cp -r " + pathInstall + "Data/Config/Lang/" + language + "/* " + pathInstall + "Data/Config/"
 
             if subprocess.run(commnad, shell=True , stdout=subprocess.PIPE):
                 print(Colors['green'] + '\n# The language was selected' + Colors['end'])
@@ -225,7 +226,19 @@ def __config_language(pathInstall):
 
 
 def __config_chat(pathInstall):
-    pass
+
+    with open(pathInstall + 'Data/Config/Config.json', 'r+') as file:
+        data = load(file)
+
+        chatname = input(Colors['yellow'] + '\n% Write the name chat used to listening Bot: ' + Colors['end'])
+
+        data['main']['Default']['WhatsappName'] = chatname
+
+        file.seek(0)
+        dump(data, file, indent=4)
+        file.truncate()
+
+        return True
 
 def __get_general_info():
     # Only this Package Manager is required
