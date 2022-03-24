@@ -11,7 +11,7 @@
             ]
         },
         "/config": {
-            "Desc":["Permite obtener información de configuración del bot actual ademas de cambiar algunas de sus parametros"],
+            "Desc":["Permite obtener información de configuración del bot actual además de cambiar algunas de sus parametros"],
             "Args": [
                 {
                     "-d": "Descripción del comando",
@@ -19,6 +19,22 @@
                     "-log": "Listar los logs del bot",
                     "-c": "Mostrar la configuración actual del bot",
                     "-L": "Cambiar el lenguaje del bot"
+                }
+            ]
+        },
+        "/AutoMessage": {
+            "Desc":["Este módulo permite enviar mensajes a los usuarios automáticamente"],
+            "Args": [
+                {
+                    "-d": "Descripción del comando",
+                    "-l": "Listar los argumentos del comando",
+                    "-set": "Establecer un mensaje enviado al usuario o grupo",
+                    "-send": "Enviar un mensaje al usuario o grupo.",
+                    "-del": "Delete a automated message sent to the user or group",
+                    "-list": "List all the automated messages sent to the user or group",
+                    "-add": "Add a new automated message sent to the user or group",
+                    "-edit": "Edit an automated message sent to the user or group",
+                    "-delall": "Delete all the automated messages sent to the user or group"
                 }
             ]
         }

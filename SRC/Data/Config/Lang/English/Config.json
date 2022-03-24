@@ -1,9 +1,9 @@
 {
     "metadata": {
         "version": "0.1.0",
-        "name": "I don't know what :c",
+        "name": "Andromeda",
         "internalName": "Aurora",
-        "description": "El proyecto Aurora es una BOT de WhatsApp, el cual esta elaborado para llevar a cabo diversas funciones.",
+        "description": "El proyecto Andromeda es una BOT de WhatsApp, el cual esta elaborado para llevar a cabo diversas funciones.",
         "author": "Diego DG",
         "email": "contacto@diegodg.com.mx",
         "website": "diegodg.com.mx",
@@ -15,7 +15,7 @@
     },
 
     "welcome": {
-        "first": "## BIENVENIDO, soy Aurora!!! ヽ(´▽`)/",
+        "first": "## WELCOME, I'M Andromeda!!! ヽ(´▽`)/",
         "second": ">> Here you can find all the functions you need.",
         "third": ">> To know the available commands type (/help -c)",
         "fourth": ">> For more information, you can visit my website.",
@@ -35,7 +35,7 @@
         },
 
         "Default": {
-            "WhatsappName":"Testing",
+            "WhatsappName":"",
             "WhatsappNumber":"",
             "WhatsappGroupName":""
         }
