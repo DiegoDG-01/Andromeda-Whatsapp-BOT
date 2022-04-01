@@ -157,9 +157,9 @@ class AutomatedMessages:
             if not re.search(regex, Info[step]):
                 return self.AutomatedMessages['set'][step]['error']['Invalid']
 
-        data = ['1', Info["Hash_ID_Automation"], Info['WhatsappName'], Info['Message'], Info['Time'], Info['Date']]
+        data = ['1', Info["Hash_ID_Automation"], Info['WhatsappName'], Info['Message'], Info['Time'], Info['Date'], '-send']
 
-        saved = self.DB.insert_data('M_AutomatedMessage', ['ID_Type_Event', 'ID_Automation_Module', 'WhatsappName', 'Message', 'Time', 'Date'], data)
+        saved = self.DB.insert_data('M_AutomatedMessage', ['ID_Type_Event', 'ID_Automation_Module', 'WhatsappName', 'Message', 'Time', 'Date', 'args'], data)
 
         if saved:
 

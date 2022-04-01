@@ -10,6 +10,7 @@
 ###################################
 
 import Log
+from json import load
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -18,9 +19,14 @@ class Interface:
 
     def __init__(self, WebDriver):
 
+        with open('Data/Config/Config.json', 'r') as f:
+            config = load(f)
+            self.Name_Bot = config['main']['Default']['WhatsappName']
+
+            f.close()
+
         self.Log = Log.Generate()
 
-        self.Name_Bot = "Testing"
         self.WebDriver = WebDriver
 
         self.Chat_List_HTML_Class = "zoWT4"
@@ -45,13 +51,10 @@ class Interface:
                 user = Chat.find_element(By.CLASS_NAME, "zoWT4").text
 
                 if user == Tag:
-
                     Chat.click()
-
                     return True
-                else:
-                    return False
 
+            self.Log.Write("InterfaceControl.py | Info # Not found user: " + Tag)
             return False
 
         except Exception as e:

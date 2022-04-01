@@ -54,8 +54,8 @@
   },
 
   "error":  {
-    "Set": "Failed to set auto message",
-    "Send": "Failed to send auto message",
-    "Remove": "Failed to remove from auto message"
+    "Set": ["Failed to set auto message"],
+    "Send": ["Failed to send auto message"],
+    "Remove": ["Failed to remove from auto message"]
   }
 }
