@@ -43,6 +43,9 @@ Currently, the bot is tested in the following browsers:
 
 5. The installer will create a new folder with the name "Andromeda-Whatsapp_BOT" in your home directory.
 
+
+6. **Download** and **install** ChromeDriver from the [ChromeDriver website](https://chromedriver.chromium.org/downloads) according your Google Chrome version.
+
 ### Manual installation
 
 if you don't want to use the installer.
