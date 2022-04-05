@@ -39,21 +39,25 @@ class SQLite:
 
     def select_data(self, table_name, columns, where = None):
 
-        columns = ', '.join([column for column in columns])
+        try:
 
-        if where is None:
-            Query = f"SELECT {columns} FROM {table_name}"
-        else:
-            Query = f"SELECT {columns} FROM {table_name} WHERE {where}"
+            columns = ', '.join([column for column in columns])
 
-        self.cursor.execute(Query)
+            if where is None:
+                Query = f"SELECT {columns} FROM {table_name}"
+            else:
+                Query = f"SELECT {columns} FROM {table_name} WHERE {where}"
 
-        rows = self.cursor.fetchall()
+            self.cursor.execute(Query)
 
-        # Convert tuple to list
-        data = [list(row) for row in rows]
+            rows = self.cursor.fetchall()
 
-        return data
+            # Convert tuple to list
+            data = [list(row) for row in rows]
+
+            return data
+        except OperationalError as error:
+            self.log.Write("Database.py | OperationalError # " + str(error))
 
     def update_data(self, table_name, columns, data):
         self.cursor.execute("UPDATE {} SET {} WHERE {}".format(table_name, columns, data))
@@ -65,7 +69,10 @@ class SQLite:
             return False
 
     def delete_data(self, table_name, data):
-        self.cursor.execute("DELETE FROM {} WHERE {}".format(table_name, data))
+
+        where = ''.join([f"{column} = '{value}'" for column, value in data.items()])
+
+        self.cursor.execute("DELETE FROM {} WHERE {}".format(table_name, where))
         self.conn.commit()
 
         if self.cursor.rowcount > 0:

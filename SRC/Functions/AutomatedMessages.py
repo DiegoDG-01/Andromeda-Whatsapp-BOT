@@ -17,6 +17,7 @@ class AutomatedMessages:
         # It's used to identify the module in the database
         # Not modified this value
         self.ID_Event_In_DB = 2
+        self.TableDatabase = 'M_AutomatedMessage'
 
         self.Data = None
 
@@ -27,6 +28,8 @@ class AutomatedMessages:
         PathModuleMessage = getcwd() + "/Data/Modules/AutomatedMessage.json"
 
         try:
+            # This instance is used to control the interface and reset Schedule if needed
+            # Not all modules used this functions
             self.InterfaceControl = InterfaceControl
             self.Schedule = Schedule
         except Exception as error:
@@ -92,6 +95,8 @@ class AutomatedMessages:
             return self.Set_Automated_Message()
         elif self.Argument == '-send':
             return self.Send_Message()
+        elif self.Argument == '-del':
+            return self.Delete_Automated_Message()
         else:
             return False
 
@@ -198,3 +203,51 @@ class AutomatedMessages:
                 return self.AutomatedMessages['error']['Send']
         else:
             return ['Error', 'No ID given']
+
+    def Delete_Automated_Message(self):
+
+        try:
+            List = self.DB.select_data(self.TableDatabase, ['ID_Automation_Module', 'WhatsappName', 'Time', 'Date'])
+            count = len(List)
+
+            if List:
+
+                message = ["# " + str(i) + ": " + List[i][1] + " - " + List[i][2] + " - " + List[i][3] for i in range(len(List))]
+
+                self.Communicate.WriteMessage(message)
+                self.Communicate.SendMessage()
+                self.Communicate.WriteMessage(["# Select the number of the message you want to delete"])
+                self.Communicate.SendMessage()
+
+                while True:
+                    deleteMessage = self.Communicate.ReadResponse()
+
+                    if deleteMessage is False:
+                        sleep(0.2)
+                    else:
+                        if deleteMessage == 'exit':
+                            return self.AutomatedMessages['error']['Remove']
+                        else:
+                            if deleteMessage.isdigit():
+                                break
+                            else:
+                                self.Communicate.WriteMessage(["# Invalid option"])
+                                self.Communicate.SendMessage()
+
+                deleteMessage = int(deleteMessage)
+
+                if 0 <= int(deleteMessage) < count:
+
+                    # Params: 1: Table, 2: Dictionary to Where
+                    self.DB.delete_data(self.TableDatabase, {'ID_Automation_Module': List[deleteMessage][0]})
+                    self.DB.delete_data('Automation_Event', {'ID_Automation_Module': List[deleteMessage][0]})
+
+                    self.Schedule.reset_event()
+
+                    return self.AutomatedMessages['success']['Remove']
+                else:
+                    return self.AutomatedMessages['error']['Remove']
+            else:
+                return self.AutomatedMessages['error']['NotFound']
+        except Exception as error:
+            self.log.Write("AutomatedMessages.py | GenErr # " + str(error))

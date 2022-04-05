@@ -50,14 +50,14 @@ def InitWebDriver():
     _Chrome_options.add_argument('--disable-extensions')
     _Chrome_options.add_argument('--disable-dev-shm-usage')
     _Chrome_options.add_argument('--no-sandbox')
+    _Chrome_options.add_argument('--start-maximized')
     
-    # Iniciar sin mostrar la ventana del navegador
-    # _Chrome_options.add_argument('headless')
+    # Hide the browser window
+    # _Chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
+    # _Chrome_options.add_argument('--headless')
      
     try:
-        WebDriver = Chrome(options = _Chrome_options)   
-
-        WebDriver.maximize_window()
+        WebDriver = Chrome(options = _Chrome_options)
         WebDriver.get(URL)
         
         return WebDriver

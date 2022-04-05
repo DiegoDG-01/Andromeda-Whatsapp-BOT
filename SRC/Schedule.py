@@ -57,7 +57,7 @@ class Schedule:
 
         return ThreadBackground
 
-    def set_events_parameters(self, event, days, time, args, data):
+    def set_events_parameters(self, event, days, time, args, data, tag):
 
         try:
 
@@ -72,19 +72,19 @@ class Schedule:
             if isinstance(days, list):
                 for i in range(len(days)):
                     if days[i] == "M":
-                        schedule.every().monday.at(time).do(self.ListAction[event], args=args, data=data)
+                        schedule.every().monday.at(time).do(self.ListAction[event], args=args, data=data).tag(tag)
                     elif days[i] == "T":
-                        schedule.every().tuesday.at(time).do(self.ListAction[event], args=args, data=data)
+                        schedule.every().tuesday.at(time).do(self.ListAction[event], args=args, data=data).tag(tag)
                     elif days[i] == "W":
-                        schedule.every().wednesday.at(time).do(self.ListAction[event], args=args, data=data)
+                        schedule.every().wednesday.at(time).do(self.ListAction[event], args=args, data=data).tag(tag)
                     elif days[i] == "TH":
-                        schedule.every().thursday.at(time).do(self.ListAction[event], args=args, data=data)
+                        schedule.every().thursday.at(time).do(self.ListAction[event], args=args, data=data).tag(tag)
                     elif days[i] == "F":
-                        schedule.every().friday.at(time).do(self.ListAction[event], args=args, data=data)
+                        schedule.every().friday.at(time).do(self.ListAction[event], args=args, data=data).tag(tag)
                     elif days[i] == "S":
-                        schedule.every().saturday.at(time).do(self.ListAction[event], args=args, data=data)
+                        schedule.every().saturday.at(time).do(self.ListAction[event], args=args, data=data).tag(tag)
                     elif days[i] == "SU":
-                        schedule.every().sunday['SU'].at(time).do(self.ListAction[event], args=args, data=data)
+                        schedule.every().sunday['SU'].at(time).do(self.ListAction[event], args=args, data=data).tag(tag)
         except Exception as e:
             self.Log.Write("Schedule.py | Error # " + str(e))
 
@@ -101,14 +101,13 @@ class Schedule:
                             args = data[i][0]
                             days = data[i][1]
                             time = data[i][2]
+                            tag = data[i][3]
 
-                            data[i].pop(0)
-                            data[i].pop(0)
-                            data[i].pop(0)
+                            del data[i][0:4]
 
                             alldata = [value for value in data[i]]
 
-                            self.set_events_parameters(event, days, time, args, alldata)
+                            self.set_events_parameters(event, days, time, args, alldata, tag)
                 else:
                     print("Evento no encontrado")
         except TypeError as e:
@@ -144,8 +143,8 @@ class Schedule:
         if add more modules to the system then add the name of the table in the dictionary
         """
         dict_to_get_data = {
-            1: {"table": "M_AutomatedMessage", "data": ['args', 'Date', 'Time', 'WhatsappName', 'Message']},
-            2: {"table": "M_Crypto", "data": ['args', 'Date', 'Time', 'CriptoName']}
+            1: {"table": "M_AutomatedMessage", "data": ['args', 'Date', 'Time', 'ID_Automation_Module', 'WhatsappName', 'Message']},
+            2: {"table": "M_Crypto", "data": ['args', 'Date', 'Time', 'ID_Automation_Module', 'CriptoName']}
         }
 
         if id_event in dict_to_get_data:
