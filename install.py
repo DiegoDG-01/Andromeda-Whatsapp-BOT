@@ -4,6 +4,7 @@ import platform
 from pathlib import Path
 from os import getcwd
 from json import load, dump
+import getpass
 
 def __ColorsInit():
     # Colors for the terminal
@@ -37,17 +38,18 @@ def __get_paths(Type):
         return str(Path.home())
 
 
-def __install_virtualenv():
+def __install_virtualenv(PM, Password):
     # Install the virtualenv
     print(Colors['green'] + '\n# Installing the virtualenv' + Colors['end'])
-    subprocess.run('pip3 install virtualenv==20.13.0', shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    subprocess.run(f'echo {Password} | sudo -S {PM} -y install virtualenv', shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
-    if subprocess.run("pip3 list | grep 'virtualenv'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL):
+    # \u007b is the { and \u007d is the }
+    if subprocess.run(f"{PM} list | awk - F '/' '/^virtualenv/ \u007b print $1 \u007d' | grep 'virtualenv'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL):
         print(Colors['white'] + '>> The virtualenv was installed' + Colors['end'])
 
         # Create the virtualenv
         print(Colors['white'] + '>> Creating the virtualenv' + Colors['end'])
-        subprocess.run('virtualenv -p python3 .venv', shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        subprocess.run('sudo virtualenv -p python3 .venv', shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
         # Activate the virtualenv
         print(Colors['white'] + '>> Activating the virtualenv' + Colors['end'])
         subprocess.run('source .venv/bin/activate', shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
@@ -55,6 +57,19 @@ def __install_virtualenv():
         return True
     else:
         print(Colors['red'] + '\nError: The virtualenv was not installed' + Colors['end'])
+        return False
+
+def __install_PIP(PM):
+    # Install the PIP
+    print(Colors['green'] + '\n# Installing the PIP' + Colors['end'])
+    subprocess.run(f'sudo {PM} -S install python3-pip', shell=True, stdout=subprocess.PIPE,
+                   stderr=subprocess.DEVNULL)
+
+    if subprocess.run(f"{PM} list | grep -w 'python3-pip'", shell=True, stdout=subprocess.PIPE,stderr=subprocess.DEVNULL):
+        print(Colors['white'] + '>> The PIP was installed' + Colors['end'])
+        return True
+    else:
+        print(Colors['red'] + '\nError: The PIP was not installed' + Colors['end'])
         return False
 
 
@@ -146,7 +161,7 @@ def __install_bot():
                 return False
 
             print(Colors['green'] + '\n# Copying the bot source' + Colors['end'])
-            os.system('cp -r ' + pathSRC + ' ' + pathInstall)
+            os.system('cp -r ' + pathSRC + '* ' + pathInstall)
             print(Colors['white'] + '>> Copied complete' + Colors['end'])
 
         if os.path.exists(pathEnv):
@@ -164,13 +179,13 @@ def __install_bot():
 
 def __create_alias(pathInstall):
     alias = f'alias andromeda="cd {pathInstall} && source .venv/bin/activate && python3 entrypoint.py"'
-
     # shell = os.system('echo $SHELL')
     shell = subprocess.run("echo $SHELL", shell=True, stdout=subprocess.PIPE).stdout.decode('utf-8').strip('\n')
+    shell = shell.split('/')[-1]
 
-    if shell == '/bin/zsh':
+    if shell == 'zsh':
         shell = 'zsh'
-    elif shell == '/bin/bash':
+    elif shell == 'bash':
         shell = 'bash'
     else:
         shell = None
@@ -244,7 +259,7 @@ def __get_general_info():
     # Only this Package Manager is required
     Managers = {
         'brew': 'brew',
-        'apt': 'apt-get'
+        'apt': 'apt'
     }
 
     # Validating the Package Manager
@@ -262,7 +277,7 @@ def __get_general_info():
         'Package Manager': PM,
         "Checked": Check,
         'Operative System': platform.uname()[0],
-        'Operative System Version': platform.uname()[2]
+        'Operative System Version': platform.uname()[2],
     }
 
     # Return the dictionary with the general info
@@ -305,35 +320,47 @@ def main(Info, Colors):
 
                 # If the answer is yes, start the installer
                 if install == 'y':
-                    if __install_virtualenv():
-                        if __install_dependencies():
 
-                            pathInstall = __install_bot()
+                    Password = getpass.getpass(Colors['yellow'] + '\n% Write the password to install the dependencies: ' + Colors['end'])
 
-                            if pathInstall != False:
-                                if __create_alias(pathInstall):
-                                    print(Colors['green'] + '\n# Alias created' + Colors['end'])
+                    if __install_virtualenv(Info['Package Manager'], Password):
+
+                        if __install_PIP(Info['Package Manager']):
+
+                            if __install_dependencies():
+
+                                pathInstall = __install_bot()
+
+                                if pathInstall != False:
+
+                                    if __create_alias(pathInstall):
+                                        print(Colors['green'] + '\n# Alias created' + Colors['end'])
+                                    else:
+                                        print(Colors['red'] + '\n# Error: Alias not created' + Colors['end'])
+
+                                    if __config_language(pathInstall):
+                                        print(Colors['green'] + '\n# Language configured' + Colors['end'])
+                                    else:
+                                        print(Colors['red'] + '\n# Error: Language not configured' + Colors['end'])
+
+                                    if __config_chat(pathInstall):
+                                        print(Colors['green'] + '\n# Chat configured' + Colors['end'])
+                                    else:
+                                        print(Colors['red'] + '\n# Error: Chat not configured' + Colors['end'])
+
+                                    print(Colors['green'] + '\nThe bot was installed successfully' + Colors['end'])
                                 else:
-                                    print(Colors['red'] + '\n# Error: Alias not created' + Colors['end'])
-
-                                if __config_language(pathInstall):
-                                    print(Colors['green'] + '\n# Language configured' + Colors['end'])
-                                else:
-                                    print(Colors['red'] + '\n# Error: Language not configured' + Colors['end'])
-
-                                if __config_chat(pathInstall):
-                                    print(Colors['green'] + '\n# Chat configured' + Colors['end'])
-                                else:
-                                    print(Colors['red'] + '\n# Error: Chat not configured' + Colors['end'])
-
-                                print(Colors['green'] + '\nThe bot was installed successfully' + Colors['end'])
+                                    print(Colors['red'] + '\nError: The bot was not installed' + Colors['end'])
+                                break
                             else:
-                                print(Colors['red'] + '\nError: The bot was not installed' + Colors['end'])
-                            break
+                                print(Colors['red'] + '\n# Error: The dependencies are not installed' + Colors['end'])
+                                break
                         else:
-                            print(Colors['red'] + '\n# Error: The dependencies are not installed' + Colors['end'])
+                            print(Colors['red'] + '\n# Error: The PIP is not installed' + Colors['end'])
                             break
-
+                    else:
+                        print(Colors['red'] + '\n# Error: The virtualenv is not installed' + Colors['end'])
+                        break
                 # If the answer is no or other character, finish the installer
                 else:
                     print(Colors['red'] + '\nExiting...' + Colors['end'])
