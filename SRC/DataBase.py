@@ -59,8 +59,12 @@ class SQLite:
         except OperationalError as error:
             self.log.Write("Database.py | OperationalError # " + str(error))
 
-    def update_data(self, table_name, columns, data):
-        self.cursor.execute("UPDATE {} SET {} WHERE {}".format(table_name, columns, data))
+    def update_data(self, table_name, data, where):
+
+        where = ''.join([f"{column} = '{value}'" for column, value in where.items()])
+        data = ', '.join([f"{column} = '{value}'" for column, value in data.items()])
+
+        self.cursor.execute(f"UPDATE {table_name} SET {data} WHERE {where}")
         self.conn.commit()
 
         if self.cursor.rowcount > 0:

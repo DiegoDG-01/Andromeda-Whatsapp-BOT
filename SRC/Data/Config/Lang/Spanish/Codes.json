@@ -29,7 +29,6 @@
                     "-d": "Descripción del comando",
                     "-l": "Listar los argumentos del comando",
                     "-set": "Establecer un mensaje enviado al usuario o grupo",
-                    "-send": "Enviar un mensaje al usuario o grupo.",
                     "-del": "Delete a automated message sent to the user or group",
                     "-list": "List all the automated messages sent to the user or group",
                     "-add": "Add a new automated message sent to the user or group",

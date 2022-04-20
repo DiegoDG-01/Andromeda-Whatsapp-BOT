@@ -29,7 +29,6 @@
                     "-d": "Command Description",
                     "-l": "List command arguments",
                     "-set": "Set a message sent to the user or group",
-                    "-send": "Send a message to the user or group",
                     "-del": "Delete a automated message sent to the user or group",
                     "-list": "List all the automated messages sent to the user or group",
                     "-add": "Add a new automated message sent to the user or group",

@@ -33,7 +33,7 @@ class AutomatedMessages:
             self.InterfaceControl = InterfaceControl
             self.Schedule = Schedule
         except Exception as error:
-            self.log.Write("Configure.py | JSONDecodeError # " + str(error))
+            self.log.Write("Configure.py | GenErr # " + str(error))
 
         try:
 
@@ -93,10 +93,12 @@ class AutomatedMessages:
             return self.ListArgs()
         elif self.Argument == '-set':
             return self.Set_Automated_Message()
-        elif self.Argument == '-send':
-            return self.Send_Message()
         elif self.Argument == '-del':
             return self.Delete_Automated_Message()
+        elif self.Argument == '-list':
+            return self.Show_List_Messages()
+        elif self.Argument == '-edit':
+            return self.Edit_Message()
         else:
             return False
 
@@ -142,6 +144,33 @@ class AutomatedMessages:
 
         return message
 
+    def __List_Automated_Messages(self):
+
+        try:
+            List = self.DB.select_data(self.TableDatabase, ['ID_Automation_Module', 'WhatsappName', 'Time', 'Date'])
+            count = len(List)
+
+            if List:
+                return List
+            else:
+                return False
+        except Exception as error:
+            self.log.Write("AutomatedMessages.py | GenErr # " + str(error))
+
+    def __Response_is_digit(self, Response, Min=None, Max=None):
+
+        if Response.isdigit():
+
+            Response = int(Response)
+
+            if Min is not None or Max is not None:
+                if Min <= Response or Response <= Max:
+                    return True
+                else:
+                    return False
+        else:
+            return False
+
     def Set_Automated_Message(self):
 
         # Random ID to identify Automated Message in database
@@ -162,16 +191,21 @@ class AutomatedMessages:
             if not re.search(regex, Info[step]):
                 return self.AutomatedMessages['set'][step]['error']['Invalid']
 
-        data = ['1', Info["Hash_ID_Automation"], Info['WhatsappName'], Info['Message'], Info['Time'], Info['Date'], '-send']
+        data = ['1', Info["Hash_ID_Automation"], Info['WhatsappName'], Info['Message'], Info['Time'], Info['Date'],
+                '-send']
 
-        saved = self.DB.insert_data('M_AutomatedMessage', ['ID_Type_Event', 'ID_Automation_Module', 'WhatsappName', 'Message', 'Time', 'Date', 'args'], data)
+        saved = self.DB.insert_data('M_AutomatedMessage',
+                                    ['ID_Type_Event', 'ID_Automation_Module', 'WhatsappName', 'Message', 'Time', 'Date',
+                                     'args'], data)
 
         if saved:
 
             # ID_TYPE_EVENT = 1
             # This id is used to identify the automated message in the database
             # the value is static and is not changed in the future
-            created_automation = self.DB.insert_data('Automation_Event', ['ID_Type_Event', 'ID_Automation_Module', 'Status'], ['1', ID, '1'])
+            created_automation = self.DB.insert_data('Automation_Event',
+                                                     ['ID_Type_Event', 'ID_Automation_Module', 'Status'],
+                                                     ['1', ID, '1'])
 
             if created_automation:
                 self.Schedule.reset_event()
@@ -207,40 +241,40 @@ class AutomatedMessages:
     def Delete_Automated_Message(self):
 
         try:
-            List = self.DB.select_data(self.TableDatabase, ['ID_Automation_Module', 'WhatsappName', 'Time', 'Date'])
-            count = len(List)
+            List = self.__List_Automated_Messages()
 
             if List:
+                countList = len(List)
 
-                message = ["# " + str(i) + ": " + List[i][1] + " - " + List[i][2] + " - " + List[i][3] for i in range(len(List))]
+                message = ["# " + str(i) + ": " + List[i][1] + " - " + List[i][2] + " - " + List[i][3] for i in range(countList)]
+
+                message.append("# " + str(countList) + ": Cancel")
+                message.append("# Select the number of the message you want to delete")
 
                 self.Communicate.WriteMessage(message)
                 self.Communicate.SendMessage()
-                self.Communicate.WriteMessage(["# Select the number of the message you want to delete"])
-                self.Communicate.SendMessage()
 
                 while True:
-                    deleteMessage = self.Communicate.ReadResponse()
+                    selected = self.Communicate.ReadResponse()
 
-                    if deleteMessage is False:
-                        sleep(0.2)
-                    else:
-                        if deleteMessage == 'exit':
-                            return self.AutomatedMessages['error']['Remove']
+                    # Use function to validate
+                    if selected is not False:
+                        # Validate if the response is a digit using the function __Response_is_digit
+                        # 1.- Value to validate
+                        # 2.- Min value (optional)
+                        # 3.- Max value (optional)
+                        if self.__Response_is_digit(selected, 0, countList):
+                            selected = int(selected)
+                            break
                         else:
-                            if deleteMessage.isdigit():
-                                break
-                            else:
-                                self.Communicate.WriteMessage(["# Invalid option"])
-                                self.Communicate.SendMessage()
+                            self.Communicate.WriteMessage('# Invalid option')
+                            self.Communicate.SendMessage()
 
-                deleteMessage = int(deleteMessage)
-
-                if 0 <= int(deleteMessage) < count:
+                if 0 <= selected < countList:
 
                     # Params: 1: Table, 2: Dictionary to Where
-                    self.DB.delete_data(self.TableDatabase, {'ID_Automation_Module': List[deleteMessage][0]})
-                    self.DB.delete_data('Automation_Event', {'ID_Automation_Module': List[deleteMessage][0]})
+                    self.DB.delete_data(self.TableDatabase, {'ID_Automation_Module': List[selected][0]})
+                    self.DB.delete_data('Automation_Event', {'ID_Automation_Module': List[selected][0]})
 
                     self.Schedule.reset_event()
 
@@ -249,5 +283,112 @@ class AutomatedMessages:
                     return self.AutomatedMessages['error']['Remove']
             else:
                 return self.AutomatedMessages['error']['NotFound']
+
         except Exception as error:
             self.log.Write("AutomatedMessages.py | GenErr # " + str(error))
+
+    def Show_List_Messages(self):
+
+        List = self.__List_Automated_Messages()
+
+        if List is not False:
+
+            message = ["# " + str(i) + ": " + List[i][1] + " - " + List[i][2] + " - " + List[i][3] for i in range(len(List))]
+
+            self.Communicate.WriteMessage(message)
+            self.Communicate.SendMessage()
+        else:
+            self.Communicate.WriteMessage(self.AutomatedMessages['error']['NotFound'])
+            self.Communicate.SendMessage()
+
+    def Edit_Message(self):
+
+        List = self.__List_Automated_Messages()
+
+        if List:
+
+            message = ["# " + str(i) + ": " + List[i][1] + " - " + List[i][2] + " - " + List[i][3] for i in range(len(List))]
+
+            message.append("# " + str(len(List)) + ": Cancel")
+            message.append("# Select the number of the message you want to delete")
+
+            self.Communicate.WriteMessage(message)
+            self.Communicate.SendMessage()
+
+            while True:
+                selectedMessage = self.Communicate.ReadResponse()
+
+                # Use function to validate
+                if selectedMessage is not False:
+                    # Validate if the response is a digit using the function __Response_is_digit
+                    # 1.- Value to validate
+                    # 2.- Min value (optional)
+                    # 3.- Max value (optional)
+                    if self.__Response_is_digit(selectedMessage, 0, len(List)):
+                        selectedMessage = int(selectedMessage)
+                        break
+                    else:
+                        self.Communicate.WriteMessage(['# Invalid option'])
+                        self.Communicate.SendMessage()
+
+            if 0 <= selectedMessage < len(List):
+
+                count = 0
+                totalKeys = len(self.AutomatedMessages['set'].keys())
+                message = ["# What do you want to change?"]
+
+
+                for key in self.AutomatedMessages['set'].keys():
+                    message.append("# " + str(count) + ": " + key)
+                    count += 1
+
+                message.append("# " + str(count) + ": Cancel")
+                message.append("# Select the number of the field you want to edit")
+
+                self.Communicate.WriteMessage(message)
+                self.Communicate.SendMessage()
+
+                while True:
+                    selected = self.Communicate.ReadResponse()
+
+                    # Use function to validate
+                    if selected is not False:
+                        # Validate if the response is a digit using the function __Response_is_digit
+                        # 1.- Value to validate
+                        # 2.- Min value (optional)
+                        # 3.- Max value (optional)
+                        if self.__Response_is_digit(selected, 0, totalKeys):
+                            selected = int(selected)
+                            break
+                        else:
+                            self.Communicate.WriteMessage(['# Invalid option'])
+                            self.Communicate.SendMessage()
+
+                if 0 <= selected < totalKeys:
+
+                    for index, key in enumerate(self.AutomatedMessages['set']):
+                        if index == selected:
+                            dataToEdit = self.__Get_Info_By_User(self.AutomatedMessages['set'][key]['message'])
+                            keyToEdit = key
+
+                            regex = self.AutomatedMessages['set'][key]['regex']
+
+                            if not re.search(regex, dataToEdit):
+                                return self.AutomatedMessages['set'][key]['error']['Invalid']
+
+                            break
+
+                    if self.DB.update_data(self.TableDatabase, {keyToEdit: dataToEdit}, {'ID_Automation_Module': List[selectedMessage][0]}):
+
+                        self.Schedule.reset_event()
+                        return self.AutomatedMessages['success']['Edit']
+                    else:
+                        return self.AutomatedMessages['error']['Edit']
+
+                else:
+                    return self.AutomatedMessages['error']['Cancel']
+            else:
+                return self.AutomatedMessages['error']['Cancel']
+        else:
+            self.Communicate.WriteMessage(self.AutomatedMessages['error']['NotFound'])
+            self.Communicate.SendMessage()

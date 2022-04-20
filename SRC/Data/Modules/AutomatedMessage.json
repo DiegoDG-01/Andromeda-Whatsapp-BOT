@@ -48,15 +48,18 @@
   },
 
   "success": {
-    "Set": "Successfully set auto message",
-    "Send": "Successfully send auto message",
-    "Remove": "Successfully removed from auto message"
+    "Set": ["Successfully set auto message"],
+    "Send": ["Successfully send auto message"],
+    "Remove":["Successfully removed from auto message"],
+    "Edit": ["Successfully edited auto message"]
   },
 
   "error":  {
     "Set": ["Failed to set auto message"],
     "Send": ["Failed to send auto message"],
     "Remove": ["Failed to remove from auto message"],
-    "NotFound": ["Data not found"]
+    "NotFound": ["Data not found"],
+    "Edit": ["Failed to edit auto message"],
+    "Cancel": ["Canceled"]
   }
 }
