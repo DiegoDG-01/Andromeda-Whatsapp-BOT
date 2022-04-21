@@ -12,7 +12,7 @@ from json import JSONDecodeError
 
 class AutomatedMessages:
 
-    def __init__(self, commandsFile, Communicate, InterfaceControl, Schedule):
+    def __init__(self):
 
         # It's used to identify the module in the database
         # Not modified this value
@@ -23,17 +23,12 @@ class AutomatedMessages:
 
         self.DB = DataBase.SQLite()
         self.log = Log.Generate()
-        self.Communicate = Communicate
-        self.commandsFile = commandsFile
+        self.Communicate = None
+        self.commandsFile = None
         PathModuleMessage = getcwd() + "/Data/Modules/AutomatedMessage.json"
 
-        try:
-            # This instance is used to control the interface and reset Schedule if needed
-            # Not all modules used this functions
-            self.InterfaceControl = InterfaceControl
-            self.Schedule = Schedule
-        except Exception as error:
-            self.log.Write("Configure.py | GenErr # " + str(error))
+        self.InterfaceControl = None
+        self.Schedule = None
 
         try:
 
@@ -48,6 +43,38 @@ class AutomatedMessages:
         except FileNotFoundError as error:
             self.log.Write("AutomatedMessages.py | FileNotFoundError # " + str(error))
             exit(1)
+
+    def requirements(self):
+
+        requeriments = {
+            'CommandExecution': "/AutoMessage",
+            'ExternalModules': [
+                'commandsFile', 'Communicate', 'InterfaceControl', 'Schedule'
+            ],
+        }
+
+        return requeriments
+
+    def set_Communicate(self, Communicate):
+        self.Communicate = Communicate
+
+    def set_commandFile(self, commandsFile):
+        self.commandsFile = commandsFile
+
+    def set_InterfaceController(self, InterfaceControl):
+        try:
+            # This instance is used to control the interface and reset Schedule if needed
+            # Not all modules used this functions
+            self.InterfaceControl = InterfaceControl
+        except Exception as error:
+            self.log.Write("Configure.py | InterfaceControl # " + str(error))
+
+    def set_Schedule(self, Schedule):
+        try:
+            self.Schedule = Schedule
+        except Exception as error:
+            self.log.Write("Configure.py | Schedule # " + str(error))
+
 
     # Function to prepare info to argument
     def __PrepareArgs(self, args):

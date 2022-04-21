@@ -13,14 +13,10 @@
 # Module imported from the main python library
 import Log
 from re import match
-from os import getcwd
+from os import getcwd, listdir
 from json import load
 from json import JSONDecodeError
-
-# Modules to import from the project
-import Functions.Help
-import Functions.Configure
-import Functions.AutomatedMessages
+from importlib import import_module
 
 
 class CommandManager:
@@ -32,6 +28,12 @@ class CommandManager:
 
         # Log instance
         self.Log = Log.Generate()
+
+        # List of functions
+        self.ListAction = {}
+
+        # Import modules dinamically from the Functions folder
+        Modules = self.__import_Modules()
 
         # Save Communicate to permit communicate with user in whatsapp
 
@@ -50,23 +52,61 @@ class CommandManager:
             finally:
                 File.close()
 
-        # Load module help
-        self.Help = Functions.Help.Help(self.commands, Communicate)
-        # Load module config
-        self.Config = Functions.Configure.Configure(self.commands, Communicate)
-        # Load module automated messages
-        # Add the interface controller to the automated messages
-        # and the pass the schedule to used function to reset the schedule and
-        # load the new schedule
-        # (Schedule) Schedule is only used to reset the schedule in necessary modules
-        self.AutomatedMessages = Functions.AutomatedMessages.AutomatedMessages(self.commands, Communicate, InterfaceController, Schedule)
+        # Traverse all modules
+        for Module in Modules:
 
-        # List of all modules loaded
-        self.ListAction = {
-            "/help": self.Help.EntryPoint,
-            "/config": self.Config.EntryPoint,
-            "/AutoMessage": self.AutomatedMessages.EntryPoint
-        }
+            # Get name of the class splitted by '.'
+            ClassName = Module.__name__.split('.')[-1]
+
+            # Get the class from the module
+            Module = getattr(Module, ClassName)()
+
+            # Get requirements of the module
+            requirements = Module.requirements()
+            # Create variable to save list of Extra requirements
+            ExternalModules = requirements['ExternalModules']
+            # Create variable to save the command to execute the module
+            CommandExcecution = requirements['CommandExecution']
+
+            # Check if the module has requirements
+            if 'InterfaceController' in ExternalModules:
+                Module.set_InterfaceController(InterfaceController)
+            if 'Communicate' in ExternalModules:
+                Module.set_Communicate(Communicate)
+            if 'Schedule' in ExternalModules:
+                Module.set_Schedule(Schedule)
+            if 'commandsFile' in ExternalModules:
+                Module.set_commandFile(self.commands)
+
+            # Generate a dict containing all functions to execute commands
+            self.ListAction[CommandExcecution] = Module.EntryPoint
+
+
+    # Function to import all modules from the Functions folder
+    def __import_Modules(self):
+
+        # List of modules
+        Functions = []
+
+        # Get all files from the Functions folder
+        path = getcwd() + '/Functions/'
+
+        # Get all files from the Functions folder
+        for file in listdir(path):
+            # Check if the file is a python file and not a folder or a __init__.py
+            if not file.startswith("__") and file.endswith(".py"):
+                try:
+                    # Create name of the module
+                    module = 'Functions.' + file[:-3]
+                    # Import the module
+                    Functions.append(import_module(module))
+                except Exception as err:
+                    # Log error
+                    self.Log.Write("Commands.py | Error importing module " + file + " | " + str(err))
+                    exit(1)
+
+        # Return the list of modules imported
+        return Functions
 
     def Get_List_of_Functions(self):
         return self.ListAction

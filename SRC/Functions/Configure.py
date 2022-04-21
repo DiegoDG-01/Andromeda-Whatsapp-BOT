@@ -9,12 +9,12 @@ from json import JSONDecodeError
 
 class Configure:
 
-    def __init__(self, commandsFile, Communicate):
+    def __init__(self):
         self.PathConfig = getcwd() + '/Data/Config/Config.json'
         self.Argument = None
         self.log = Log.Generate()
-        self.Communicate = Communicate
-        self.commandsFile = commandsFile
+        self.Communicate = None
+        self.commandsFile = None
 
         try:
 
@@ -27,6 +27,23 @@ class Configure:
         except JSONDecodeError as error:
             self.log.Write("Configure.py | UnboundLocalError # "+ str(error))
             exit(1)
+
+    def requirements(self):
+
+        requeriments = {
+            'CommandExecution': "/config",
+            'ExternalModules': [
+                'commandsFile', 'Communicate'
+            ],
+        }
+
+        return requeriments
+
+    def set_Communicate(self, Communicate):
+        self.Communicate = Communicate
+
+    def set_commandFile(self, commandsFile):
+        self.commandsFile = commandsFile
 
     # Function to prepare info to argument
     def __PrepareArgs(self, args):
