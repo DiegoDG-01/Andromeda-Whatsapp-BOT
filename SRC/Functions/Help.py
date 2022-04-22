@@ -1,11 +1,27 @@
 class Help:
 
     # Function to configure the help function and prepare it for use
-    def __init__(self, commandsFile, Communicate):
+    def __init__(self):
         self.Argument = None
-        self.commandsFile = commandsFile
+        self.commandsFile = None
+        self.Communicate = None
+
+    def requirements(self):
+
+        requeriments = {
+            'CommandExecution': "/help",
+            'ExternalModules': [
+                'commandsFile', 'Communicate'
+            ],
+        }
+
+        return requeriments
+
+    def set_Communicate(self, Communicate):
         self.Communicate = Communicate
 
+    def set_commandFile(self, commandsFile):
+        self.commandsFile = commandsFile
 
     # Function to prepare info to argument
     def __PrepareArgs(self, args):
