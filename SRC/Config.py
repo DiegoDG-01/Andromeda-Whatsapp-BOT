@@ -1,10 +1,12 @@
-import time
 import Log
+import time
+import qrcode
 import base64
 from PIL import Image
-from io import BytesIO
 from os import getcwd
 from json import load
+from io import BytesIO
+from pyzbar.pyzbar import decode
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -13,6 +15,8 @@ from  selenium.common.exceptions import TimeoutException
 class Config():
 
     def __init__(self, Driver):
+
+        self.QRCode = qrcode.QRCode()
         self.Log = Log.Generate()
         self.WebDriver = Driver
         self.PathUser = getcwd() + '/Data/Config/Config.json'
@@ -30,20 +34,30 @@ class Config():
 
     def Initialize(self):
 
-            if(self.__SessionActive()):
-                try:
-
-                    User = WebDriverWait(self.WebDriver, 60).until(ec.presence_of_element_located((By.XPATH, '//span[@title = "{}"]'.format(self.UFC['Default']["WhatsappName"]))))
-                    User.click()
-
-                    return True
-
-                except Exception as error:
-                    self.Log.Write("Config.py | GenericErr # "+ str(error))
-                    self.Error = "Error: To initialize bot"
-                    return False
+            if self.__SessionActive():
+                self.__load_chat()
+                return True
             else:
-                self.__CreateSession()
+                if self.__CreateSession():
+                    self.__load_chat()
+                    return True
+                else:
+                    return False
+
+
+    def __load_chat(self):
+        try:
+
+            User = WebDriverWait(self.WebDriver, 60).until(ec.presence_of_element_located(
+                (By.XPATH, '//span[@title = "{}"]'.format(self.UFC['Default']["WhatsappName"]))))
+            User.click()
+
+            return True
+
+        except Exception as error:
+            self.Log.Write("Config.py | GenericErr # " + str(error))
+            self.Error = "Error: To initialize bot"
+            return False
 
     def GetWelcome(self):
         return self.Welcome
@@ -66,20 +80,38 @@ class Config():
 
         count = 1
 
-        while(True):
+        while True:
+            try:
+                if count <= 3:
+                    # Get image QR code
+                    QRCode64 = base64.b64decode(self.Validate.screenshot_as_base64)
+                    # Convert image to PIL
+                    IMG = Image.open(BytesIO(QRCode64))
+                    # Decode QR code data
+                    DataQR = decode(IMG)[0].data.decode('utf-8')
 
-            if (count <= 3):
-                QRCode = base64.b64decode(self.Validate.screenshot_as_base64)
-                Image.open(BytesIO(QRCode)).show()
+                    # Load QR code data to convert string to QR code Ascii & print QR code in terminal
+                    self.QRCode.add_data(DataQR)
 
-                print("Scan the QR code to login.")
+                    # Print in terminal basic instructions
+                    print("\033[93m" + "SCAN QR CODE TO LOGIN" + "\033[0m")
+                    self.QRCode.print_ascii(invert=True)
 
-            else:
-                self.Error = "Error: could not login, limit of attempts exceeded"
+                else:
+                    self.Error = "Error: could not login, limit of attempts exceeded"
+                    return False
+
+                count += 1
+                self.QRCode.clear()
+                time.sleep(10)
+
+            except ValueError as error:
+                self.Log.Write("Config.py | ValueError # " + str(error))
+                self.Error = error
                 return False
-
-            count += 1
-            time.sleep(10)
+            except Exception as error:
+                self.Log.Write("Config.py | GenericErr # " + str(error))
+                return True
 
 
     def GenerateUser(self):

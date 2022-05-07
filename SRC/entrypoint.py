@@ -34,41 +34,42 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
 def InitWebDriver():
-
     """[summary]
 
     Returns:
         [type]: [description]
     """
-    
+
     URL = 'https://web.whatsapp.com/'
-    
+
     PathSession = getcwd() + '/Data/Session/'
-    
+
     _Chrome_options = Options()
-    _Chrome_options.add_argument('--user-data-dir='+PathSession)
+    _Chrome_options.add_argument('--user-data-dir=' + PathSession)
     _Chrome_options.add_argument('--disable-extensions')
     _Chrome_options.add_argument('--disable-dev-shm-usage')
     _Chrome_options.add_argument('--no-sandbox')
+    _Chrome_options.add_argument('--window-size=1920x1080')
     _Chrome_options.add_argument('--start-maximized')
-    
+
     # Hide the browser window
-    # _Chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36')
-    # _Chrome_options.add_argument('--headless')
-     
+    _Chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36')
+    _Chrome_options.add_argument('--headless')
+
     try:
-        WebDriver = Chrome(options = _Chrome_options)
+        WebDriver = Chrome(options=_Chrome_options)
         WebDriver.get(URL)
-        
+
         return WebDriver
     except Exception as error:
         Log.Write("entrypoint.py # " + str(error))
         WebDriver.quit()
 
-if(__name__ == '__main__'):
-    
+
+if __name__ == '__main__':
+
     Log = Log.Generate()
-    
+
     try:
 
         # Initialize WebDriver connection
@@ -85,25 +86,23 @@ if(__name__ == '__main__'):
         # Seter the welcome message
         Bot.SetWelcomeMessage(Welcome)
 
-
         # Start Configurator
-        if(Config.Initialize()):
+        if Config.Initialize():
             # Start Bot
             Bot.ReadMessage(WebDriver)
         else:
-            print(Config.GetError()) # Get the error to debug
+            print(Config.GetError())  # Get the error to debug
             # if Configurator is not initialized and occurs an error save the error in the log
-            Log.Write("Config # " + str(Config.GetError()))
+            Log.Write("Entrypoint # " + str(Config.GetError()))
 
-        print("exist error ")
         # is ended the program, close the WebDriver
         WebDriver.quit()
 
     # if occurs an error save the error in the log
     except UnboundLocalError as error:
-        Log.Write("entrypoint.py | UnboundLocalError # "+ str(error))
+        Log.Write("entrypoint.py | UnboundLocalError # " + str(error))
     except TypeError as error:
-        Log.Write("entrypoint.py | TypeError # "+ str(error))
+        Log.Write("entrypoint.py | TypeError # " + str(error))
     except KeyboardInterrupt:
         # if the user press Ctrl+C, close the WebDriver
         WebDriver.quit()

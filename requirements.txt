@@ -3,3 +3,5 @@ selenium == 4.0.0
 virtualenv == 20.13.0
 psutil == 5.9.0
 schedule == 1.1.0
+pyzbar == 0.1.9
+qrcode == 7.3.1
