@@ -29,7 +29,7 @@ class Communicate:
         self.Log = Log.Generate()
 
         self.ClassBoxMessage = "_1Ilru"
-        self.ClassButton_Send = "_4sWnG"
+        self.ClassButton_Send_Xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button'
 
     def WriteMessage(self, msg):
 
@@ -67,7 +67,7 @@ class Communicate:
             # button = WebDriverWait(self.WebDriver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, ClassButton_Send)))
             button = WebDriverWait(self.WebDriver, 5).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button')))
 
-            button = self.WebDriver.find_element_by_class_name(self.ClassButton_Send)
+            button = self.WebDriver.find_elements_by_xpath(self.ClassButton_Send_Xpath)[0]
             button.click()
 
             return True
