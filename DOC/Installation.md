@@ -123,8 +123,6 @@ if you didn't create alias ("CHOSEN_PATH" is the path selected by you in Install
 python3 CHOSEN_PATH/SRC/entrypoint.py
 ```
 
-Once started, show the initial page of whatsapp web, its necessary scan QR Code with the whatsapp app in your phone.
+Once started the bot, in the terminal show a QR code to scan and load the session.
 
 <img src="IMG/Whatsapp_Init_Page.png" width="100%">
-
-Once scanned, the bot will be started and ready to listen messages.
