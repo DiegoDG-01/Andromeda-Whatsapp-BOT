@@ -36,6 +36,7 @@ class Screenshot:
         driver.get_screenshot_as_file('screenshot.png')
         image = Image.open('screenshot.png')
         width, height = image.size
+        os.remove('screenshot.png')
 
         return {'width': width, 'height': height}
 
