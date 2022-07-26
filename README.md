@@ -28,6 +28,7 @@ Andromeda is a bot multifunctional capable of multitasking using the Whatsapp We
 ## 📕 Documentation <a name = "installing"></a>
 
 - [Installation](/DOC/Installation.md)
+- [Contributing](/DOC/Contributing.md)
 
 ## 🤓 Contac With Me  <a name = "connect"></a>
 
