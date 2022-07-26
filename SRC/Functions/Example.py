@@ -40,9 +40,9 @@ class Example:
             'CommandExecution': "/example",
             # In ExternalModules is necessary define the modules necessary to make the module work in the list
             # >> commandsFile: is a dictionary with the commands and the information of the command
-            # >> Communicate: is a object that will be used to communicate with the user
-            # >> InterfaceControl: is a object that will be used to control the web WhatsApp interface
-            # >> Schedule: is a object that will be used to control the schedule of the module
+            # >> Communicate: is an object that will be used to communicate with the user
+            # >> InterfaceController: is an object that will be used to control the web WhatsApp interface
+            # >> Schedule: is an object that will be used to control the schedule of the module
             'ExternalModules': [
                 'commandsFile', 'Communicate'
             ],
