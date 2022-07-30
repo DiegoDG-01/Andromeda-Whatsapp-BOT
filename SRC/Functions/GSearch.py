@@ -1,4 +1,6 @@
 import Log
+from os import getcwd
+from json import load
 from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -16,8 +18,10 @@ class GSearch:
         self.SearchBar_Class = 'gLFyf'
         self.SearchBar_XPath = '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input'
         self.Google = 'https://www.google.com/'
+        PathModuleMessage = getcwd() + "/Data/Modules/GSearch.json"
 
         self.log = Log.Generate()
+        self.GSearchMessages = self.__Load_MultiLanguage(PathModuleMessage)
 
     def requirements(self):
 
@@ -44,6 +48,17 @@ class GSearch:
 
     def set_WebDriver(self, WebDriver):
         self.WebDriver = WebDriver
+
+    def __Load_MultiLanguage(self, Path):
+        try:
+            with open(Path, 'r') as file:
+                file = load(file)
+                default_code = file['lang']['default']
+                language_code = file['lang'][default_code]['locale']
+                return file['messages'][language_code]
+        except Exception as error:
+            self.log.Write("GSearch.py | __Load_MultiLanguage # " + str(error))
+            return False
 
     # Function to prepare info to argument
     def __PrepareArgs(self, args):
@@ -117,7 +132,7 @@ class GSearch:
             Content['Links'].append(content.find_element(By.TAG_NAME, 'a'))
             cout += 1
 
-        Content['Info'].append('# exit - to Cancel')
+        Content['Info'].append(self.GSearchMessages['info']['cancel'][0])
 
         return Content
 
@@ -125,7 +140,7 @@ class GSearch:
         pass
 
     def Search(self):
-        self.Communicate.WriteMessage(["# Searching in Google", "# What do you want to search?"])
+        self.Communicate.WriteMessage(self.GSearchMessages['info']['search'])
         self.Communicate.SendMessage()
         search = self.__readMessage()
 
@@ -133,10 +148,10 @@ class GSearch:
             # when create new window automatically open the new tab
             if not self.InterfaceControl.create_new_window(self.Google):
                 self.__Rollback()
-                return ["", "Error # Could not open new tab"]
+                return self.GSearchMessages['error']['open_tab']
             if not self.InterfaceControl.move_next_tab():
                 self.__Rollback()
-                return ["", "Error # Could not move to new tab"]
+                return self.GSearchMessages['error']['move_tab']
         except Exception as error:
             self.log.Write("GSearch.py | InterfaceControl # " + str(error))
 
@@ -150,7 +165,7 @@ class GSearch:
         except Exception as error:
             self.log.Write("GSearch.py | WebDriver # " + str(error))
             self.__Rollback()
-            return ["Error # Could not search"]
+            return self.GSearchMessages['error']['search']
 
         links = self.__CountLinks(TempWebDriver)
 
@@ -163,30 +178,31 @@ class GSearch:
 
         page_to_search = self.__readMessage()
 
-        if page_to_search == 'exit':
+        try:
+            assert page_to_search == 'exit' or page_to_search.isdigit()
+
+            if page_to_search == 'exit':
+                self.InterfaceControl.close_tabs()
+                return self.GSearchMessages['info']['cancelled']
+
+            if int(page_to_search) < 1 or int(page_to_search) > len(links['Links']):
+                self.InterfaceControl.close_tabs()
+                return self.GSearchMessages['error']['index_out_of_range']
+
+            self.Communicate.WriteMessage(self.GSearchMessages['info']['wait'])
+            self.Communicate.SendMessage()
+
+            self.InterfaceControl.move_next_tab()
+            links['Links'][int(page_to_search) - 1].click()
+            image_name = self.InterfaceControl.take_screenshot()
+            self.InterfaceControl.return_to_main_tab()
+
+            result, message = self.InterfaceControl.send_mediafile(image_name)
+
             self.InterfaceControl.close_tabs()
-            return ['', '# Search canceled']
 
-        self.Communicate.WriteMessage([' ', 'Please wait while get information...'])
-        self.Communicate.SendMessage()
-
-        self.InterfaceControl.move_next_tab()
-        links['Links'][int(page_to_search) - 1].click()
-        image_name = self.InterfaceControl.take_screenshot()
-        self.InterfaceControl.return_to_main_tab()
-
-        result, message = self.InterfaceControl.send_mediafile(image_name)
-
-        self.InterfaceControl.close_tabs()
-
-        return [message]
-
-
-    def Select(self, args):
-        pass
-
-    def Back(self, args):
-        pass
-
-    def Exit(self, args):
-        pass
+            return [message]
+        except AssertionError as error:
+            self.log.Write("GSearch.py | AssertionError - Invalid value # " + str(error))
+            self.InterfaceControl.close_tabs()
+            return self.GSearchMessages['error']['invalid_value']
