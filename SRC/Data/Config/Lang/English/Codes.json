@@ -30,10 +30,18 @@
                     "-l": "List command arguments",
                     "-set": "Set a message sent to the user or group",
                     "-del": "Delete a automated message sent to the user or group",
-                    "-list": "List all the automated messages sent to the user or group",
-                    "-add": "Add a new automated message sent to the user or group",
-                    "-edit": "Edit an automated message sent to the user or group",
-                    "-delall": "Delete all the automated messages sent to the user or group"
+                    "-list": "List all the automated messages sent to the user or group"
+                    "-edit": "Edit an automated message sent to the user or group"
+                }
+            ]
+        },
+        "/GSearch": {
+            "Desc":["Search in google and get a screenshot of the result and select the result"],
+            "Args": [
+                {
+                    "-d": "Command Description",
+                    "-l": "List command arguments",
+                    "-s": "Search in google"
                 }
             ]
         }

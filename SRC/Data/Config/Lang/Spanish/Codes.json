@@ -31,9 +31,17 @@
                     "-set": "Establecer un mensaje enviado al usuario o grupo",
                     "-del": "Delete a automated message sent to the user or group",
                     "-list": "List all the automated messages sent to the user or group",
-                    "-add": "Add a new automated message sent to the user or group",
-                    "-edit": "Edit an automated message sent to the user or group",
-                    "-delall": "Delete all the automated messages sent to the user or group"
+                    "-edit": "Edit an automated message sent to the user or group"
+                }
+            ]
+        },
+        "/GSearch": {
+            "Desc":["Este módulo permite realizar una búsqueda en Google"],
+            "Args": [
+                {
+                    "-d": "Descripción del comando",
+                    "-l": "Listar los argumentos del comando",
+                    "-s": "Buscar en Google"
                 }
             ]
         }
