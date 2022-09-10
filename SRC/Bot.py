@@ -74,7 +74,7 @@ class Bot:
         """[summary]
         """
 
-        ClassGlobalMessageBox = '_22AX6'
+        ClassGlobalMessageBox = '_22Msk'
 
         while True:
 

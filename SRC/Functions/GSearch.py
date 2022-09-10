@@ -2,6 +2,7 @@ import Log
 from os import getcwd
 from json import load
 from time import sleep
+from pathlib import Path
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -18,7 +19,7 @@ class GSearch:
         self.SearchBar_Class = 'gLFyf'
         self.SearchBar_XPath = '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input'
         self.Google = 'https://www.google.com/'
-        PathModuleMessage = getcwd() + "/Data/Modules/GSearch.json"
+        PathModuleMessage = Path(getcwd() + "/Data/Modules/GSearch.json")
 
         self.log = Log.Generate()
         self.GSearchMessages = self.__Load_MultiLanguage(PathModuleMessage)

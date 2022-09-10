@@ -6,6 +6,7 @@ from PIL import Image
 from os import getcwd
 from json import load
 from io import BytesIO
+from pathlib import Path
 from pyzbar.pyzbar import decode
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,7 +20,7 @@ class Config():
         self.QRCode = qrcode.QRCode()
         self.Log = Log.Generate()
         self.WebDriver = Driver
-        self.PathUser = getcwd() + '/Data/Config/Config.json'
+        self.PathUser = Path(getcwd() + '/Data/Config/Config.json')
         self.Validate = None
         self.UserFileConfig = None
 
