@@ -30,7 +30,7 @@
                     "-l": "List command arguments",
                     "-set": "Set a message sent to the user or group",
                     "-del": "Delete a automated message sent to the user or group",
-                    "-list": "List all the automated messages sent to the user or group"
+                    "-list": "List all the automated messages sent to the user or group",
                     "-edit": "Edit an automated message sent to the user or group"
                 }
             ]
