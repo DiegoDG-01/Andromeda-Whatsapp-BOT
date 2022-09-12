@@ -13,8 +13,9 @@
 # Module imported from the main python library
 import Log
 from re import match
-from os import getcwd, listdir
 from json import load
+from pathlib import Path
+from os import getcwd, listdir
 from json import JSONDecodeError
 from importlib import import_module
 
@@ -41,7 +42,7 @@ class CommandManager:
         self.commands = None
         self.commandargs = None
         self.commandInfo = None
-        self.Path = getcwd() + '/Data/Config/Codes.json'
+        self.Path = Path(getcwd() + '/Data/Config/Codes.json')
 
         with open(self.Path, 'r') as File:
             try:
@@ -89,7 +90,7 @@ class CommandManager:
         Functions = []
 
         # Get all files from the Functions folder
-        path = getcwd() + '/Functions/'
+        path = Path(getcwd() + '/Functions/')
 
         # Get all files from the Functions folder
         for file in listdir(path):

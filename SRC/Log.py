@@ -6,7 +6,7 @@ from os import getcwd, remove
 class Generate:
 
     def GetLog(self, lines = None):
-        LogPath = getcwd() + '/Data/Log/Log.txt'
+        LogPath = Path(getcwd() + '/Data/Log/Log.txt')
 
         with open(LogPath, 'r') as File:
 
@@ -27,7 +27,7 @@ class Generate:
     def Write(self, error):
         DateTime = self.__GetDateTime()
 
-        LogPath = getcwd() + '/Data/Log/Log.txt'
+        LogPath = Path(getcwd() + '/Data/Log/Log.txt')
 
         with open(LogPath, 'a') as File:
             self.__DeleteLog(LogPath)

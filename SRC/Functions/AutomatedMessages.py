@@ -5,8 +5,9 @@ from os import getcwd
 from json import load
 from time import sleep
 from hashlib import md5
-from datetime import datetime
+from pathlib import Path
 from random import randint
+from datetime import datetime
 from json import JSONDecodeError
 
 
@@ -25,7 +26,7 @@ class AutomatedMessages:
         self.log = Log.Generate()
         self.Communicate = None
         self.commandsFile = None
-        PathModuleMessage = getcwd() + "/Data/Modules/AutomatedMessage.json"
+        PathModuleMessage = Path(getcwd() + "/Data/Modules/AutomatedMessage.json")
 
         self.InterfaceControl = None
         self.Schedule = None

@@ -3,6 +3,7 @@ import psutil
 import shutil
 from json import load
 from time import sleep
+from pathlib import Path
 from subprocess import call
 from os import getcwd, getpid
 from json import JSONDecodeError
@@ -10,7 +11,7 @@ from json import JSONDecodeError
 class Configure:
 
     def __init__(self):
-        self.PathConfig = getcwd() + '/Data/Config/Config.json'
+        self.PathConfig = Path(getcwd() + '/Data/Config/Config.json')
         self.Argument = None
         self.log = Log.Generate()
         self.Communicate = None

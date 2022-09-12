@@ -32,6 +32,8 @@ import Config
 from os import getcwd
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 def InitWebDriver():
     """[summary]
@@ -57,7 +59,7 @@ def InitWebDriver():
     _Chrome_options.add_argument('--headless')
 
     try:
-        WebDriver = Chrome(options=_Chrome_options)
+        WebDriver = Chrome(options=_Chrome_options, service=Service(ChromeDriverManager().install()))
         WebDriver.get(URL)
 
         return WebDriver

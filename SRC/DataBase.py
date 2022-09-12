@@ -1,12 +1,17 @@
 import Log
 import sqlite3
+from os import getcwd
+from pathlib import Path
 from sqlite3 import OperationalError
 
 class SQLite:
 
     def __init__(self):
+
+        self.Path = Path(getcwd() + '/Data/Database/database.db')
+
         self.log = Log.Generate()
-        self.conn = sqlite3.connect("Data/Database/database.db")
+        self.conn = sqlite3.connect(self.Path)
         self.cursor = self.conn.cursor()
 
     def create_table(self, table_name, columns):
