@@ -1,10 +1,10 @@
 import os
-import subprocess
-import platform
-from pathlib import Path
-from os import getcwd
-from json import load, dump
 import getpass
+import platform
+import subprocess
+from os import getcwd
+from pathlib import Path
+from json import load, dump
 
 def __ColorsInit():
     # Colors for the terminal
