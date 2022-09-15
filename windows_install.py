@@ -11,10 +11,13 @@
 
 import os
 import sys
+import shutil
 import platform
 import subprocess
 import pkg_resources
 from os import getcwd
+from pathlib import WindowsPath
+from json import load, dump
 
 def __ColorsInit():
     # Codes for colors in the
@@ -103,10 +106,76 @@ def __install_requirements(Colors = __ColorsInit()):
         print(Colors['red'] + 'Requirements not installed' + Colors['end'])
         exit()
 
+
+def __configure():
+
+    PathSRC = __get_paths('SRC')
+    PathLang = str(WindowsPath(PathSRC + '\\Data\\Config\\Lang\\'))
+    PathConfig =str(WindowsPath(PathSRC + '\\Data\\Config\\'))
+
+    # Set the language
+    print('----------------------------------------')
+    print('Setting the language...')
+    print('----------------------------------------')
+
+    print('Available languages:')
+    print('1. English')
+    print('2. Spanish')
+
+    while True:
+        try:
+            Language = int(input('Select the language: '))
+            if Language == 1:
+                Language = 'English'
+                break
+            elif Language == 2:
+                Language = 'Spanish'
+                break
+            else:
+                print('Invalid language')
+        except ValueError:
+            print('Invalid language')
+
+    if os.path.exists(PathLang + '\\' + Language + '\Codes.json'):
+        shutil.copy(PathLang + '\\' + Language + '\Codes.json', PathConfig)
+    else:
+        print('Language not found')
+        exit()
+
+    if os.path.exists(PathLang + '\\' + Language + '\Config.json'):
+        shutil.copy(PathLang + '\\' + Language + '\Config.json', PathConfig)
+    else:
+        print('Config not found')
+        exit()
+    
+
+    print('----------------------------------------')
+    print('Language set to ' + Language)
+    print('----------------------------------------\n')
+
+    print('----------------------------------------')
+    print('Setting to listening chat...')
+    print('----------------------------------------')
+
+    with open(PathConfig + '\Config.json', 'r+') as file:
+        Config = load(file)
+
+        chatname = input('Write the name chat used to listening Bot: ')
+
+        Config['main']['Default']['WhatsappName'] = chatname
+
+        file.seek(0)
+        dump(Config, file, indent=4)
+        file.truncate()
+
+        
+
+
 def main():
     __validations()
     __install_virtualenv()
     __install_requirements()
+    __configure()
 
 if __name__ == '__main__':
     main()
