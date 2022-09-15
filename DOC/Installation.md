@@ -1,31 +1,32 @@
 ## Install Andromeda - WhatsApp Bot
 
-Currently, this bot is testing in the MacOS and Linux function and the installer only on these operating systems, but it will be updated in the future or can be installed manually following instructions.
+This bot is currently being tested on Mac OS, Linux and Windows, but the installer only works on Unix or derived operating systems and for Windows operating systems an alternative basic installer was developed, or it can be installed manually by following the instructions.
+
+If you want this documentation in Spanish, you can find it [here](Spanish/Installation.md).
 
 ## 📕 Requirements
 
 Currently, the bot is compatible with the next's operating systems:
 
+- Windows (only tested on Windows 10)
 - Linux (APT package manager required)
-- Mac OS Big Sur or later (Brew Package Manager)
+- Mac OS Big Sur or later (Brew Package Manager required)
 
 You're need have installed the next's software programs:
 
 - Git
-- Python 3.X 
 - Google Chrome
-
-Please note that the bot is not tested in Windows or Windows WSL
+- Python 3.8 or later
 
 ## 🌐 Supported Browsers
 
 Currently, the bot is tested in the following browsers:
 
- - Google Chrome 98.X
+ - Google Chrome 98.X or later
 
 ## 💻 Install
 
-### Using the installer
+### Using the installer for Unix/Linux
 
 1. Download the latest version of the bot from the [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) or using **Git** in your terminal:
     ```
@@ -41,10 +42,28 @@ Currently, the bot is tested in the following browsers:
 3. The installer will request the name chat to used for listen the messages (it's recommend create previously one group with **only you**).
 
 
-5. The installer will create a new folder with the name "Andromeda-Whatsapp_BOT" in your home directory.
+4. The installer will create a new folder with the name "Andromeda-Whatsapp_BOT" in your home directory.
 
 
-6. **Download** and **install** ChromeDriver from the [ChromeDriver website](https://chromedriver.chromium.org/downloads) according your Google Chrome version.
+5. Head over to the "Initialization" section to continue.
+
+### Using the installer (Windows)
+
+1. Download the latest version of the bot from the [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) or using **Git** in your terminal:
+    ```
+    git clone "https://github.com/DiegoDG-01/Andromeda-Whatsapp_BOT.git"
+    ```
+2. In your terminal open the folder with the bot and run the following command:
+    ```
+    python3 windows_install.py
+    ```
+    The installation show progress and important information, please wait until the installation is finished.
+
+
+3. The installer will request the name chat to used for listen the messages (it's recommend create previously one group with **only you**).
+
+
+4. Head over to the "Initialize the bot" section to continue.
 
 ### Manual installation
 
@@ -57,31 +76,38 @@ if you don't want to use the installer.
 2. Copy the folder with the bot to desired location.
 
 
-3. (Optional) Install virtual environment
-    ```
+3. Open the folder of project
+
+
+4. (**Optional**) Install virtual environment
+   ```
     pip3 install virtualenv
     ```
    
-4. (Optional) Open the folder with the bot and run the following command to create a virtual environment:
+5. (**Optional**) Create a virtual environment:
     ```
     virtualenv -p python3 .venv
     ```
    
-5. (Optional) Activate the virtual environment:
+6. (**Optional**) Activate the virtual environment:
+   
+    Unix/Linux: 
     ```
     source .venv/bin/activate
     ```
 
-6. under the folder with the bot, run the following command to install the dependencies:
+    Windows:
+   ```
+   .venv\\Scripts\\activate.bat
+   ```
+
+7. inside the folder with the bot, run the following command to install the dependencies:
     ```
     python3 pip install -r requirements.txt
     ```
 
-7. **Download** and **install** ChromeDriver from the [ChromeDriver website](https://chromedriver.chromium.org/downloads) according your Google Chrome version.
-
-
-8. (Optional) In the terminal, run the following command to create alias for the executable easy access,
-    "CHOSEN_PATH" is the path selected by you in the step 2.
+8. (**Optional Unix/Linux**) In the terminal, run the following command to create alias for the executable easy access,
+    "**CHOSEN_PATH**" is the path selected by you in the step 2.
     <br>
     <br>
     if you use Bash:
@@ -94,7 +120,7 @@ if you don't want to use the installer.
     echo 'alias andromeda="cd CHOSEN_PATH/SRC/ && source .venv/bin/activate && python3 entrypoint.py"' >> ~/.zshrc
     ```
    
-9. (**Obligatory**) access to folder **"SRC/Data/Config/Lang"** this folder contains the language files (currently only **English** and **Spanish**) copy ***Codes.json*** and ***Config.json*** and paste them in the root folder **"SRC/Data/Config"**. 
+9. (**Obligatory**) access to folder **"SRC/Data/Config/Lang"** this folder contains the language files (currently only **English** and **Spanish**) copy ***Codes.json*** and ***Config.json*** and paste them in the root config folder **"SRC/Data/Config"**. 
     ```
     SRC/Data/Config/Codes.json
     SRC/Data/Config/Config.json
@@ -125,4 +151,4 @@ python3 CHOSEN_PATH/SRC/entrypoint.py
 
 Once started the bot, in the terminal show a QR code to scan and load the session.
 
-<img src="IMG/Whatsapp_Init_Page.png" width="100%">
+<img src="IMG/Whatsapp_Init_Page.png" width="70%">
