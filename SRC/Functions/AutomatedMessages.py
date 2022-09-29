@@ -17,10 +17,11 @@ class AutomatedMessages:
 
         # It's used to identify the module in the database
         # Not modified this value
-        self.ID_Event_In_DB = 2
+        self.ID_Event_In_DB = 1
         self.TableDatabase = 'M_AutomatedMessage'
 
         self.Data = None
+        self.AdditionalArgs = None
 
         self.DB = DataBase.SQLite()
         self.log = Log.Generate()
@@ -50,7 +51,7 @@ class AutomatedMessages:
         requeriments = {
             'CommandExecution': "/AutoMessage",
             'ExternalModules': [
-                'commandsFile', 'Communicate', 'InterfaceControl', 'Schedule'
+                'commandsFile', 'Communicate', 'InterfaceController', 'Schedule'
             ],
         }
 
@@ -78,14 +79,15 @@ class AutomatedMessages:
 
 
     # Function to prepare info to argument
-    def __PrepareArgs(self, args):
+    def __PrepareArgs(self, args, additionalArgs):
         # Check if args is a valid argument
 
-        if not isinstance(args, list):
-            args = args.split()
+        if args in self.commandsFile['Active']['/AutoMessage']['Args'][0].keys() or args == '-send':
+            self.Argument = args
 
-        if args[0] in self.commandsFile['Active']['/AutoMessage']['Args'][0].keys():
-            self.Argument = args[0]
+            if additionalArgs is not None:
+                self.AdditionalArgs = additionalArgs
+
             return True
         else:
             # There is an error with not responding  with a message
@@ -95,9 +97,10 @@ class AutomatedMessages:
         # this error affects all modules and should be fixed
 
     # This function is used to initialize the help function
-    def EntryPoint(self, args=None, data=None):
+    def EntryPoint(self, args=None, data=None, additionalArgs=None):
 
         # Validate if passed data to used in other functions and assign it to the variable
+        # Data is provided by the Schedule module when the time is reached
         if data is not None:
             self.Data = data
 
@@ -106,7 +109,7 @@ class AutomatedMessages:
             return self.Default()
         else:
             # check if args exist and is a valid argument
-            if self.__PrepareArgs(args):
+            if self.__PrepareArgs(args, additionalArgs):
                 # Execute the function in charge of managing the help function
                 return self.CommandManager()
             else:
@@ -121,6 +124,8 @@ class AutomatedMessages:
             return self.ListArgs()
         elif self.Argument == '-set':
             return self.Set_Automated_Message()
+        elif self.Argument == '-send':
+            return self.Send_Message()
         elif self.Argument == '-del':
             return self.Delete_Automated_Message()
         elif self.Argument == '-list':

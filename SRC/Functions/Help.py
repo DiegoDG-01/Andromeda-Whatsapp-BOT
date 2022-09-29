@@ -5,6 +5,7 @@ class Help:
         self.Argument = None
         self.commandsFile = None
         self.Communicate = None
+        self.AdditionalArgs = None
 
     def requirements(self):
 
@@ -24,21 +25,25 @@ class Help:
         self.commandsFile = commandsFile
 
     # Function to prepare info to argument
-    def __PrepareArgs(self, args):
-        if args[0] in self.commandsFile['Active']['/help']['Args'][0].keys():
-            self.Argument = args[0]
+    def __PrepareArgs(self, args, additionalArgs):
+        if args in self.commandsFile['Active']['/help']['Args'][0].keys():
+            self.Argument = args
+
+            if additionalArgs is not None:
+                self.AdditionalArgs = additionalArgs
+
             return True
         else:
             return False
 
     # This function is used to initialize the help function
-    def EntryPoint(self, args=None):
+    def EntryPoint(self, args=None, additionalArgs=None):
         # if args is empty or None execute default function else execute different function depending on the args
         if args is None:
             return self.Default()
         else:
             # check if args exist and is a valid argument
-            if self.__PrepareArgs(args):
+            if self.__PrepareArgs(args, additionalArgs):
                 # Execute the function in charge of managing the help function
                 return self.CommandManager()
             else:

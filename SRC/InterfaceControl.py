@@ -42,7 +42,7 @@ class Interface:
 
         self.Chat_List_HTML_Class = "zoWT4"
 
-        self.Path_Screenshot = Path(Main_Path + "/Data/WhatsApp/Screenshot/")
+        self.Path_Screenshot = str(Path(Main_Path + "/Data/WhatsApp/Screenshot/"))
 
         self.Tabs = Tabs.Tabs(self.WebDriver)
 

@@ -16,6 +16,7 @@ class Configure:
         self.log = Log.Generate()
         self.Communicate = None
         self.commandsFile = None
+        self.AdditionalArgs = None
 
         try:
 
@@ -47,9 +48,13 @@ class Configure:
         self.commandsFile = commandsFile
 
     # Function to prepare info to argument
-    def __PrepareArgs(self, args):
-        if args[0] in self.commandsFile['Active']['/config']['Args'][0].keys():
-            self.Argument = args[0]
+    def __PrepareArgs(self, args, additionalArgs):
+        if args in self.commandsFile['Active']['/config']['Args'][0].keys():
+            self.Argument = args
+
+            if additionalArgs is not None:
+                self.AdditionalArgs = additionalArgs
+
             return True
         else:
             # There is an error with not responding  with a message
@@ -60,13 +65,13 @@ class Configure:
         #
 
     # This function is used to initialize the help function
-    def EntryPoint(self, args=None):
+    def EntryPoint(self, args=None, additionalArgs=None):
         # if args is empty or None execute default function else execute different function depending on the args
         if args is None:
             return self.Default()
         else:
             # check if args exist and is a valid argument
-            if self.__PrepareArgs(args):
+            if self.__PrepareArgs(args, additionalArgs):
                 # Execute the function in charge of managing the help function
                 return self.CommandManager()
             else:

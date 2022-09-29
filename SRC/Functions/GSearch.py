@@ -13,8 +13,9 @@ class GSearch:
     # Function to configure the help function and prepare it for use
     def __init__(self):
         self.Argument = None
-        self.commandsFile = None
         self.Communicate = None
+        self.commandsFile = None
+        self.AdditionalArgs = None
         self.NameModule = "/GSearch"
         self.SearchBar_Class = 'gLFyf'
         self.SearchBar_XPath = '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input'
@@ -27,7 +28,7 @@ class GSearch:
     def requirements(self):
 
         requeriments = {
-            'CommandExecution': "/GSearch",
+            'CommandExecution': self.NameModule,
             'ExternalModules': [
                 'commandsFile', 'Communicate', 'InterfaceController', 'WebDriver'
             ],
@@ -62,21 +63,25 @@ class GSearch:
             return False
 
     # Function to prepare info to argument
-    def __PrepareArgs(self, args):
-        if args[0] in self.commandsFile['Active'][self.NameModule]['Args'][0].keys():
-            self.Argument = args[0]
+    def __PrepareArgs(self, args, additionalArgs):
+        if args in self.commandsFile['Active'][self.NameModule]['Args'][0].keys():
+            self.Argument = args
+
+            if additionalArgs is not None:
+                self.AdditionalArgs = additionalArgs
+
             return True
         else:
             return False
 
     # This function is used to initialize the help function
-    def EntryPoint(self, args=None):
+    def EntryPoint(self, args=None , additionalArgs=None):
         # if args is empty or None execute default function else execute different function depending on the args
         if args is None:
             return self.Default()
         else:
             # check if args exist and is a valid argument
-            if self.__PrepareArgs(args):
+            if self.__PrepareArgs(args, additionalArgs):
                 # Execute the function in charge of managing the help function
                 return self.CommandManager()
             else:

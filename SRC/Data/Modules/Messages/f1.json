@@ -1,0 +1,11 @@
+{
+  "success": {
+
+  },
+
+  "error": {
+    "Unknown": "Unknown error",
+    "NotData": "Actually, there is no data",
+    "ServiceUnavailable": "The server is out of service"
+  }
+}

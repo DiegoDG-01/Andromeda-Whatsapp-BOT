@@ -38,10 +38,12 @@ class CommandManager:
 
         # Save Communicate to permit communicate with user in whatsapp
 
+        self.arg = None
         self.command = None
         self.commands = None
         self.commandargs = None
         self.commandInfo = None
+        self.additionalArgs = {}
         self.Path = Path(getcwd() + '/Data/Config/Codes.json')
 
         with open(self.Path, 'r') as File:
@@ -138,17 +140,11 @@ class CommandManager:
 
     def Execute(self):
 
-        """[summary]
-
-        Returns:
-            [type]: [description]
-        """
-
         if self.commandargs:
             contentargs, error = self.__ContentArgs()
 
             if contentargs is True and error is None:
-                return self.ListAction[self.command](self.commandargs), None
+                return self.ListAction[self.command](args=self.arg, additionalArgs=self.additionalArgs), None
             else:
                 return contentargs, error
         else:
@@ -157,13 +153,7 @@ class CommandManager:
 
     def __IsCommand(self):
 
-        """[summary]
-
-        Returns:
-            [type]: [description]
-        """
-
-        regex = "^/[a-zA-Z]+$"
+        regex = "^/[a-zA-Z0-9]+$"
 
         isCommand = match(regex, self.command)
 
@@ -173,12 +163,6 @@ class CommandManager:
             return False
 
     def __IsValidCommand(self):
-
-        """[summary]
-
-        Returns:
-            [type]: [description]
-        """
 
         if self.command in self.commands['Active']:
             self.commandInfo = self.commands['Active'][self.command]
@@ -191,17 +175,28 @@ class CommandManager:
 
     def __ContentArgs(self):
 
-        """[summary]
-
-        Returns:
-            [type]: [description]
-        """
-
         if self.commandargs:
 
             if self.commandargs[0] in self.commands['Active'][self.command]["Args"][0].keys():
+                self.arg = self.commandargs.pop(0)
+
+                if len(self.commandargs):
+                    self.__AdditionalArgs(self.commandargs)
+
                 return True, None
             else:
                 return False, "Invalid argument"
         else:
             return False, "Argument not exist"
+
+    def __AdditionalArgs(self, args):
+
+        regex = "^-[a-zA-Z]+$"
+
+        if len(args) % 2 == 0:
+
+            for i in range(0, len(args), 2):
+
+                if match(regex, args[i]) is not None:
+
+                    self.additionalArgs[args[i]] = args[i + 1]

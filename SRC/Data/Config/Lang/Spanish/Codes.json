@@ -44,6 +44,17 @@
                     "-s": "Buscar en Google"
                 }
             ]
+        },
+        "/f1": {
+            "Desc":["Obtener información de la temporada actual de F1"],
+            "Args": [
+                {
+                    "-d": "Descripción del comando",
+                    "-l": "Listar los argumentos del comando",
+                    "-qualify": "Obtener información de la clasificación",
+                    "-race": "Obtener información de la carrera"
+                }
+            ]
         }
     },
     "Development":{
