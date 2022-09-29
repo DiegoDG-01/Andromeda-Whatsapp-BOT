@@ -27,7 +27,7 @@ class AutomatedMessages:
         self.log = Log.Generate()
         self.Communicate = None
         self.commandsFile = None
-        PathModuleMessage = Path(getcwd() + "/Data/Modules/AutomatedMessage.json")
+        PathModuleMessage = Path(getcwd() + "/Data/Modules/Messages/AutomatedMessage.json")
 
         self.InterfaceControl = None
         self.Schedule = None

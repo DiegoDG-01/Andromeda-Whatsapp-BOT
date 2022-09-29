@@ -1,0 +1,65 @@
+{
+  "set": {
+    "WhatsappName": {
+      "message": [
+        "## Note: Make sure the name is identical to chat name",
+        ">> Please enter a valid user or group name: "
+      ],
+      "error": {
+        "Invalid": "Invalid user or group name",
+        "UserNotFound": "User or group not found",
+        "UserAlreadyInAutoMessage": "User already in group"
+      },
+      "regex": "^[a-zA-Z0-9_]+$"
+    },
+    "Message": {
+      "message": [
+        "## Note: The message is content only 20 characters",
+        ">> Please enter a valid message: "
+      ],
+      "error": {
+        "Invalid": "Invalid message"
+      },
+      "regex": "^[a-zA-Z0-9_,. ]+$"
+    },
+    "Time": {
+      "message": [
+        "## Note: Make sure to format time is HH:MM:SS and use : as separator",
+        "## Make sure to use 24 hour format",
+        ">> Please enter a valid time:"
+      ],
+      "error": {
+        "Invalid": "Invalid time"
+      },
+      "regex": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$"
+    },
+     "Date": {
+      "message": [
+        "## Note: Select day of the week",
+        "## M = Mon, T = Tues, W = Wed, TH = Thu, F = Fri, S = Sat, SU = Sun",
+        "## use , as separator for multiple days, not use space",
+        ">> Please enter a valid date: "
+      ],
+      "error": {
+        "Invalid": "Invalid date"
+      },
+      "regex": "^[MTWRFSU,]+$"
+    }
+  },
+
+  "success": {
+    "Set": ["Successfully set auto message"],
+    "Send": ["Successfully send auto message"],
+    "Remove":["Successfully removed from auto message"],
+    "Edit": ["Successfully edited auto message"]
+  },
+
+  "error":  {
+    "Set": ["Failed to set auto message"],
+    "Send": ["Failed to send auto message"],
+    "Remove": ["Failed to remove from auto message"],
+    "NotFound": ["Data not found"],
+    "Edit": ["Failed to edit auto message"],
+    "Cancel": ["Canceled"]
+  }
+}

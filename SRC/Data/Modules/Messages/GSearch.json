@@ -1,0 +1,62 @@
+{
+  "lang": {
+
+    "default": "es",
+
+    "en": {
+      "name": "English",
+      "flag": "us",
+      "locale": "en_US"
+    },
+
+    "es": {
+      "name": "Español",
+      "flag": "es",
+      "locale": "es_MX"
+    }
+  },
+
+  "messages": {
+    "en_US": {
+        "success": {
+        "searching": ["Searching information..."]
+      },
+
+      "info": {
+        "cancel": ["# exit - to cancel search"],
+        "search": ["# Searching in Google", "# What do you want to search?"],
+        "cancelled": ["# Search cancelled"],
+        "wait": ["# Searching for results, please wait..."]
+      },
+
+      "error": {
+        "open_tab": ["", "Error # Could not open new tab"],
+        "move_tab":["", "Error # Could not move to new tab"],
+        "search": ["", "Error # Could not search"],
+        "invalid_value": ["", "# Error, Invalid value"],
+        "index_out_of_range": ["", "# Error, value out of range"]
+      }
+    },
+
+    "es_MX": {
+      "success": {
+        "searching": ["Buscando información..."]
+      },
+
+      "info": {
+        "cancel": "# exit - para cancelar búsqueda",
+        "search": ["# Buscando en Google", "# ¿Qué quieres buscar?"],
+        "cancelled": ["# Búsqueda cancelada"],
+        "wait": ["# Buscando resultados, por favor espere..."]
+      },
+
+      "error": {
+        "open_tab": ["", "Error # No se pudo abrir una nueva pestaña"],
+        "move_tab":["", "Error # No se pudo mover a la nueva pestaña"],
+        "search": ["", "Error # No se pudo buscar"],
+        "invalid_value": ["", "# Error, Valor inválido"],
+        "index_out_of_range": ["", "# Error, valor fuera de rango"]
+      }
+    }
+  }
+}

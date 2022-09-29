@@ -20,7 +20,7 @@ class GSearch:
         self.SearchBar_Class = 'gLFyf'
         self.SearchBar_XPath = '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input'
         self.Google = 'https://www.google.com/'
-        PathModuleMessage = Path(getcwd() + "/Data/Modules/GSearch.json")
+        PathModuleMessage = Path(getcwd() + "/Data/Modules/Messages/GSearch.json")
 
         self.log = Log.Generate()
         self.GSearchMessages = self.__Load_MultiLanguage(PathModuleMessage)
