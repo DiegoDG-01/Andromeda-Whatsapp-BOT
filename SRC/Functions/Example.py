@@ -16,8 +16,8 @@
 ######################################################################################
 ######################################################################################
 
-# Version: 1.1
-# Compatibility: Andromeda >= 0.1.3
+# Version: 1.2
+# Compatibility: Andromeda >= 0.2.3
 
 # >> THIS FILE IS ONLY THE STRUCTURE OF THE MODULE <<
 # >> DO NOT ADD CODE HERE, COPY IT TO YOUR OWN MODULE <<
@@ -30,8 +30,10 @@ class Example:
     # Function to configure the help function and prepare it for use
     def __init__(self):
         self.Argument = None
-        self.commandsFile = None
         self.Communicate = None
+        self.commandsFile = None
+        self.AdditionalArgs = None
+        self.NameModule = "Example"
 
     def requirements(self):
 
@@ -85,21 +87,25 @@ class Example:
     ## >> Copy all code in your file                                                                                 ##
     ###################################################################################################################
     # Function to prepare info to argument
-    def __PrepareArgs(self, args):
-        if args[0] in self.commandsFile['Active']['/help']['Args'][0].keys():
+    def __PrepareArgs(self, args, additionalArgs):
+        if args[0] in self.commandsFile['Active'][self.NameModule]['Args'][0].keys():
             self.Argument = args[0]
+
+            if additionalArgs is not None:
+                self.AdditionalArgs = additionalArgs
+
             return True
         else:
             return False
 
     # This function is used to initialize the help function
-    def EntryPoint(self, args=None):
+    def EntryPoint(self, args=None, additionalArgs=None):
         # if args is empty or None execute default function else execute different function depending on the args
         if args is None:
             return self.Default()
         else:
             # check if args exist and is a valid argument
-            if self.__PrepareArgs(args):
+            if self.__PrepareArgs(args, additionalArgs):
                 # Execute the function in charge of managing the help function
                 return self.CommandManager()
             else:
@@ -131,11 +137,11 @@ class Example:
         return self.DescribeCommand()
 
     def DescribeCommand(self):
-        return self.commandsFile['Active']["/help"]['Desc']
+        return self.commandsFile['Active'][self.NameModule]['Desc']
 
     def ListArgs(self):
 
-        List = self.commandsFile['Active']['/help']['Args'][0]
+        List = self.commandsFile['Active'][self.NameModule]['Args'][0]
 
         ListToMessage = [key + ': ' + List[key] for key in List.keys()]
 

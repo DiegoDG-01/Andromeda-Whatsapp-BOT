@@ -18,6 +18,7 @@ class F1:
         self.ModuleMessages = None
         self.AdditionalArgs = None
 
+        self.NameModule = "/f1"
         self.Log = Log.Generate()
         # self.DB = DataBase.DataBase()
 
@@ -55,7 +56,7 @@ class F1:
 
     # Function to prepare info to argument
     def __PrepareArgs(self, args, additionalArgs):
-        if args in self.commandsFile['Active']['/f1']['Args'][0].keys():
+        if args in self.commandsFile['Active'][self.NameModule]['Args'][0].keys():
             self.Argument = args
 
             if additionalArgs is not None:
@@ -97,11 +98,11 @@ class F1:
         return self.DescribeCommand()
 
     def DescribeCommand(self):
-        return self.commandsFile['Active']["/f1"]['Desc']
+        return self.commandsFile['Active'][self.NameModule]['Desc']
 
     def ListArgs(self):
 
-        List = self.commandsFile['Active']['/f1']['Args'][0]
+        List = self.commandsFile['Active'][self.NameModule]['Args'][0]
 
         ListToMessage = [key + ': ' + List[key] for key in List.keys()]
 

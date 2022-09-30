@@ -52,8 +52,6 @@ class CommandManager:
             except JSONDecodeError as err:
                 self.Log.Write("Commands.py | JSONDecodeError # " + str(err))
                 exit(1)
-            finally:
-                File.close()
 
         # Traverse all modules
         for Module in Modules:
@@ -84,6 +82,11 @@ class CommandManager:
             # Generate a dict containing all functions to execute commands
             self.ListAction[CommandExcecution] = Module.EntryPoint
 
+            # Add dinamically codes of the third party modules to the main codes file "self.commands"
+            Codes = self.__import_codes_of_module(ClassName)
+
+            if Codes is not False:
+                self.commands['Active'].update(Codes)
 
     # Function to import all modules from the Functions folder
     def __import_Modules(self):
@@ -110,6 +113,27 @@ class CommandManager:
 
         # Return the list of modules imported
         return Functions
+
+    def __import_codes_of_module(self, NameFile):
+
+        ModuleCodes = Path(getcwd() + '/Data/Modules/Codes/' + NameFile + '.json')
+
+        if ModuleCodes.exists():
+            with open(ModuleCodes, 'r') as File:
+                try:
+                    Module = load(File)
+                    lang = Module['Lang']
+
+                    return Module[lang]
+                except JSONDecodeError as err:
+                    self.Log.Write("Commands.py | JSONDecodeError # " + str(err))
+                    exit(1)
+                except Exception as err:
+                    self.Log.Write("Commands.py | Error importing codes of module " + NameFile + " | " + str(err))
+                    exit(1)
+        else:
+            return False
+
 
     def Get_List_of_Functions(self):
         return self.ListAction
