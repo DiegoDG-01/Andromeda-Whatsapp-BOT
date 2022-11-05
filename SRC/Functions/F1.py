@@ -24,8 +24,7 @@ class F1:
 
         self.API_Url = "http://ergast.com/api/f1/"
 
-        PathModuleMessages = str(Path(getcwd() + '/Data/Modules/Messages/f1.json'))
-        PathModuleMessages = "/Users/diego/Proyects/BOT_Adromeda/SRC/Data/Modules/Messages/f1.json"
+        PathModuleMessages = str(Path(getcwd() + '/Data/Modules/Messages/F1.json'))
 
         with open(PathModuleMessages, 'r') as file:
             self.ModuleMessages = load(file)
