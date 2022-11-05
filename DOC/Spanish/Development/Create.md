@@ -129,7 +129,7 @@ def requirements(self):
     }
     return requeriments
 ```
-Esta función es la encargada de definir los requerimientos del módulo, en este caso se define que el comando de ejecución sea `/mymodule_name` y que se necesitan los módulos `commandsFile` y `Communicate`.
+Esta función es la encargada de definir los requerimientos del módulo, en este caso se define que el comando de ejecución desde WhatsApp sea `/mymodule_name` y que se necesitan los módulos `commandsFile` y `Communicate`.
 además existen otros modulos externos que se pueden utilizar, estos son:
 
 - `commandsFile` - **(Obligarotio)** Permite acceder a la lista de los comandos de ejecución de los módulos.

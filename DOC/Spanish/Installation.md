@@ -53,7 +53,7 @@ Actualmente, el bot se prueba en los siguientes navegadores:
     ```
 2. En tu terminal abre la carpeta con el bot y ejecuta el siguiente comando:
     ```
-    python3 install.py
+    python3 windows_install.py
     ```
     El instalador muestra el progreso e información importante, espere hasta que la instalación finalice.
 

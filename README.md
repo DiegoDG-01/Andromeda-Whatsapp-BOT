@@ -20,15 +20,14 @@ Andromeda is a bot multifunctional capable of multitasking using the Whatsapp We
 - ✅ Hidden browser
 - ✅ Google Search
 - ✅ Working in all OS
-- ➖ Scrapping Web
 - ➖ Send Photos
 - ➖ Send Voice note
-- ➖ Alerts to cryptocurrency
 
 ## 📕 Documentation <a name = "installing"></a>
 
 - [Installation](/DOC/Installation.md)
 - [Contributing](/DOC/Contributing.md)
+- [Development](/DOC/Development/Create.md)
 
 ## 🤓 Contac With Me  <a name = "connect"></a>
 
