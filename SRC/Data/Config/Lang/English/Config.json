@@ -35,7 +35,7 @@
         },
 
         "Default": {
-            "WhatsappName":"",
+            "WhatsappName":"Chat_Name",
             "WhatsappNumber":"",
             "WhatsappGroupName":""
         }
