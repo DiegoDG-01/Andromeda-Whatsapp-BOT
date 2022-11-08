@@ -44,19 +44,6 @@
                     "-s": "Search in google"
                 }
             ]
-        },
-        "/f1": {
-            "Desc": [
-                "Get information about the current F1 season"
-            ],
-            "Args": [
-                {
-                    "-d": "Command Description",
-                    "-l": "List command arguments",
-                    "-qualify": "Get result of qualifying",
-                    "-race": "Get actually results of the race"
-                }
-            ]
         }
     },
     "Development":{

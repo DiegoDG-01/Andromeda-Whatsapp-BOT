@@ -56,7 +56,7 @@ class Config():
             return True
 
         except Exception as error:
-            self.Log.Write("Config.py | GenericErr # " + str(error))
+            self.Log.Write("Config.py | GenericErr - Load Chat # " + str(error))
             self.Error = "Error: To initialize bot"
             return False
 
@@ -67,7 +67,7 @@ class Config():
 
         try:
             # Validating if the user is logged in whatsapp if shows the QR code it will be necessary to scan for login
-            self.Validate = WebDriverWait(self.WebDriver, 5).until(ec.presence_of_element_located((By.XPATH, '//*[@id="app"]/div[1]/div/div[2]/div[1]/div/div[2]/div/canvas')))
+            self.Validate = WebDriverWait(self.WebDriver, 15).until(ec.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div[3]/div[1]/div/div[2]/div/canvas')))
 
             # If you get QR, it returns false since it indicates that you are not logged in.
             if self.Validate:
@@ -111,7 +111,7 @@ class Config():
                 self.Error = error
                 return False
             except Exception as error:
-                self.Log.Write("Config.py | GenericErr # " + str(error))
+                self.Log.Write("Config.py | GenericErr - Create session # " + str(error))
                 return True
 
 
