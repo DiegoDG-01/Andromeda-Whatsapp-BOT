@@ -26,7 +26,12 @@ Currently, the bot is tested in the following browsers:
 
 ## 💻 Install
 
-### Using the installer for Unix/Linux
+* [Linux Installer](#LinuxInstaller)
+* [Windows Installer](#WinInstaller)
+* [Docker](#Docker)
+* [Manual Installation](#ManualInstallation)
+
+### <a name="LinuxInstaller"></a> Using the installer for Unix/Linux
 
 1. Download the latest version of the bot from the [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) or using **Git** in your terminal:
     ```
@@ -47,7 +52,7 @@ Currently, the bot is tested in the following browsers:
 
 5. Head over to the "Initialization" section to continue.
 
-### Using the installer (Windows)
+### <a name="WinInstaller"></a> Windows installer
 
 1. Download the latest version of the bot from the [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) or using **Git** in your terminal:
     ```
@@ -65,7 +70,43 @@ Currently, the bot is tested in the following browsers:
 
 4. Head over to the "Initialize the bot" section to continue.
 
-### Manual installation
+### <a name="Docker"></a> Docker installation
+
+1. Make sure you have Docker installed on your system. If you don't have it installed, you can find the installation instructions [here](https://docs.docker.com/get-docker/).
+
+
+2. Download the latest version of the bot from the [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) or using **Git** in your terminal:
+    ```
+    git clone "https://github.com/DiegoDG-01/Andromeda-Whatsapp_BOT.git"
+    ```
+
+3. In your editor of code open the file "DockerFile"
+
+
+4. In the line 9 (**ENV Language English**) select the language you want to use, the current available languages are:
+
+    - English
+    - Spanish
+
+
+5. In the line 10 (**ENV Username "ChatName"**) select the name of the chat where you want to listen the messages, it's recommend create previously one group with **only you**.
+
+
+6. In your terminal open the folder with the bot and run the following command:
+    ```
+    docker build -t "andromeda" .
+    ```
+    The installation show progress and important information, please wait until the installation is finished.
+
+
+7. Head over to the "Initialize the bot" section to continue [here](#InitializeTheBot).
+
+### <a name="ManualInstallation"></a> Manual installation
+
+1. Download the latest version of the bot from the [GitHub Release](
+
+
+### <a name="ManualInstallation"></a> Manual installation
 
 if you don't want to use the installer.
 
@@ -135,7 +176,7 @@ if you don't want to use the installer.
         }
     ```
 
-## 😎 Initialization
+## <a name="InitializeTheBot"></a> 😎 Initialization
 
 To start the bot, run the next command:
 
@@ -147,6 +188,16 @@ ANDROMEDA
 if you didn't create alias ("CHOSEN_PATH" is the path selected by you in Install the step 2)
 ```
 python3 CHOSEN_PATH/SRC/entrypoint.py
+```
+
+or if you are using Docker, the first time you run the bot, you need to run the following command to login:
+```
+docker run -it --name andromeda andromeda
+```
+
+if you are logged in, you need to run the following command:
+```
+docker start andromeda
 ```
 
 Once started the bot, in the terminal show a QR code to scan and load the session.

@@ -24,7 +24,12 @@ Actualmente, el bot se prueba en los siguientes navegadores:
 
 ## 💻 Instalación
 
-### Usar el instalador para Unix/Linux
+* [Instalador Linux](#LinuxInstaller)
+* [Instalador Windows](#WinInstaller)
+* [Docker](#Docker)
+* [Instalación manual](#ManualInstallation)
+
+### <a name="LinuxInstaller"></a> Usar el instalador para Unix/Linux
 
 1. Descarga la última versión del bot desde [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) o usando **Git** en tu terminal:
      ```
@@ -45,7 +50,7 @@ Actualmente, el bot se prueba en los siguientes navegadores:
 
 5. Dirígete al apartado "Inicializar el bot" para continuar.
 
-### Usar el instalador para Windows
+### <a name="WinInstaller"></a> Usar el instalador para Windows
 
 1. Descarga la última versión del bot desde [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) o usando **Git** en tu terminal:
      ```
@@ -63,7 +68,33 @@ Actualmente, el bot se prueba en los siguientes navegadores:
 
 5. Dirígete al apartado "Inicializar el bot" para continuar.
 
-### Instalación manual
+### <a name="Docker"></a> Instalación desde docker (En desarrollo)
+
+1. Asegurate de tener instalado docker en tu sistema operativo.
+
+
+2. Descarga la última versión del bot desde [GitHub Release]((https://github.com/DiegoDG-01/Whatsapp_BOT/releases)) o usando **Git** en tu terminal:
+    ```
+    git clone "https://github.com/DiegoDG-01/Andromeda-Whatsapp_BOT.git"
+    ```
+
+3. En un editor de texto, abre el archivo "Dockerfile"
+
+
+4. En la línea 9 (**ENV Language English**) asegurate de establecer el lenguage para el bot, actualmente solo se soporta el inglés y el español.
+
+
+5. En la línea 10 (**ENV Username "ChatName"**) establece el nombre del chat donde quieres que el bot escuche los mensajes.
+
+
+6. Abre una terminal en la carpeta donde se encuentra el archivo "Dockerfile" y ejecuta el siguiente comando:
+    ```
+    docker build -t "andromeda" .
+    ```
+   
+7. Una vez finalizada la construcción de la imagen, dirígete al apartado "Inicializar el bot" [aquí](#init) para continuar.
+
+### <a name="ManualInstallation"></a> Instalación manual
 
 Si no quieres usar el instalador, puedes instalar el bot manualmente siguiendo las siguientes instrucciones:
 
@@ -149,6 +180,16 @@ ANDROMEDA
 Si instalaste el bot manualmente y no creaste un alias ("Ruta-Elegida" es la ruta donde se encuentra el folder del proyecto y es la ruta del paso 2):
 ```
 python3 /Ruta-Elegida/Andromeda-Whatsapp_BOT/SRC/entrypoint.py
+```
+
+o si está utilizando Docker, la primera vez que ejecuta el bot, debe ejecutar el siguiente comando para iniciar sesión:
+```
+docker run -it --name andromeda andromeda
+```
+
+Si ha iniciado sesión, debe ejecutar el siguiente comando:  
+```
+docker start andromeda
 ```
 
 Una vez iniciado el bot, el bot te pedirá que escanees el código QR para iniciar sesión en Whatsapp Web.
