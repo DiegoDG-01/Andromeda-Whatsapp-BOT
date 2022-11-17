@@ -25,6 +25,8 @@
 # >> DO NOT EDIT THE FUNCTION PARAMETERS <<
 # >> FOR MORE INFORMATION ON FUNCTIONS, READ THE DOCUMENTATION IN DOCS/DEVELOPER_MODULE.md <<
 
+import Log
+
 class Example:
 
     # Function to configure the help function and prepare it for use
@@ -34,6 +36,8 @@ class Example:
         self.commandsFile = None
         self.AdditionalArgs = None
         self.NameModule = "Example"
+
+        self.log = Log.Generate()
 
     def requirements(self):
 
@@ -88,8 +92,8 @@ class Example:
     ###################################################################################################################
     # Function to prepare info to argument
     def __PrepareArgs(self, args, additionalArgs):
-        if args[0] in self.commandsFile['Active'][self.NameModule]['Args'][0].keys():
-            self.Argument = args[0]
+        if args in self.commandsFile['Active'][self.NameModule]['Args'][0].keys():
+            self.Argument = args
 
             if additionalArgs is not None:
                 self.AdditionalArgs = additionalArgs
