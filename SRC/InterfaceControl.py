@@ -18,8 +18,12 @@ from random import randint
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 
 from Screenshot import Screenshot as Screenshot_Clipping
+
+# TEST
+from time import sleep
 
 
 class Interface:
@@ -47,6 +51,8 @@ class Interface:
         self.Tabs = Tabs.Tabs(self.WebDriver)
 
         self.Screenshot = Screenshot_Clipping.Screenshot()
+
+        self.MouseAction = ActionChains(self.WebDriver)
 
     # Only use to managment the interface for customs modules and not for the main module
     def get_WebDriver(self):
@@ -177,6 +183,31 @@ class Interface:
             except Exception as e:
                 self.Log.Write("InterfaceControl.py | Error - Open menu # " + str(e))
                 return False, ['Error sending document']
+
+    def download_files(self):
+        sleep(0.2)
+        MenuHoverClass = '_3ojyC'
+        ButtonHovewrClass = '_3e9My'
+        DownloadButtonXPath = '//*[@id="app"]/div/span[4]/div/ul/div/li[3]/div[1]'
+
+        try:
+            self.MouseAction.move_to_element(
+                WebDriverWait(self.WebDriver, 5).until(
+                    EC.presence_of_all_elements_located((By.CLASS_NAME, MenuHoverClass)))[-1]
+            ).click().perform()
+
+            WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, ButtonHovewrClass)))[-1].click()
+
+            WebDriverWait(self.WebDriver, 5).until(EC.presence_of_element_located((By.XPATH, DownloadButtonXPath))).click()
+
+            return True
+        except Exception as e:
+            self.Log.Write("InterfaceControl.py | Error - Download files # " + str(e))
+            return False
+
+    def get_location(self, XPath):
+        return WebDriverWait(self.WebDriver, 5).until(
+                    EC.presence_of_all_elements_located((By.XPATH, XPath)))[-1].location
 
     # To create new windows is necessary pass name to open
     def create_new_window(self, URL=None):

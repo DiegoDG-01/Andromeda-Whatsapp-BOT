@@ -30,6 +30,7 @@ import Bot
 import Log
 import Config
 from os import getcwd
+from pathlib import Path
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -46,6 +47,12 @@ def InitWebDriver():
 
     PathSession = getcwd() + '/Data/Session/'
 
+    PathDownloads = str(Path(getcwd() + '/Data/WhatsApp/Downloads/'))
+    prefs = {
+        "download.default_directory": PathDownloads,
+        "directory_upgrade": True
+    }
+
     _Chrome_options = Options()
     _Chrome_options.add_argument('--user-data-dir=' + PathSession)
     _Chrome_options.add_argument('--disable-extensions')
@@ -53,6 +60,7 @@ def InitWebDriver():
     _Chrome_options.add_argument('--no-sandbox')
     _Chrome_options.add_argument('--window-size=1920x1080')
     _Chrome_options.add_argument('--start-maximized')
+    _Chrome_options.add_experimental_option("prefs", prefs)
 
     # Hide the browser window
     _Chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36')
