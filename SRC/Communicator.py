@@ -100,3 +100,26 @@ class Communicate:
         except Exception as e:
             self.Log.Write("communicator.py | error # " + str(e))
             return False
+
+    def ReadMediaResponse(self, Class):
+
+        try:
+
+            XPath = "//*[contains(@class, '" + self.ClassBoxMessage + "')]"
+
+            LastMessage = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, Class)))[-1]
+
+            if LastMessage:
+
+                Location_Messages =  self.WebDriver.find_elements_by_xpath(XPath)[-1].location
+                Location_Media = LastMessage.location
+
+                if(Location_Messages["y"] < Location_Media["y"]):
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+        except Exception as e:
+            return False
