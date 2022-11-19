@@ -1,13 +1,13 @@
 {
     "metadata": {
-        "version": "0.1.0",
+        "version": "0.2.5",
         "name": "Andromeda",
         "internalName": "Aurora",
         "description": "El proyecto Andromeda es una BOT de WhatsApp, el cual está elaborado para llevar acabo diversas funciones.",
         "author": "Diego DG",
         "email": "contacto@diegodg.com.mx",
         "website": "diegodg.com.mx",
-        "license": "POR DEFINIR"
+        "license": "GPL-3.0"
     },
 
     "config":{
