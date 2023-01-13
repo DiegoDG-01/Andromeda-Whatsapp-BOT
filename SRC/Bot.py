@@ -94,6 +94,8 @@ class Bot:
                     Command = self.CommandManager.Read(Message)
 
                     if Command[0] is True and Command[1] is None:
+                        # stop the thread to run the commands in the background and not have a conflict
+                        self.BackgroundSchedule.set()
 
                         ExecutResult, _error = self.CommandManager.Execute()
 
@@ -107,6 +109,9 @@ class Bot:
                         if self.Communicate.SendMessage():
                             print("Command responde successfully")
                             sleep(3)
+
+                        # Reactive the thread to run the commands in the background without conflict
+                        self.BackgroundSchedule.clear()
 
                     elif Command[0] is True and Command[1] is not None:
 
