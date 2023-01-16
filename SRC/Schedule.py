@@ -53,39 +53,48 @@ class Schedule:
                 while True:
                     # If main thread is busy and the task is proximate to be executed, to avoid the main thread blocked
                     # the task is saved in a list to be executed when the main thread is free
-                    if ThreadBackground.is_set() and schedule.idle_seconds() < 10:
-                        # Get actual time
-                        now = datetime.now()
-                        closest_time = timedelta.max
-                        # Get the all events in the schedule
-                        for job in schedule.get_jobs():
-                            # Get the future time of the event and compare with the actual time to get the difference between them
-                            diff = abs(job.next_run - now)
-                            # If the difference is less than the closest time, the closest time is updated
-                            if diff < closest_time:
-                                # Update the closest time
-                                closest_time = diff
-                                # Save the event to be executed in the list
-                                self.Busy_Thread["".join(job.tags)] = {
-                                    "next_run": job.next_run,
-                                    "executed": job
-                                }
-                    # If the main thread is free, check if there is an event to be executed in the list
-                    if len(self.Busy_Thread) > 0:
-                        # Scroll the list of events to be executed saved in the list
-                        for tag, job in self.Busy_Thread.items():
-                            # If don't overpass the time for 30 second of the event, execute the event
-                            # and remove from the list
-                            if job["next_run"] <= datetime.now() + timedelta(seconds=30):
-                                job["executed"].run()
-                                del self.Busy_Thread[tag]
-                            else:
-                                # If overpass the time for 30 second of the event, remove from the list
-                                del self.Busy_Thread[tag]
+                    if ThreadBackground.is_set():
+                        try:
+                            if schedule.idle_seconds() < 10:
+                                # Get actual time
+                                now = datetime.now()
+                                closest_time = timedelta.max
+                                # Get the all events in the schedule
+                                for job in schedule.get_jobs():
+                                    # Get the future time of the event and compare with the actual time to get the difference between them
+                                    diff = abs(job.next_run - now)
+                                    # If the difference is less than the closest time, the closest time is updated
+                                    if diff < closest_time:
+                                        # Update the closest time
+                                        closest_time = diff
+                                        # Save the event to be executed in the list
+                                        self.Busy_Thread["".join(job.tags)] = {
+                                            "next_run": job.next_run,
+                                            "executed": job
+                                        }
+                        except TypeError as e:
+                            pass
+                        except Exception as e:
+                            self.Log.Write("Schedule.py | Background_Set # " + str(e))
+                        finally:
+                            sleep(interval)
+                    else:
+                        # If the main thread is free, check if there is an event to be executed in the list
+                        if len(self.Busy_Thread) > 0:
+                            # Scroll the list of events to be executed saved in the list
+                            for tag, job in self.Busy_Thread.items():
+                                # If don't overpass the time for 30 second of the event, execute the event
+                                # and remove from the list
+                                if job["next_run"] <= datetime.now() + timedelta(seconds=30):
+                                    job["executed"].run()
+                                    del self.Busy_Thread[tag]
+                                else:
+                                    # If overpass the time for 30 second of the event, remove from the list
+                                    del self.Busy_Thread[tag]
 
-                    # Check if there is an event to be executed in the schedule and sleep the thread
-                    schedule.run_pending()
-                    sleep(interval)
+                        # Check if there is an event to be executed in the schedule and sleep the thread
+                        schedule.run_pending()
+                        sleep(interval)
 
         ContinuousThread = ScheduleThread()
         ContinuousThread.start()
