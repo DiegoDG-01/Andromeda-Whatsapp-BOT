@@ -28,7 +28,9 @@ class Communicate:
         self.WebDriver = WebDriver
         self.Log = Log.Generate()
 
-        self.ClassBoxMessage = "_27K43"
+        self.Messages = '_3mSPV'
+        self.ClassBoxMessage = "_11JPr"
+        self.MessageContainer = "_2gzeB"
         self.ClassButton_Send_Xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button'
 
     def WriteMessage(self, msg):
@@ -104,22 +106,14 @@ class Communicate:
     def ReadMediaResponse(self, Class):
 
         try:
+            LastMessage = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, self.Messages)))[-1].rect
+            LastMedia = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, Class)))[-1].rect
 
-            XPath = "//*[contains(@class, '" + self.ClassBoxMessage + "')]"
-
-            LastMessage = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, Class)))[-1]
-
-            if LastMessage:
-
-                Location_Messages =  self.WebDriver.find_elements_by_xpath(XPath)[-1].location
-                Location_Media = LastMessage.location
-
-                if(Location_Messages["y"] < Location_Media["y"]):
-                    return True
-                else:
-                    return False
+            if LastMessage['y'] < LastMedia['y']:
+                return True
             else:
                 return False
 
         except Exception as e:
+            self.Log.Write("communicator.py | error read media # " + str(e))
             return False
