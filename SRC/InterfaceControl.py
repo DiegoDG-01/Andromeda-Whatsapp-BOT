@@ -186,8 +186,8 @@ class Interface:
 
     def download_files(self):
         sleep(0.2)
-        MenuHoverClass = '_3ojyC'
-        ButtonHovewrClass = '_3e9My'
+        MenuHoverClass = '_35VV1'
+        ButtonHovewrClass = '_3u9t-'
         DownloadButtonXPath = '//*[@id="app"]/div/span[4]/div/ul/div/li[3]/div[1]'
 
         try:
@@ -196,7 +196,11 @@ class Interface:
                     EC.presence_of_all_elements_located((By.CLASS_NAME, MenuHoverClass)))[-1]
             ).click().perform()
 
+            sleep(0.07)
+
             WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, ButtonHovewrClass)))[-1].click()
+
+            sleep(0.07)
 
             WebDriverWait(self.WebDriver, 5).until(EC.presence_of_element_located((By.XPATH, DownloadButtonXPath))).click()
 

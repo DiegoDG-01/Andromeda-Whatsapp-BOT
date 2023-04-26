@@ -107,3 +107,6 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         # if the user press Ctrl+C, close the WebDriver
         WebDriver.quit()
+    except Exception as error:
+        Log.Write("entrypoint.py # " + str(error))
+        WebDriver.quit()
