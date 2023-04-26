@@ -33,6 +33,7 @@ Andromeda is a bot multifunctional capable of multitasking using the Whatsapp We
 ## 📝 Modules <a name = "modules"></a>
 
 - [Whisper_For_Andromeda-Whatsapp](https://github.com/DiegoDG-01/Whisper_For_Andromeda-Whatsapp)
+- [ChatGPT_For_Andromeda-Whatsapp](https://github.com/DiegoDG-01/ChatGPT_For_Andromeda-Whatsapp)
 
 ## 🤓 Contac With Me  <a name = "connect"></a>
 
