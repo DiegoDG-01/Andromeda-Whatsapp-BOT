@@ -30,6 +30,9 @@ class CommandManager:
         # Log instance
         self.Log = Log.Generate()
 
+        # List of modules available
+        self.AvailableModules = []
+
         # List of functions
         self.ListAction = {}
 
@@ -53,40 +56,80 @@ class CommandManager:
                 self.Log.Write("Commands.py | JSONDecodeError # " + str(err))
                 exit(1)
 
-        # Traverse all modules
-        for Module in Modules:
+        self.TempDependency_Dict = {}
 
-            # Get name of the class splitted by '.'
-            ClassName = Module.__name__.split('.')[-1]
+        try:
+            # Traverse all modules
+            for Module in Modules:
 
-            # Get the class from the module
-            Module = getattr(Module, ClassName)()
+                # Get name of the class splitted by '.'
+                ClassName = Module.__name__.split('.')[-1]
 
-            # Get requirements of the module
-            requirements = Module.requirements()
-            # Create variable to save list of Extra requirements
-            ExternalModules = requirements['ExternalModules']
-            # Create variable to save the command to execute the module
-            CommandExcecution = requirements['CommandExecution']
+                # Get the class from the module
+                Module = getattr(Module, ClassName)()
 
-            # Check if the module has requirements
-            if 'InterfaceController' in ExternalModules:
-                Module.set_InterfaceController(InterfaceController)
-            if 'Communicate' in ExternalModules:
-                Module.set_Communicate(Communicate)
-            if 'Schedule' in ExternalModules:
-                Module.set_Schedule(Schedule)
-            if 'commandsFile' in ExternalModules:
-                Module.set_commandFile(self.commands)
+                # Get requirements of the module
+                requirements = Module.requirements()
+                # Create variable to save list of Extra requirements
+                ExternalModules = requirements['ExternalModules']
+                # Create variable to save the command to execute the module
+                CommandExcecution = requirements['CommandExecution']
 
-            # Generate a dict containing all functions to execute commands
-            self.ListAction[CommandExcecution] = Module.EntryPoint
+                # save the dependencies of the module to import them later
+                if 'Dependencies' in requirements:
+                    self.TempDependency_Dict[ClassName] = {
+                        # This is the module where it will be imported
+                        'Module': Module,
+                        # This is the list of dependencies
+                        'Dependencies': requirements['Dependencies'],
+                    }
 
-            # Add dinamically codes of the third party modules to the main codes file "self.commands"
-            Codes = self.__import_codes_of_module(ClassName)
+                # Check if the module has requirements
+                if 'InterfaceController' in ExternalModules:
+                    Module.set_InterfaceController(InterfaceController)
+                if 'Communicate' in ExternalModules:
+                    Module.set_Communicate(Communicate)
+                if 'Schedule' in ExternalModules:
+                    Module.set_Schedule(Schedule)
+                if 'commandsFile' in ExternalModules:
+                    Module.set_commandFile(self.commands)
 
-            if Codes is not False:
-                self.commands['Active'].update(Codes)
+                # Generate a dict containing all functions to execute commands
+                self.ListAction[CommandExcecution] = Module.EntryPoint
+
+                # Add dinamically codes of the third party modules to the main codes file "self.commands"
+                Codes = self.__import_codes_of_module(ClassName)
+
+                if Codes is not False:
+                    self.commands['Active'].update(Codes)
+
+                Modules[self.AvailableModules.index(ClassName)] = Module
+
+            # Import dependencies
+            for Module in self.TempDependency_Dict: #ChatGPT
+                Dependencies_status = True
+                Dependencies = self.TempDependency_Dict[Module]['Dependencies'].keys()
+
+                # Check if the dependencies are installed
+                for dependency in Dependencies:
+                    # Check if the dependency is installed
+                    if not dependency in self.AvailableModules:
+                        self.Log.Write("Commands.py | Information of modules | Module " + Module + " requires " + dependency + " to work")
+                        self.ListAction.pop(self.AvailableModules.index(dependency))
+                        Dependencies_status = False
+
+                # If the dependencies are not installed, skip the module
+                if Dependencies_status == False:
+                    continue
+
+                for dependency in Dependencies:
+                    self.TempDependency_Dict[Module]['Module'].set_dependency(dependency, Modules[self.AvailableModules.index(dependency)])
+
+
+
+        except Exception as err:
+            self.Log.Write("Commands.py | Error load modules | " + str(err))
+            exit(1)
 
     # Function to import all modules from the Functions folder
     def __import_Modules(self):
@@ -104,8 +147,10 @@ class CommandManager:
                 try:
                     # Create name of the module
                     module = 'Functions.' + file[:-3]
-                    # Import the module
+                    # Imported module but not initialized
                     Functions.append(import_module(module))
+                    # Add the module to the list of available modules
+                    self.AvailableModules.append(file[:-3])
                 except Exception as err:
                     # Log error
                     self.Log.Write("Commands.py | Error importing module " + file + " | " + str(err))
@@ -134,10 +179,8 @@ class CommandManager:
         else:
             return False
 
-
     def Get_List_of_Functions(self):
         return self.ListAction
-
 
     def Read(self, command):
 
@@ -222,5 +265,4 @@ class CommandManager:
             for i in range(0, len(args), 2):
 
                 if match(regex, args[i]) is not None:
-
                     self.additionalArgs[args[i]] = args[i + 1]

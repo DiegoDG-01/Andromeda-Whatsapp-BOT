@@ -20,7 +20,6 @@ class F1:
 
         self.NameModule = "/f1"
         self.Log = Log.Generate()
-        # self.DB = DataBase.DataBase()
 
         self.API_Url = "http://ergast.com/api/f1/"
 
