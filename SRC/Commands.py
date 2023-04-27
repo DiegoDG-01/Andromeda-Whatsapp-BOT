@@ -33,8 +33,10 @@ class CommandManager:
         # List of modules available
         self.AvailableModules = []
 
-        # List of functions
+        # Dict to save the functions to execute commands
         self.ListAction = {}
+        # Convert the dict to a list to use the index of the list as a command
+        TempListAction = None
 
         # Import modules dinamically from the Functions folder
         Modules = self.__import_Modules()
@@ -105,6 +107,8 @@ class CommandManager:
 
                 Modules[self.AvailableModules.index(ClassName)] = Module
 
+            TempListAction = list(self.ListAction.keys())
+
             # Import dependencies
             for Module in self.TempDependency_Dict: #ChatGPT
                 Dependencies_status = True
@@ -114,8 +118,8 @@ class CommandManager:
                 for dependency in Dependencies:
                     # Check if the dependency is installed
                     if not dependency in self.AvailableModules:
-                        self.Log.Write("Commands.py | Information of modules | Module " + Module + " requires " + dependency + " to work")
-                        self.ListAction.pop(self.AvailableModules.index(dependency))
+                        self.Log.Write("Commands.py | Information of modules | Module " + Module + " requires module " + dependency + " to work")
+                        self.ListAction.pop(TempListAction[self.AvailableModules.index(Module)])
                         Dependencies_status = False
 
                 # If the dependencies are not installed, skip the module
@@ -124,8 +128,6 @@ class CommandManager:
 
                 for dependency in Dependencies:
                     self.TempDependency_Dict[Module]['Module'].set_dependency(dependency, Modules[self.AvailableModules.index(dependency)])
-
-
 
         except Exception as err:
             self.Log.Write("Commands.py | Error load modules | " + str(err))
