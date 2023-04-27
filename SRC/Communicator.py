@@ -20,6 +20,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from Data.Env import WhatsappTags as Tags
 
 
 class Communicate:
@@ -28,15 +29,9 @@ class Communicate:
         self.WebDriver = WebDriver
         self.Log = Log.Generate()
 
-        self.Messages = '_3mSPV'
-        self.ClassBoxMessage = "_11JPr"
-        self.MessageContainer = "_2gzeB"
         self.ClassButton_Send_Xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button'
 
     def WriteMessage(self, msg):
-
-        """[summary]
-        """
 
         try:
 
@@ -59,14 +54,7 @@ class Communicate:
 
     def SendMessage(self):
 
-        """[summary]
-        """
-
         try:
-
-            # ClassButton_Send = "_4sWnG"
-
-            # button = WebDriverWait(self.WebDriver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, ClassButton_Send)))
             button = WebDriverWait(self.WebDriver, 5).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button')))
 
             button = self.WebDriver.find_elements_by_xpath(self.ClassButton_Send_Xpath)[0]
@@ -85,7 +73,7 @@ class Communicate:
         try:
 
             "USE THIS METHOD TO READ ONLY LAST MESSAGE IN THE BOT file"
-            XPath = "//*[contains(@class, '" + self.ClassBoxMessage + "')]"
+            XPath = "//*[contains(@class, '" + Tags.ClassMessageBox + "')]"
 
             LastMessage = self.WebDriver.find_elements_by_xpath(XPath)[-1:]
 
@@ -106,8 +94,11 @@ class Communicate:
     def ReadMediaResponse(self, Class):
 
         try:
-            LastMessage = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, self.Messages)))[-1].rect
-            LastMedia = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, Class)))[-1].rect
+            LastMessage = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located(
+                (By.CLASS_NAME, Tags.ClassMessageBox)))[-1].rect
+
+            LastMedia = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located(
+                (By.CLASS_NAME, Class)))[-1].rect
 
             if LastMessage['y'] < LastMedia['y']:
                 return True

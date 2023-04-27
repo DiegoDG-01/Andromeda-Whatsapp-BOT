@@ -13,18 +13,15 @@ import Log
 import Tabs
 from os import getcwd
 from json import load
+from time import sleep
 from pathlib import Path
 from random import randint
+from Data.Env import WhatsappTags as Tags
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-
 from Screenshot import Screenshot as Screenshot_Clipping
-
-# TEST
-from time import sleep
-
 
 class Interface:
 
@@ -74,7 +71,7 @@ class Interface:
 
             for Chat in Chat_List:
 
-                user = Chat.find_element(By.CLASS_NAME, "zoWT4").text
+                user = Chat.find_element(By.CLASS_NAME, Tags.ClassChat_List).text
 
                 if user == Tag:
                     Chat.click()
@@ -186,21 +183,19 @@ class Interface:
 
     def download_files(self):
         sleep(0.2)
-        MenuHoverClass = '_35VV1'
-        ButtonHovewrClass = '_3u9t-'
         DownloadButtonXPath = '//*[@id="app"]/div/span[4]/div/ul/div/li[3]/div[1]'
 
         try:
             self.MouseAction.move_to_element(
                 WebDriverWait(self.WebDriver, 5).until(
-                    EC.presence_of_all_elements_located((By.CLASS_NAME, MenuHoverClass)))[-1]
+                    EC.presence_of_all_elements_located((By.CLASS_NAME, Tags.ClassMenuHover)))[-1]
             ).click().perform()
 
-            sleep(0.07)
+            sleep(0.06)
 
-            WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, ButtonHovewrClass)))[-1].click()
+            WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, Tags.ClassButtonHover)))[-1].click()
 
-            sleep(0.07)
+            sleep(0.06)
 
             WebDriverWait(self.WebDriver, 5).until(EC.presence_of_element_located((By.XPATH, DownloadButtonXPath))).click()
 

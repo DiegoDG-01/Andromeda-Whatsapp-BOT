@@ -29,6 +29,8 @@ from selenium.common.exceptions import TimeoutException
 # Module to check if exists a command automatically
 import Schedule
 
+from Data.Env import WhatsappTags as Tags
+
 
 class Bot:
 
@@ -71,16 +73,11 @@ class Bot:
 
     def ReadMessage(self, WebDriver):
 
-        """[summary]
-        """
-
-        ClassGlobalMessageBox = '_3mSPV'
-
         while True:
 
             try:
                 # Get the message box
-                Messages = WebDriver.find_elements_by_class_name(ClassGlobalMessageBox)
+                Messages = WebDriver.find_elements_by_class_name(Tags.ClassMessageBox)
 
                 if Messages:
 
