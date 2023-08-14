@@ -58,18 +58,22 @@ class Browser():
 
         try:
 
-            _BrowserOptions.add_argument('--user-data-dir=' + self.PathSession)
-            _BrowserOptions.add_argument('--disable-extensions')
-            _BrowserOptions.add_argument('--disable-dev-shm-usage')
-            _BrowserOptions.add_argument('--no-sandbox')
-            _BrowserOptions.add_argument('--window-size=1920x1080')
-            _BrowserOptions.add_argument('--start-maximized')
-            _BrowserOptions.add_argument('--headless')
-            _BrowserOptions.add_argument('''--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 
-                                            (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36
-                                         ''')
+            # Global options
+            # _BrowserOptions.add_argument('--headless')
 
-            _BrowserOptions.add_experimental_option("prefs", self.prefs)
+            if self.NameBrowser == 'chrome' or self.NameBrowser == 'edge':
+
+                _BrowserOptions.add_argument('--user-data-dir=' + self.PathSession)
+                _BrowserOptions.add_argument('--disable-extensions')
+                _BrowserOptions.add_argument('--disable-dev-shm-usage')
+                _BrowserOptions.add_argument('--no-sandbox')
+                _BrowserOptions.add_argument('--window-size=1920x1080')
+                _BrowserOptions.add_argument('--start-maximized')
+                _BrowserOptions.add_argument('''--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 
+                                                (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36
+                                             ''')
+
+                _BrowserOptions.add_experimental_option("prefs", self.prefs)
 
         except AttributeError as e:
             self.Log.Write(f"SetBrowser.py | AttributeError - {self.NameBrowser} # " + str(e))
