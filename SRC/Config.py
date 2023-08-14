@@ -1,11 +1,13 @@
 import Log
-import time
+import sys
 import qrcode
 import base64
+import platform
 import tkinter as tk
 from os import getcwd
 from json import load
 from io import BytesIO
+from time import sleep
 from pathlib import Path
 from PIL import Image, ImageTk
 from pyzbar.pyzbar import decode
@@ -37,6 +39,7 @@ class Config():
         self.count = 0
         self.Display = None
         self.CanvasQR = None
+        self.OS = platform.system()
 
     def Initialize(self):
 
@@ -83,40 +86,15 @@ class Config():
             return True
 
     def __CreateSession(self):
-
-        count = 1
-
-        # while True:
         try:
-
-            self.SetConfigTK()
-            self.__UpdateQR()
-            self.Display.mainloop()
+            if self.OS == 'Windows' or self.OS == 'Linux':
+                self.SetConfigTK()
+                self.__UpdateQR()
+                self.Display.mainloop()
+            else:
+                self.TerminalLogin()
 
             print("Waiting for QR code scan...")
-
-            # if count <= 3:
-            #     # Get image QR code
-            #     QRCode64 = base64.b64decode(self.Validate.screenshot_as_base64)
-            #     # Convert image to PIL
-            #     IMG = Image.open(BytesIO(QRCode64))
-            #     # Decode QR code data
-            #     DataQR = decode(IMG)[0].data.decode('utf-8')
-            #
-            #     # Load QR code data to convert string to QR code Ascii & print QR code in terminal
-            #     self.QRCode.add_data(DataQR)
-            #
-            #     # Print in terminal basic instructions
-            #     print("\033[93m" + "SCAN QR CODE TO LOGIN" + "\033[0m")
-            #     self.QRCode.print_ascii(invert=True)
-            #
-            # else:
-            #     self.Error = "Error: could not login, limit of attempts exceeded"
-            #     return False
-            #
-            # count += 1
-            # self.QRCode.clear()
-            # time.sleep(10)
 
         except ValueError as error:
             self.Log.Write("Config.py | ValueError # " + str(error))
@@ -128,6 +106,7 @@ class Config():
 
     def SetConfigTK(self):
         self.Display = tk.Tk()
+        self.Display.protocol("WM_DELETE_WINDOW", lambda: sys.exit())
         self.Display.title("Andromeda - Authentication")
         self.Display.geometry("400x400")
         self.Display.resizable(False, False)
@@ -166,6 +145,38 @@ class Config():
     def DestroyTK(self):
         self.Display.quit()
         self.Display.destroy()
+
+    def TerminalLogin(self):
+
+        try:
+            while True:
+
+                self.count += 1
+
+                if self.count >= 3:
+                    # Get image QR code
+                    QRCode64 = base64.b64decode(self.Validate.screenshot_as_base64)
+                    # Convert image to PIL
+                    IMG = Image.open(BytesIO(QRCode64))
+                    # Decode QR code data
+                    DataQR = decode(IMG)[0].data.decode('utf-8')
+
+                    # Load QR code data to convert string to QR code Ascii & print QR code in terminal
+                    self.QRCode.add_data(DataQR)
+
+                    # Print in terminal basic instructions
+                    print("\033[93m" + "SCAN QR CODE TO LOGIN" + "\033[0m")
+                    self.QRCode.print_ascii(invert=True)
+
+                else:
+                    self.Error = "Error: could not login, limit of attempts exceeded"
+                    return False
+
+                self.QRCode.clear()
+                sleep(10)
+        except Exception as error:
+            self.Log.Write("Config.py | GenericErr - Terminal Login # " + str(error))
+            return False
 
     def GetError(self):
         return self.Error
