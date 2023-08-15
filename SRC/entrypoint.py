@@ -31,6 +31,10 @@ def InitWebDriver():
 
     try:
         WebDriver = selectBrowser.SetBrowser(default_browser)
+
+        if WebDriver == False:
+            return exit(1)
+
         WebDriver.get(URL)
 
         return WebDriver

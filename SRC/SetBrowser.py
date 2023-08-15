@@ -1,7 +1,6 @@
 import Log
 from os import getcwd
 from pathlib import Path
-from selenium import webdriver
 
 
 class Browser():
@@ -18,40 +17,42 @@ class Browser():
 
     def SetBrowser(self, Name):
 
-        self.NameBrowser = Name
+        try:
 
-        if Name == 'chrome':
-            from webdriver_manager.chrome import ChromeDriverManager
-            from selenium.webdriver.chrome.options import Options
-            from selenium.webdriver.chrome.service import Service
+            self.NameBrowser = Name
+
+            if Name == 'chrome':
+                from webdriver_manager.chrome import ChromeDriverManager as BrowserManager
+                from selenium.webdriver.chrome.options import Options
+                from selenium.webdriver.chrome.service import Service
+                from selenium.webdriver import chrome as webdriver
+
+            elif Name == 'firefox':
+                from webdriver_manager.firefox import GeckoDriverManager as BrowserManager
+                from selenium.webdriver.firefox.options import Options
+                from selenium.webdriver.firefox.service import Service
+                from selenium.webdriver import firefox as webdriver
+
+            elif Name == 'edge':
+                from webdriver_manager.microsoft import EdgeChromiumDriverManager as BrowserManager
+                from selenium.webdriver.edge.options import Options
+                from selenium.webdriver.edge.service import Service
+                from selenium.webdriver import edge as webdriver
+                
+            else:
+                self.Log.Write("SetBrowser.py | BrowserErr | SetBrowser # Browser not found")
+                return False
 
             _BrowserOptions = Options()
             self.SetOptionsForWebDriver(_BrowserOptions)
 
-            WebDriver = webdriver.Chrome(options=_BrowserOptions, service=Service(ChromeDriverManager().install()))
+            WebDriver = webdriver(options=_BrowserOptions, service=Service(BrowserManager().install()))
 
-        elif Name == 'firefox':
-            from webdriver_manager.firefox import GeckoDriverManager
-            from selenium.webdriver.firefox.options import Options
-            from selenium.webdriver.firefox.service import Service
+            return WebDriver
 
-            _BrowserOptions = Options()
-            self.SetOptionsForWebDriver(_BrowserOptions)
-
-            WebDriver = webdriver.Firefox(options=_BrowserOptions, service=Service(GeckoDriverManager().install()))
-
-        elif Name == 'edge':
-            from webdriver_manager.microsoft import EdgeChromiumDriverManager
-            from selenium.webdriver.edge.options import Options
-            from selenium.webdriver.edge.service import Service
-
-            _BrowserOptions = Options()
-            self.SetOptionsForWebDriver(_BrowserOptions)
-
-            WebDriver = webdriver.Edge(options=_BrowserOptions, service=Service(EdgeChromiumDriverManager().install()))
-
-        return WebDriver
-
+        except Exception as e:
+            self.Log.Write("SetBrowser.py | GenericErr | SetBrowser # " + str(e))
+            return False
 
 
     def SetOptionsForWebDriver(self, _BrowserOptions):
