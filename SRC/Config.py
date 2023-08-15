@@ -123,7 +123,6 @@ class Config():
 
             if self.count >= 3:
                 self.DestroyTK()
-                self.Display.after_cancel(self.update_id)
                 self.Error = "Error: could not login, limit of attempts exceeded"
                 return False
 
@@ -137,7 +136,7 @@ class Config():
             self.IMG = ImageTk.PhotoImage(IMG)
             self.CanvasQR.create_image(0, 0, anchor=tk.NW, image=self.IMG)
 
-            self.update_id = self.Display.after(1000, self.__UpdateQR)
+            self.update_id = self.Display.after(10000, self.__UpdateQR)
 
         except Exception as error:
             self.Log.Write("Config.py | GenericErr - Update QR # " + str(error))
