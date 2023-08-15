@@ -1,4 +1,4 @@
-import SRC.Log as Log
+import Log
 from os import getcwd
 from pathlib import Path
 from selenium import webdriver
