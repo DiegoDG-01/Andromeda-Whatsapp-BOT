@@ -48,19 +48,20 @@ if __name__ == '__main__':
         # Initialize WebDriver connection
         WebDriver = InitWebDriver()
 
-        # Initialize Bot and pass WebDriver to get access to the browser
-        Bot = Bot.Bot(WebDriver)
         # Initialize Config and pass WebDriver to get access to the browser
         Config = Config.Config(WebDriver)
 
-        # Welcome message
-        Welcome = Config.GetWelcome()
-
-        # Seter the welcome message
-        Bot.SetWelcomeMessage(Welcome)
-
         # Start Configurator
         if Config.Initialize():
+            # Initialize Bot and pass WebDriver to get access to the browser
+            Bot = Bot.Bot(WebDriver)
+
+            # Welcome message
+            Welcome = Config.GetWelcome()
+
+            # Seter the welcome message
+            Bot.SetWelcomeMessage(Welcome)
+
             # Start Bot
             Bot.ReadMessage(WebDriver)
         else:
