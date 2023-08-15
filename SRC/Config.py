@@ -152,7 +152,7 @@ class Config():
 
                 self.count += 1
 
-                if self.count >= 3:
+                if self.count <= 3:
                     # Get image QR code
                     QRCode64 = base64.b64decode(self.Validate.screenshot_as_base64)
                     # Convert image to PIL
