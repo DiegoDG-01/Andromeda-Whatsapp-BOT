@@ -25,19 +25,19 @@ class Browser():
                 from webdriver_manager.chrome import ChromeDriverManager as BrowserManager
                 from selenium.webdriver.chrome.options import Options
                 from selenium.webdriver.chrome.service import Service
-                from selenium.webdriver import chrome as webdriver
+                from selenium.webdriver import Chrome as webdriver
 
             elif Name == 'firefox':
                 from webdriver_manager.firefox import GeckoDriverManager as BrowserManager
                 from selenium.webdriver.firefox.options import Options
                 from selenium.webdriver.firefox.service import Service
-                from selenium.webdriver import firefox as webdriver
+                from selenium.webdriver import Firefox as webdriver
 
             elif Name == 'edge':
                 from webdriver_manager.microsoft import EdgeChromiumDriverManager as BrowserManager
                 from selenium.webdriver.edge.options import Options
                 from selenium.webdriver.edge.service import Service
-                from selenium.webdriver import edge as webdriver
+                from selenium.webdriver import Edge as webdriver
                 
             else:
                 self.Log.Write("SetBrowser.py | BrowserErr | SetBrowser # Browser not found")
