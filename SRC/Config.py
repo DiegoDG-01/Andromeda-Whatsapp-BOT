@@ -14,7 +14,7 @@ from pyzbar.pyzbar import decode
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 
 
 class Config():
@@ -94,7 +94,7 @@ class Config():
             else:
                 self.TerminalLogin()
 
-            print("Waiting for QR code scan...")
+            return True
 
         except ValueError as error:
             self.Log.Write("Config.py | ValueError # " + str(error))
@@ -102,11 +102,10 @@ class Config():
             return False
         except Exception as error:
             self.Log.Write("Config.py | GenericErr - Create session # " + str(error))
-            return True
+            return False
 
     def SetConfigTK(self):
         self.Display = tk.Tk()
-        self.Display.protocol("WM_DELETE_WINDOW", lambda: sys.exit())
         self.Display.title("Andromeda - Authentication")
         self.Display.geometry("400x400")
         self.Display.resizable(False, False)
@@ -121,11 +120,6 @@ class Config():
 
             self.count += 1
 
-            if self.count >= 3:
-                self.DestroyTK()
-                self.Error = "Error: could not login, limit of attempts exceeded"
-                return False
-
             # Get image QR code
             QRCode64 = base64.b64decode(self.Validate.screenshot_as_base64)
             # Convert image to PIL
@@ -136,8 +130,16 @@ class Config():
             self.IMG = ImageTk.PhotoImage(IMG)
             self.CanvasQR.create_image(0, 0, anchor=tk.NW, image=self.IMG)
 
+            if self.count >= 3:
+                self.DestroyTK()
+                self.Error = "Error: could not login, limit of attempts exceeded"
+                return False
+
             self.update_id = self.Display.after(10000, self.__UpdateQR)
 
+        except StaleElementReferenceException:
+            self.Display.after_cancel(self.update_id)
+            self.DestroyTK()
         except Exception as error:
             self.Log.Write("Config.py | GenericErr - Update QR # " + str(error))
 

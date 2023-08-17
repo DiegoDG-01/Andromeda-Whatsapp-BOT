@@ -24,7 +24,7 @@ import SetBrowser
 
 def InitWebDriver():
 
-    default_browser = 'firefox'
+    default_browser = 'edge'
     selectBrowser = SetBrowser.Browser()
 
     URL = 'https://web.whatsapp.com/'
