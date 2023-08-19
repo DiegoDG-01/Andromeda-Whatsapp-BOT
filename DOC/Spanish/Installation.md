@@ -48,7 +48,7 @@ Actualmente, el bot se prueba en los siguientes navegadores:
 4. El instalador creará una nueva carpeta con el nombre "Andromeda-Whatsapp_BOT" en tu directorio de inicio.
 
 
-5. Dirígete al apartado "Inicializar el bot" para continuar.
+5. Dirígete al apartado [Inicializar el bot](#init) para continuar.
 
 ### <a name="WinInstaller"></a> Usar el instalador para Windows
 
@@ -66,7 +66,7 @@ Actualmente, el bot se prueba en los siguientes navegadores:
 4. El instalador solicitará el nombre del chat para usarlo para escuchar los mensajes (se recomienda crear previamente un grupo donde te encuentres **solo tú**.
 
 
-5. Dirígete al apartado "Inicializar el bot" para continuar.
+5. Dirígete al apartado [Inicializar el bot](#init) para continuar.
 
 ### <a name="Docker"></a> Instalación desde docker (En desarrollo)
 
@@ -92,7 +92,7 @@ Actualmente, el bot se prueba en los siguientes navegadores:
     docker build -t "andromeda" .
     ```
    
-7. Una vez finalizada la construcción de la imagen, dirígete al apartado "Inicializar el bot" [aquí](#init) para continuar.
+7. Una vez finalizada la construcción de la imagen, dirígete al apartado [Inicializar el bot](#init) para continuar.
 
 ### <a name="ManualInstallation"></a> Instalación manual
 
@@ -172,7 +172,7 @@ Si no quieres usar el instalador, puedes instalar el bot manualmente siguiendo l
 
 Para iniciar el bot ejecuta el siguiente comando:
 
-Si usas el instalador o created un alias:
+Si usas el instalador o creaste un alias:
 ```
 ANDROMEDA
 ```
