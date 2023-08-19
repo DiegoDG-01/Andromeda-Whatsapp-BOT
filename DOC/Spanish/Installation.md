@@ -13,7 +13,7 @@ Actualmente, el bot es compatible con los siguientes sistemas operativos:
 Necesitas tener instalado los siguientes programas:
 
 - Git
-- Google Chrome
+- Google Chrome o Microsoft Edge
 - Python 3.8 o posterior
 
 ## 🌐 Navegadores compatibles
@@ -21,6 +21,7 @@ Necesitas tener instalado los siguientes programas:
 Actualmente, el bot se prueba en los siguientes navegadores:
 
  - Google Chrome 98.X o posterior
+ - Microsoft Edge 115 o posterior
 
 ## 💻 Instalación
 
@@ -192,6 +193,10 @@ Si ha iniciado sesión, debe ejecutar el siguiente comando:
 docker start andromeda
 ```
 
-Una vez iniciado el bot, el bot te pedirá que escanees el código QR para iniciar sesión en Whatsapp Web.
+En sistemas operativos Linux y Windows, el bot abrirá una ventana donde podras escanear el código QR.
 
-<img src="../IMG/Whatsapp_Init_Page.png" width="100%">
+<img src="../IMG/UI-Whatsapp_Init_Page.png" width="70%">
+
+En sistemas operativos Mac OS, el bot mostrará el codigo QR en la terminal, escanea el código QR con tu teléfono y espera a que el bot inicie sesión.
+
+<img src="../IMG/Whatsapp_Init_Page.png" width="70%">

@@ -15,7 +15,7 @@ Currently, the bot is compatible with the next's operating systems:
 You're need have installed the next's software programs:
 
 - Git
-- Google Chrome
+- Google Chrome or Microsoft Edge
 - Python 3.8 or later
 
 ## 🌐 Supported Browsers
@@ -23,6 +23,7 @@ You're need have installed the next's software programs:
 Currently, the bot is tested in the following browsers:
 
  - Google Chrome 98.X or later
+ - Microsoft Edge 115 or later
 
 ## 💻 Install
 

@@ -125,7 +125,10 @@ def requirements(self):
         'CommandExecution': "/mymodule_name",
         'ExternalModules': [
             'commandsFile', 'Communicate'
-        ]
+        ],
+        'Dependencies': {
+            'Whisper':'0.2.0'
+        }
     }
     return requeriments
 ```
@@ -136,6 +139,11 @@ además existen otros modulos externos que se pueden utilizar, estos son:
 - `Communicate` - Permite escribir y enviar mensajes usando el chat de whatsapp.
 - `InterfaceController:` - Permite obtener la instancia del navegador para poder interactuar con la interfaz del navegador y hacer uso del mismo fuera de whatsapp.
 - `Schedule:` - Permite programar tareas para que se ejecuten en momentos determinados.
+
+Las dependencias es un diccionario que contiene los módulos externos que se necesitan para que el módulo funcione correctamente, en este caso se necesita el módulo `Whisper` en su versión `0.2.0`.
+
+Dependiendo de los módulos externos que se necesiten, se deberá agregar al diccionario.
+
 
 #### 📌 set_commands
 Las siguientes funciones deberán existir en el módulo dependiendo los requerimientos que se definan en la función `requirements`:
