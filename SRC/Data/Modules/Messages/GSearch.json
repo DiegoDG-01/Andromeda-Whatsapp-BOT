@@ -1,23 +1,6 @@
 {
-  "lang": {
-
-    "default": "es",
-
-    "en": {
-      "name": "English",
-      "flag": "us",
-      "locale": "en_US"
-    },
-
-    "es": {
-      "name": "Español",
-      "flag": "es",
-      "locale": "es_MX"
-    }
-  },
-
   "messages": {
-    "en_US": {
+    "English": {
         "success": {
         "searching": ["Searching information..."]
       },
@@ -38,7 +21,7 @@
       }
     },
 
-    "es_MX": {
+    "Spanish": {
       "success": {
         "searching": ["Buscando información..."]
       },

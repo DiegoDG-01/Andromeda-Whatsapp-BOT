@@ -1,8 +1,8 @@
 import Log
-from os import getcwd
 from json import load
 from time import sleep
 from pathlib import Path
+from os import getcwd, environ
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -23,7 +23,12 @@ class GSearch:
         PathModuleMessage = Path(getcwd() + "/Data/Modules/Messages/GSearch.json")
 
         self.log = Log.Generate()
-        self.GSearchMessages = self.__Load_MultiLanguage(PathModuleMessage)
+
+        with open(PathModuleMessage, 'r') as file:
+            self.GSearchMessages = load(file)
+            self.GSearchMessages = self.GSearchMessages['messages'][environ['Language']]
+
+            file.close()
 
     def requirements(self):
 
@@ -50,17 +55,6 @@ class GSearch:
 
     def set_WebDriver(self, WebDriver):
         self.WebDriver = WebDriver
-
-    def __Load_MultiLanguage(self, Path):
-        try:
-            with open(Path, 'r') as file:
-                file = load(file)
-                default_code = file['lang']['default']
-                language_code = file['lang'][default_code]['locale']
-                return file['messages'][language_code]
-        except Exception as error:
-            self.log.Write("GSearch.py | __Load_MultiLanguage # " + str(error))
-            return False
 
     # Function to prepare info to argument
     def __PrepareArgs(self, args, additionalArgs):
