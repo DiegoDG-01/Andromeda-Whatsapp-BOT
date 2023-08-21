@@ -21,16 +21,18 @@ import Bot
 import Log
 import Config
 import SetBrowser
+from os import environ
+from dotenv import load_dotenv
+
 
 def InitWebDriver():
 
-    default_browser = 'edge'
     selectBrowser = SetBrowser.Browser()
 
     URL = 'https://web.whatsapp.com/'
 
     try:
-        WebDriver = selectBrowser.SetBrowser(default_browser)
+        WebDriver = selectBrowser.SetBrowser(environ.get('DefaultBrowser'))
 
         if WebDriver == False:
             return exit(1)
@@ -45,6 +47,7 @@ def InitWebDriver():
 
 if __name__ == '__main__':
 
+    load_dotenv()
     Log = Log.Generate()
 
     try:
