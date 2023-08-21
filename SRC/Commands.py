@@ -15,9 +15,9 @@ import Log
 from re import match
 from json import load
 from pathlib import Path
-from os import getcwd, listdir
 from json import JSONDecodeError
 from importlib import import_module
+from os import getcwd, listdir, environ
 
 
 class CommandManager:
@@ -169,9 +169,10 @@ class CommandManager:
             with open(ModuleCodes, 'r') as File:
                 try:
                     Module = load(File)
-                    lang = Module['Lang']
+                    if environ['Language'] not in Module:
+                        return Module['Default']
+                    return Module[environ['Language']]
 
-                    return Module[lang]
                 except JSONDecodeError as err:
                     self.Log.Write("Commands.py | JSONDecodeError # " + str(err))
                     exit(1)
@@ -217,7 +218,6 @@ class CommandManager:
             else:
                 return contentargs, error
         else:
-            # return self.ListAction[self.command][2](self.Communicate), None
             return self.ListAction[self.command](), None
 
     def __IsCommand(self):

@@ -1,11 +1,21 @@
 {
-  "success": {
-
+  "English": {
+    "success": {
+    },
+    "error": {
+      "Unknown": "Unknown error",
+      "NotData": "Actually, there is no data",
+      "ServiceUnavailable": "The server is out of service"
+    }
   },
 
-  "error": {
-    "Unknown": "Unknown error",
-    "NotData": "Actually, there is no data",
-    "ServiceUnavailable": "The server is out of service"
+  "Spanish": {
+    "success": {
+    },
+    "error": {
+      "Unknown": "Error desconocido",
+      "NotData": "En realidad, no hay datos",
+      "ServiceUnavailable": "El servidor está fuera de servicio"
+    }
   }
 }

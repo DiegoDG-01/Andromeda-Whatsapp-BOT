@@ -1,9 +1,9 @@
 import Log
 import requests
 # import DataBase
-from os import getcwd
 from json import load
 from pathlib import Path
+from os import getcwd, environ
 
 class F1:
 
@@ -27,6 +27,7 @@ class F1:
 
         with open(PathModuleMessages, 'r') as file:
             self.ModuleMessages = load(file)
+            self.ModuleMessages = self.ModuleMessages[environ['Language']]
             file.close()
 
     def requirements(self):
