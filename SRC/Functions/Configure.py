@@ -4,9 +4,11 @@ import shutil
 from json import load
 from time import sleep
 from pathlib import Path
+from dotenv import set_key
 from subprocess import call
-from os import getcwd, getpid
 from json import JSONDecodeError
+from os import getcwd, getpid, environ
+
 
 class Configure:
 
@@ -17,6 +19,9 @@ class Configure:
         self.Communicate = None
         self.commandsFile = None
         self.AdditionalArgs = None
+        self.ConfigureMessages = None
+
+        configure_messages_path = Path(getcwd() + '/Data/Modules/Messages/Configure.json')
 
         try:
 
@@ -26,8 +31,15 @@ class Configure:
 
                 f.close()
 
+            with open(configure_messages_path, 'r') as f:
+                self.ConfigureMessages = load(f)
+                self.ConfigureMessages = self.ConfigureMessages['messages'][environ.get('Language')]
+
+                f.close()
+
+
         except JSONDecodeError as error:
-            self.log.Write("Configure.py | UnboundLocalError # "+ str(error))
+            self.log.Write("Configure.py | UnboundLocalError # " + str(error))
             exit(1)
 
     def requirements(self):
@@ -93,7 +105,6 @@ class Configure:
         else:
             return False
 
-
     ###################################################################################################################
     ## >> The next commands are used to manage the basic functions                                                   ##
     ## >> These functions will be found in most module files                                                         ##
@@ -125,18 +136,18 @@ class Configure:
         # This function is used to get the error log
         # necessary add permission and users to be implemented
         # Temporary implementation to get the error log
-        admin = True
+        admin = False
 
-        if(admin == None):
+        if (admin == None):
             return "Your are not an admin"
         else:
             return self.log.GetLog(3)
 
-    def Show_Config(self, args = None):
+    def Show_Config(self, args=None):
         # This function is used to show the current configuration
         # necessary add permission and users to be implemented
         # Temporary implementation to show the current configuration
-        admin = True
+        admin = False
 
         config = ''
         message = []
@@ -160,86 +171,72 @@ class Configure:
                 return message
 
         except Exception as error:
-            self.log.Write("Configure.py | GenericError # "+ str(error))
+            self.log.Write("Configure.py | GenericError # " + str(error))
             return "Error al recuperar la configuración, contacte al administrador o revise el log"
 
-
-    def Change_Language(self,):
-
+    def Change_Language(self, ):
 
         Path = getcwd()
         PathLang = Path + '/Data/Config/Lang/'
         Pathdst = Path + '/Data/Config/'
+        Language = environ.get('Language')
 
-        with open(self.PathConfig, 'r') as file:
-            Language = load(file)
-            Language = Language['config']['language']
+        Browser_PID = None
+        BrowserDriverPID = str(getpid())
+        DefaultNameBrowserSystem = environ.get(environ.get('DefaultBrowser'))
 
-            file.close()
-
-        ChromeDriverPID = str(getpid())
-        Google_Chrome_PID = None
-
-        Messages = {'Spanish': [f'Tú idioma actual es: {Language}', 'Deseas cambiarlo a inglés? (s/n)', 'Idioma cambiado a inglés',
-                          'Error al cambiar el idioma'],
-                   'English': [f'Your current language is: {Language}', 'Do you want to change it to spanish? (y/n)',
-                          'Language changed to english', 'Error changing language']
-                   }
-
-        response = Messages[Language]
+        messages = self.ConfigureMessages['set_language']
 
         try:
-            for step in range(len(Messages[Language])):
+            self.Communicate.WriteMessage(messages['change'])
+            self.Communicate.SendMessage()
 
-                self.Communicate.WriteMessage(Messages[Language][step])
-                self.Communicate.SendMessage()
+            while True:
 
-                if(step == 1):
+                response = self.Communicate.ReadResponse()
 
-                    while (True):
+                if response == 's' or response == 'y':
 
-                        response = self.Communicate.ReadResponse()
-
-                        if(response == 's' or response == 'y'):
-
-                            for process in psutil.process_iter():
-                                if 'Google Chrome' in process.name():
-                                    if process.name() == 'Google Chrome':
-                                        Google_Chrome_PID = str(process.pid)
-
-                            self.Communicate.WriteMessage(['#######################################', '>> El navegador se reiniciara para aplicar los cambios', '#######################################'])
-                            self.Communicate.SendMessage()
-
-                            if Language == 'Spanish':
-                                PathLang = PathLang + 'English/'
-                                pass
-                            elif Language == 'English':
-                                PathLang = PathLang + 'Spanish/'
-                                pass
-
-                            # Copy the new language files to the current directory
-                            shutil.copyfile(PathLang+'Codes.json', Pathdst + 'Codes.json')
-                            shutil.copyfile(PathLang + 'Config.json', Pathdst + 'Config.json')
-
-                            sleep(2)
-
-                            call(['python3', 'Reset.py', ChromeDriverPID, Google_Chrome_PID])
-
-                            sleep(1)
-
-                        elif(response == 'n' or response == 'c'):
-                            self.Communicate.WriteMessage(Messages[Language][3])
+                    for process in psutil.process_iter():
+                        if process.name() == DefaultNameBrowserSystem:
+                            Browser_PID = str(process.pid)
                             break
-                        else:
-                            sleep(0.2)
 
+                    self.Communicate.WriteMessage(self.ConfigureMessages['info']['restart'])
                     self.Communicate.SendMessage()
-                    break
 
-        except Exception as error:
-            self.log.Write("Configure.py | GenericError # "+ str(error))
-            return "Error al cambiar el idioma, contacte al administrador o revise el log"
+                    if Language == 'Spanish':
+                        PathLang = PathLang + 'English/'
+                        set_key('.env', 'Language', 'English')
+
+                    elif Language == 'English':
+                        PathLang = PathLang + 'Spanish/'
+                        set_key('.env', 'Language', 'Spanish')
+
+
+                    # Copy the new language files to the current directory
+                    shutil.copyfile(PathLang + 'Codes.json', Pathdst + 'Codes.json')
+                    shutil.copyfile(PathLang + 'Config.json', Pathdst + 'Config.json')
+
+                    sleep(2)
+
+                    call(['python3', 'Reset.py', BrowserDriverPID, Browser_PID])
+
+                    sleep(1)
+
+                elif response == 'n' or response == 'c':
+                    self.Communicate.WriteMessage(self.ConfigureMessages['errors']['cancel'])
+                    break
+                else:
+                    sleep(0.2)
+
+            self.Communicate.SendMessage()
 
         except TypeError as error:
-            self.log.Write("Configure.py | TypeError: # "+ str(error))
-            return "Error al cambiar el idioma, contacte al administrador o revise el log"
+            self.log.Write("Configure.py | TypeError: # " + str(error))
+            return self.ConfigureMessages['errors']['generic']
+
+        except Exception as error:
+            self.log.Write("Configure.py | GenericError # " + str(error))
+            return self.ConfigureMessages['errors']['generic']
+
