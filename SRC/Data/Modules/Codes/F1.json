@@ -1,9 +1,9 @@
 {
-  "Lang": "English",
-
   "English": {
     "/f1": {
-      "Desc": ["Get information about the current F1 season"],
+      "Desc": [
+        "Get information about the current F1 season"
+      ],
       "Args": [
         {
           "-d": "Command Description",
@@ -15,9 +15,18 @@
     }
   },
   "Spanish": {
-    "/f1": {}
-  },
-  "French": {
-    "/f1": {}
+    "/f1": {
+      "Desc": [
+        "Obtener información sobre la temporada actual de Fórmula 1"
+      ],
+      "Args": [
+        {
+          "-d": "Descripción del Comando",
+          "-l": "Listar argumentos del comando",
+          "-qualify": "Obtener resultado de la clasificación",
+          "-race": "Obtener resultados reales de la carrera"
+        }
+      ]
+    }
   }
 }

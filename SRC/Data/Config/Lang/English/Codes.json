@@ -45,54 +45,5 @@
                 }
             ]
         }
-    },
-    "Development":{
-        "/list": {
-            "Desc": "No sé que poner aquí",
-            "Args": ["-d","-A"]
-        },
-        "/check":{
-            "Desc": ["Y tampoco aquí"],
-            "Args": ["-d"]
-        },
-        "/clean":{
-            "Desc": ["Aquí menos"],
-            "Args": ["-d"]
-        },
-        "/orders":{
-            "Desc": ["Lo anterior pero con más palabras"],
-            "Args": ["-d"]
-        },
-        "/reboot":{
-            "Desc": [""],
-            "Args": ["-d"]
-        },
-        "/config": {
-            "Args": [
-                {
-                    "-s": "Cambiar la configuración del bot",
-                    "-i": "Mostrar la información del bot",
-                    "-log-clear": "Limpiar los logs del bot"
-                }
-            ]
-        }
-    },
-    "Admin": {
-        "/add": {
-            "Desc": [""],
-            "Args": ["-d"]
-        },
-        "/del": {
-            "Desc": [""],
-            "Args": ["-d"]
-        },
-        "/edit": {
-            "Desc": [""],
-            "Args": ["-d"]
-        },
-        "/list": {
-            "Desc": [""],
-            "Args": ["-d"]
-        }
     }
 }
