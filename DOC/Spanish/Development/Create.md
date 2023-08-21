@@ -49,8 +49,6 @@ Este archivo es el encargado de almacenar la configuración del módulo, como el
 Este archivo deberá tener la siguiente estructura:
 ```json
 {
-  "Lang": "English",
-  
   "English": {
     "/MyModule": {
       "Desc": [
@@ -66,17 +64,16 @@ Este archivo deberá tener la siguiente estructura:
     }
   },
   "Spanish": {
-    ...
+    "/MyModule": {
+      . . . 
+    }
   }
 }
 ```
 
 **Importante:** El nombre del módulo debe ser el mismo que el nombre del archivo python que contiene la lógica del módulo.
 
-**Importante:** Debe existir un objeto `Lang` que contenga el idioma por defecto del módulo, en este caso `English`.
-
-- **Lang**: Es el idioma por defecto del módulo, en este caso es el inglés.
-
+~~- **Lang**: Es el idioma por defecto del módulo, en este caso es el inglés.~~
 - **English**: Es el idioma en el que se encuentra la configuración del módulo, en este caso es el inglés.
 - **/MyModule**: Es el nombre del módulo, este nombre será el que se usará para localizar el módulo de manera interna.
 - **Desc**: Es la descripción del módulo, esta descripción será mostrada al usuario cuando ejecute el comando `/mymodule_name` or `/mymodule_name -d`.
@@ -87,7 +84,18 @@ Este archivo deberá tener la siguiente estructura:
 - **-d**: Es el argumento que se usará para listar los argumentos disponibles del módulo, este argumento es obligatorio para que el módulo pueda ser ejecutado.
 - **-l**: Es el argumento que se usará para listar los argumentos disponibles del módulo, este argumento es obligatorio para que el módulo pueda ser ejecutado.
 
-**Notas:** es obligatorio que el archivo de configuración siga el mismo patrón que el ejemplo anterior.
+**Nota:** es obligatorio que el archivo de configuración siga el mismo patrón que el ejemplo anterior.
+
+**Nota #2:** Se elimino la necesidad de tener un objeto `Lang` en el archivo de configuración, ahora el idioma por defecto que tomara el módulo será el idioma que se encuentre en la configuración del bot en su archivo .env en la raíz del proyecto.
+Establezca los idiomas como llaves en el archivo de configuración, si el idioma es completamente diferente al idioma por defecto del bot establezca la llave como **Default** así no importara el idioma que se establezca en la configuración del bot.
+
+```json
+{
+  "Default": {
+    . . .
+  }
+}
+```
 
 ## 🐍 Creando el archivo de python
 
