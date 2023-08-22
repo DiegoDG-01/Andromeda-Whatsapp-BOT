@@ -145,7 +145,7 @@ class CommandManager:
         # Get all files from the Functions folder
         for file in listdir(path):
             # Check if the file is a python file and not a folder or a __init__.py
-            if not file.startswith("__") and file.endswith(".py"):
+            if not file.startswith("__") and file.endswith(".py") and file != "Base.py":
                 try:
                     # Create name of the module
                     module = 'Functions.' + file[:-3]
