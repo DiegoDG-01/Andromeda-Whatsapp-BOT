@@ -53,8 +53,6 @@ The configuration must contain the name of module, description, arguments that w
 The file structure should be as follows
 ```json
 {
-  "Lang": "English",
-  
   "English": {
     "/MyModule": {
       "Desc": [
@@ -75,6 +73,8 @@ The file structure should be as follows
 }
 ```
 
+~~- **Lang**: This is the default language of the module, in this case, it's English.~~
+
 - **English**: Is the object that contains the configuration of the module in English.
 - **/MyModule**: Is the name of the module. It must be the same as the name of the python file that contains the module logic.
 - **Desc**: Is the description of the module and is used to show the description of the module when the user uses the command `/mymodule_name` or `/mymodule_name -d` in Whatsapp.
@@ -86,6 +86,17 @@ The following is a obligatory argument and it is used to show the arguments of t
 - **-l**: List the arguments of the module.
 
 **Note:** it is obligatory that the configuration file follows the same pattern as the previous example.
+
+**Note #2:** The need for a `Lang` object in the configuration file has been removed. Now, the default language that the module will use is the one found in the bot's configuration in its `.env` file at the project's root.
+Set the languages as keys in the configuration file. If the language is completely different from the default language of the bot, set the key as **Default**. This way, the language set in the bot's configuration won't matter.
+
+```json
+{
+  "Default": {
+    . . .
+  }
+}
+```
 
 ## 🐍 Create a python file
 
@@ -124,7 +135,10 @@ def requirements(self):
         'CommandExecution': "/mymodule_name",
         'ExternalModules': [
             'commandsFile', 'Communicate'
-        ]
+        ],
+        'Dependencies': {
+            'Whisper':'0.2.0'
+        }
     }
     return requeriments
 ```
@@ -135,6 +149,10 @@ There are other external modules that can be used, these are:
 - `Communicate` - Allows you to write and send messages using the whatsapp chat.
 - `InterfaceController:` - It allows to obtain the browser instance to be able to interact with the browser interface and use it outside of whatsapp.
 - `Schedule:` - Allows you to schedule tasks to run at specific times.
+
+"Dependencies" is a dictionary that contains the external modules needed for the module to function correctly. In this case, the module `Whisper` is required in its version `0.2.0`.
+
+Depending on the external modules required, they should be added to the dictionary.
 
 #### 📌 set_commands
 The following functions must exist in the module depending on the requirements that are defined in the `requirements` function:

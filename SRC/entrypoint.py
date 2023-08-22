@@ -20,45 +20,23 @@
 import Bot
 import Log
 import Config
-from os import getcwd
-from pathlib import Path
-from selenium.webdriver import Chrome
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+import SetBrowser
+from os import environ
+from dotenv import load_dotenv
+
 
 def InitWebDriver():
-    """[summary]
 
-    Returns:
-        [type]: [description]
-    """
+    selectBrowser = SetBrowser.Browser()
 
     URL = 'https://web.whatsapp.com/'
 
-    PathSession = getcwd() + '/Data/Session/'
-
-    PathDownloads = str(Path(getcwd() + '/Data/WhatsApp/Downloads/'))
-    prefs = {
-        "download.default_directory": PathDownloads,
-        "directory_upgrade": True
-    }
-
-    _Chrome_options = Options()
-    _Chrome_options.add_argument('--user-data-dir=' + PathSession)
-    _Chrome_options.add_argument('--disable-extensions')
-    _Chrome_options.add_argument('--disable-dev-shm-usage')
-    _Chrome_options.add_argument('--no-sandbox')
-    _Chrome_options.add_argument('--window-size=1920x1080')
-    _Chrome_options.add_argument('--start-maximized')
-    _Chrome_options.add_experimental_option("prefs", prefs)
-
-    # Hide the browser window
-    _Chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36')
-    _Chrome_options.add_argument('--headless')
-
     try:
-        WebDriver = Chrome(options=_Chrome_options, service=Service(ChromeDriverManager().install()))
+        WebDriver = selectBrowser.SetBrowser(environ.get('DefaultBrowser'))
+
+        if WebDriver == False:
+            return exit(1)
+
         WebDriver.get(URL)
 
         return WebDriver
@@ -69,6 +47,7 @@ def InitWebDriver():
 
 if __name__ == '__main__':
 
+    load_dotenv()
     Log = Log.Generate()
 
     try:
@@ -76,19 +55,20 @@ if __name__ == '__main__':
         # Initialize WebDriver connection
         WebDriver = InitWebDriver()
 
-        # Initialize Bot and pass WebDriver to get access to the browser
-        Bot = Bot.Bot(WebDriver)
         # Initialize Config and pass WebDriver to get access to the browser
         Config = Config.Config(WebDriver)
 
-        # Welcome message
-        Welcome = Config.GetWelcome()
-
-        # Seter the welcome message
-        Bot.SetWelcomeMessage(Welcome)
-
         # Start Configurator
         if Config.Initialize():
+            # Initialize Bot and pass WebDriver to get access to the browser
+            Bot = Bot.Bot(WebDriver)
+
+            # Welcome message
+            Welcome = Config.GetWelcome()
+
+            # Seter the welcome message
+            Bot.SetWelcomeMessage(Welcome)
+
             # Start Bot
             Bot.ReadMessage(WebDriver)
         else:

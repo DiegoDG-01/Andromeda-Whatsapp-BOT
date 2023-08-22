@@ -10,7 +10,7 @@
 
 ## 🌐 About Andromeda - WhatsApp Bot
 
-Andromeda is a bot multifunctional capable of multitasking using the Whatsapp Web as a means to communicate with the bot
+Andromeda is a versatile bot capable of performing various functions, using Whatsapp Web as its communication platform
 
 ## ⭐️ Features
 
@@ -21,8 +21,8 @@ Andromeda is a bot multifunctional capable of multitasking using the Whatsapp We
 - ✅ Google Search
 - ✅ Working in all OS
 - ✅ Docker support
-- ➖ Send Photos
-- ➖ Send Voice note
+- ✅ Working to next browser (Chrome, Edge)
+- ⚙️ Enable UI to Login (Only for Linux and Windows for now)
 
 ## 📕 Documentation <a name = "installing"></a>
 
@@ -32,6 +32,7 @@ Andromeda is a bot multifunctional capable of multitasking using the Whatsapp We
 
 ## 📝 Modules <a name = "modules"></a>
 
+- Google Search (Integrated)
 - [Whisper_For_Andromeda-Whatsapp](https://github.com/DiegoDG-01/Whisper_For_Andromeda-Whatsapp)
 - [ChatGPT_For_Andromeda-Whatsapp](https://github.com/DiegoDG-01/ChatGPT_For_Andromeda-Whatsapp)
 

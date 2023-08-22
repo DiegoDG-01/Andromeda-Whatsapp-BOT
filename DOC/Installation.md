@@ -15,7 +15,7 @@ Currently, the bot is compatible with the next's operating systems:
 You're need have installed the next's software programs:
 
 - Git
-- Google Chrome
+- Google Chrome or Microsoft Edge
 - Python 3.8 or later
 
 ## 🌐 Supported Browsers
@@ -23,6 +23,7 @@ You're need have installed the next's software programs:
 Currently, the bot is tested in the following browsers:
 
  - Google Chrome 98.X or later
+ - Microsoft Edge 115 or later
 
 ## 💻 Install
 
@@ -50,7 +51,7 @@ Currently, the bot is tested in the following browsers:
 4. The installer will create a new folder with the name "Andromeda-Whatsapp_BOT" in your home directory.
 
 
-5. Head over to the "Initialization" section to continue.
+5. Head over to the [Initialize the bot](#InitializeTheBot) section to continue.
 
 ### <a name="WinInstaller"></a> Windows installer
 
@@ -68,7 +69,7 @@ Currently, the bot is tested in the following browsers:
 3. The installer will request the name chat to used for listen the messages (it's recommend create previously one group with **only you**).
 
 
-4. Head over to the "Initialize the bot" section to continue.
+4. Head over to the [Initialize the bot](#InitializeTheBot) section to continue.
 
 ### <a name="Docker"></a> Docker installation
 

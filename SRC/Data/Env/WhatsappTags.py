@@ -1,6 +1,6 @@
 # Files where these variables are used: Bot.py, Communicator.py
 # This variable is used to select and read main Messages box
-ClassMessageBox = '_3mSPV'
+ClassMessageBox = '_21Ahp'
 
 # Files where these variables are used: InterfaceControl.py
 # This variable is used to select List of chats

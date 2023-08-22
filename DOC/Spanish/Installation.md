@@ -13,7 +13,7 @@ Actualmente, el bot es compatible con los siguientes sistemas operativos:
 Necesitas tener instalado los siguientes programas:
 
 - Git
-- Google Chrome
+- Google Chrome o Microsoft Edge
 - Python 3.8 o posterior
 
 ## 🌐 Navegadores compatibles
@@ -21,6 +21,7 @@ Necesitas tener instalado los siguientes programas:
 Actualmente, el bot se prueba en los siguientes navegadores:
 
  - Google Chrome 98.X o posterior
+ - Microsoft Edge 115 o posterior
 
 ## 💻 Instalación
 
@@ -48,7 +49,7 @@ Actualmente, el bot se prueba en los siguientes navegadores:
 4. El instalador creará una nueva carpeta con el nombre "Andromeda-Whatsapp_BOT" en tu directorio de inicio.
 
 
-5. Dirígete al apartado "Inicializar el bot" para continuar.
+5. Dirígete al apartado [Inicializar el bot](#init) para continuar.
 
 ### <a name="WinInstaller"></a> Usar el instalador para Windows
 
@@ -66,7 +67,7 @@ Actualmente, el bot se prueba en los siguientes navegadores:
 4. El instalador solicitará el nombre del chat para usarlo para escuchar los mensajes (se recomienda crear previamente un grupo donde te encuentres **solo tú**.
 
 
-5. Dirígete al apartado "Inicializar el bot" para continuar.
+5. Dirígete al apartado [Inicializar el bot](#init) para continuar.
 
 ### <a name="Docker"></a> Instalación desde docker (En desarrollo)
 
@@ -92,7 +93,7 @@ Actualmente, el bot se prueba en los siguientes navegadores:
     docker build -t "andromeda" .
     ```
    
-7. Una vez finalizada la construcción de la imagen, dirígete al apartado "Inicializar el bot" [aquí](#init) para continuar.
+7. Una vez finalizada la construcción de la imagen, dirígete al apartado [Inicializar el bot](#init) para continuar.
 
 ### <a name="ManualInstallation"></a> Instalación manual
 
@@ -172,7 +173,7 @@ Si no quieres usar el instalador, puedes instalar el bot manualmente siguiendo l
 
 Para iniciar el bot ejecuta el siguiente comando:
 
-Si usas el instalador o created un alias:
+Si usas el instalador o creaste un alias:
 ```
 ANDROMEDA
 ```
@@ -192,6 +193,10 @@ Si ha iniciado sesión, debe ejecutar el siguiente comando:
 docker start andromeda
 ```
 
-Una vez iniciado el bot, el bot te pedirá que escanees el código QR para iniciar sesión en Whatsapp Web.
+En sistemas operativos Linux y Windows, el bot abrirá una ventana donde podras escanear el código QR.
 
-<img src="../IMG/Whatsapp_Init_Page.png" width="100%">
+<img src="../IMG/UI-Whatsapp_Init_Page.png" width="70%">
+
+En sistemas operativos Mac OS, el bot mostrará el codigo QR en la terminal, escanea el código QR con tu teléfono y espera a que el bot inicie sesión.
+
+<img src="../IMG/Whatsapp_Init_Page.png" width="70%">

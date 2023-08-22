@@ -1,0 +1,33 @@
+{
+  "messages": {
+    "English": {
+        "set_language": {
+          "change": ["Your current language is: English","Do you want to change it to spanish? (y/n)"],
+          "confirm": ["Language changed to english"]
+        },
+      "info": {
+        "restart": ["The browser will restart to apply the changes..."]
+      },
+      "errors": {
+        "cancel": ["Operation cancelled"],
+        "generic": ["An error has ocurred, please try again later"],
+        "browser_not_found": ["Browser not found"]
+      }
+    },
+
+    "Spanish": {
+      "set_language": {
+        "change": ["Tu idioma actual es: Español","¿Quieres cambiarlo a Inglés? (s/n)"],
+        "confirm": ["Idioma cambiado a inglés"]
+      },
+      "info": {
+        "restart": ["El navegador se reiniciara para aplicar los cambios..."]
+      },
+      "errors": {
+        "cancel": ["Operación cancelada"],
+        "generic": ["Ha ocurrido un error, por favor intenta de nuevo más tarde"],
+        "browser_not_found": ["Navegador no encontrado"]
+      }
+    }
+  }
+}
