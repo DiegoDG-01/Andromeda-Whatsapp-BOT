@@ -10,7 +10,8 @@
       },
       "errors": {
         "cancel": ["Operation cancelled"],
-        "generic": ["An error has ocurred, please try again later"]
+        "generic": ["An error has ocurred, please try again later"],
+        "browser_not_found": ["Browser not found"]
       }
     },
 
@@ -24,7 +25,8 @@
       },
       "errors": {
         "cancel": ["Operación cancelada"],
-        "generic": ["Ha ocurrido un error, por favor intenta de nuevo más tarde"]
+        "generic": ["Ha ocurrido un error, por favor intenta de nuevo más tarde"],
+        "browser_not_found": ["Navegador no encontrado"]
       }
     }
   }

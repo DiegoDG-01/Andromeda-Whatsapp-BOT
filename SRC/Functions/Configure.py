@@ -183,7 +183,7 @@ class Configure:
 
         Browser_PID = None
         BrowserDriverPID = str(getpid())
-        DefaultNameBrowserSystem = environ.get(environ.get('DefaultBrowser'))
+        DefaultNameBrowserSystem = environ.get('DefaultBrowser')
 
         messages = self.ConfigureMessages['set_language']
 
@@ -198,9 +198,12 @@ class Configure:
                 if response == 's' or response == 'y':
 
                     for process in psutil.process_iter():
-                        if process.name() == DefaultNameBrowserSystem:
+                        if DefaultNameBrowserSystem in process.name().lower():
                             Browser_PID = str(process.pid)
                             break
+
+                    if Browser_PID is None:
+                        return self.ConfigureMessages['errors']['browser_not_found']
 
                     self.Communicate.WriteMessage(self.ConfigureMessages['info']['restart'])
                     self.Communicate.SendMessage()
