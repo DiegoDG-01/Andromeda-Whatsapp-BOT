@@ -45,7 +45,7 @@ class BaseModule:
     def requirements(self):
         requeriments = {
             # In CommandExecution is necessary define the name that the user will use to call the command
-            'CommandExecution': f"/{self.NameModule}",
+            'CommandExecution': self.NameModule,
             # In ExternalModules is necessary define the modules necessary to make the module work in the list
             # >> commandsFile: is a dictionary with the commands and the information of the command
             # >> Communicate: is an object that will be used to communicate with the user
