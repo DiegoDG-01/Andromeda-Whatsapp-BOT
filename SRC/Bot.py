@@ -143,3 +143,6 @@ class Bot:
             except NoSuchElementException as error:
                 self.Log.Write("Bot.py # " + str(error))
                 return False
+            except Exception as error:
+                self.Log.Write("Bot.py # " + str(error))
+                return False
