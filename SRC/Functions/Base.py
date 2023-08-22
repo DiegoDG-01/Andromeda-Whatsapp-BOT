@@ -42,6 +42,22 @@ class BaseModule:
         else:
             return False
 
+    def requirements(self):
+        requeriments = {
+            # In CommandExecution is necessary define the name that the user will use to call the command
+            'CommandExecution': f"/{self.NameModule}",
+            # In ExternalModules is necessary define the modules necessary to make the module work in the list
+            # >> commandsFile: is a dictionary with the commands and the information of the command
+            # >> Communicate: is an object that will be used to communicate with the user
+            # >> InterfaceController: is an object that will be used to control the web WhatsApp interface
+            # >> Schedule: is an object that will be used to control the schedule of the module
+            'ExternalModules': [
+                'commandsFile', 'Communicate'
+            ],
+        }
+
+        return requeriments
+
     # This function is used to initialize the help function
     def EntryPoint(self, args=None, additionalArgs=None):
         # if args is empty or None execute default function else execute different function depending on the args
@@ -54,6 +70,14 @@ class BaseModule:
                 return self.CommandManager()
             else:
                 return False
+
+    def CommandManager(self):
+        if self.Argument == '-d':
+            return self.DescribeCommand()
+        elif self.Argument == '-l':
+            return self.ListArgs()
+        else:
+            return False
 
     # This function is used to function default or if no argument is given
     def Default(self):
