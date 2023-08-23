@@ -1,25 +1,21 @@
-import Log
 import psutil
 import shutil
-from json import load
+from os import getpid
 from time import sleep
 from pathlib import Path
 from dotenv import set_key
 from subprocess import call
-from json import JSONDecodeError
-from os import getcwd, getpid, environ
+from os import getcwd, environ
+from Functions.Base import BaseModule
+from json import load, JSONDecodeError
 
-
-class Configure:
+class Configure(BaseModule):
 
     def __init__(self):
-        self.PathConfig = Path(getcwd() + '/Data/Config/Config.json')
-        self.Argument = None
-        self.log = Log.Generate()
-        self.Communicate = None
-        self.commandsFile = None
-        self.AdditionalArgs = None
+        super().__init__('config')
+
         self.ConfigureMessages = None
+        self.PathConfig = Path(getcwd() + '/Data/Config/Config.json')
 
         configure_messages_path = Path(getcwd() + '/Data/Modules/Messages/Configure.json')
 
@@ -37,100 +33,22 @@ class Configure:
 
                 f.close()
 
-
         except JSONDecodeError as error:
             self.log.Write("Configure.py | UnboundLocalError # " + str(error))
             exit(1)
 
-    def requirements(self):
-
-        requeriments = {
-            'CommandExecution': "/config",
-            'ExternalModules': [
-                'commandsFile', 'Communicate'
-            ],
-        }
-
-        return requeriments
-
-    def set_Communicate(self, Communicate):
-        self.Communicate = Communicate
-
-    def set_commandFile(self, commandsFile):
-        self.commandsFile = commandsFile
-
-    # Function to prepare info to argument
-    def __PrepareArgs(self, args, additionalArgs):
-        if args in self.commandsFile['Active']['/config']['Args'][0].keys():
-            self.Argument = args
-
-            if additionalArgs is not None:
-                self.AdditionalArgs = additionalArgs
-
-            return True
-        else:
-            # There is an error with not responding  with a message
-            # fix this and other modules
-            return False
-
-        # this error affects all modules and should be fixed
-        #
-
-    # This function is used to initialize the help function
-    def EntryPoint(self, args=None, additionalArgs=None):
-        # if args is empty or None execute default function else execute different function depending on the args
-        if args is None:
-            return self.Default()
-        else:
-            # check if args exist and is a valid argument
-            if self.__PrepareArgs(args, additionalArgs):
-                # Execute the function in charge of managing the help function
-                return self.CommandManager()
-            else:
-                return False
-
-    # This function is used to function to management of the help functions and execute the correct function
     def CommandManager(self):
 
         if self.Argument == '-d':
             return self.DescribeCommand()
         elif self.Argument == '-l':
             return self.ListArgs()
-        elif self.Argument == '-log':
-            return self.Get_Error_Log()
         elif self.Argument == '-c':
             return self.Show_Config()
         elif self.Argument == '-L':
             return self.Change_Language()
         else:
             return False
-
-    ###################################################################################################################
-    ## >> The next commands are used to manage the basic functions                                                   ##
-    ## >> These functions will be found in most module files                                                         ##
-    ###################################################################################################################
-
-    # This function is used to function default or if no argument is given
-    def Default(self):
-        return self.DescribeCommand()
-
-    def DescribeCommand(self):
-        return self.commandsFile['Active']["/config"]['Desc']
-
-    def ListArgs(self):
-
-        List = self.commandsFile['Active']['/config']['Args'][0]
-
-        ListToMessage = [key + ': ' + List[key] for key in List.keys()]
-
-        return ListToMessage
-
-    ###################################################################################################################
-    ## >> The previous commands are used to manage the basic functions                                               ##
-    ## >> These functions will be found in most module files                                                         ##
-    ###################################################################################################################
-
-    # ====== The next functions are used to execute the correct orders depending on the argument given ====== #
 
     def Get_Error_Log(self):
         # This function is used to get the error log
@@ -242,4 +160,3 @@ class Configure:
         except Exception as error:
             self.log.Write("Configure.py | GenericError # " + str(error))
             return self.ConfigureMessages['errors']['generic']
-

@@ -116,7 +116,7 @@ class Interface:
             return False
 
     def send_mediafile_button(self):
-        button_xpath = '//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div'
+        button_xpath = '//*[@id="app"]/div/div/div[3]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div'
         try:
             WebDriverWait(self.WebDriver, 5).until(EC.element_to_be_clickable((By.XPATH, button_xpath))).click()
             return True
@@ -141,7 +141,7 @@ class Interface:
         if route is None and image_name is None:
             return False
 
-        input_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[1]/button/input'
+        input_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/ul/div/div[1]/li/div/input'
 
         if route is None:
             image = getcwd() + "/Data/WhatsApp/Screenshot/" + image_name
@@ -149,6 +149,7 @@ class Interface:
             image = route
 
         if self.open_menu():
+            sleep(0.1)
             try:
                 self.WebDriver.find_element_by_xpath(input_xpath).send_keys(image)
                 self.send_mediafile_button()
@@ -165,7 +166,7 @@ class Interface:
         if route is None and name is None:
             return False
 
-        input_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[4]/button/input'
+        input_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/ul/div/div[1]/li/div/input'
 
         if route is None:
             image = getcwd() + "/Data/WhatsApp/Screenshot/" + name

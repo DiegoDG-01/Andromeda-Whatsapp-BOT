@@ -210,15 +210,19 @@ class CommandManager:
 
     def Execute(self):
 
-        if self.commandargs:
-            contentargs, error = self.__ContentArgs()
+        try:
+            if self.commandargs:
+                contentargs, error = self.__ContentArgs()
 
-            if contentargs is True and error is None:
-                return self.ListAction[self.command](args=self.arg, additionalArgs=self.additionalArgs), None
+                if contentargs is True and error is None:
+                    return self.ListAction[self.command](args=self.arg, additionalArgs=self.additionalArgs), None
+                else:
+                    return contentargs, error
             else:
-                return contentargs, error
-        else:
-            return self.ListAction[self.command](), None
+                return self.ListAction[self.command](), None
+        except Exception as err:
+            self.Log.Write("Commands.py | Error executing command " + self.command + " | " + str(err))
+            return False, "Error executing command"
 
     def __IsCommand(self):
 

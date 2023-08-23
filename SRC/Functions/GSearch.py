@@ -1,28 +1,23 @@
-import Log
 from json import load
 from time import sleep
 from pathlib import Path
 from os import getcwd, environ
+from Functions.Base import BaseModule
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class GSearch:
+class GSearch(BaseModule):
 
     # Function to configure the help function and prepare it for use
     def __init__(self):
-        self.Argument = None
-        self.Communicate = None
-        self.commandsFile = None
-        self.AdditionalArgs = None
-        self.NameModule = "/GSearch"
+        super().__init__('GSearch')
+
         self.SearchBar_Class = 'gLFyf'
-        self.SearchBar_XPath = '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input'
+        self.SearchBar_XPath = '//*[@id="APjFqb"]'
         self.Google = 'https://www.google.com/'
         PathModuleMessage = Path(getcwd() + "/Data/Modules/Messages/GSearch.json")
-
-        self.log = Log.Generate()
 
         with open(PathModuleMessage, 'r') as file:
             self.GSearchMessages = load(file)
@@ -41,46 +36,6 @@ class GSearch:
 
         return requeriments
 
-    def set_Communicate(self, Communicate):
-        self.Communicate = Communicate
-
-    def set_commandFile(self, commandsFile):
-        self.commandsFile = commandsFile
-
-    def set_InterfaceController(self, InterfaceControl):
-        try:
-            self.InterfaceControl = InterfaceControl
-        except Exception as error:
-            self.log.Write("Configure.py | InterfaceControl # " + str(error))
-
-    def set_WebDriver(self, WebDriver):
-        self.WebDriver = WebDriver
-
-    # Function to prepare info to argument
-    def __PrepareArgs(self, args, additionalArgs):
-        if args in self.commandsFile['Active'][self.NameModule]['Args'][0].keys():
-            self.Argument = args
-
-            if additionalArgs is not None:
-                self.AdditionalArgs = additionalArgs
-
-            return True
-        else:
-            return False
-
-    # This function is used to initialize the help function
-    def EntryPoint(self, args=None , additionalArgs=None):
-        # if args is empty or None execute default function else execute different function depending on the args
-        if args is None:
-            return self.Default()
-        else:
-            # check if args exist and is a valid argument
-            if self.__PrepareArgs(args, additionalArgs):
-                # Execute the function in charge of managing the help function
-                return self.CommandManager()
-            else:
-                return False
-
     # This function is used to function to management of the help functions and execute the correct function
     def CommandManager(self):
 
@@ -92,23 +47,6 @@ class GSearch:
             return self.Search()
         else:
             return False
-
-    # This function is used to function default or if no argument is given
-    def Default(self):
-        return self.DescribeCommand()
-
-    def DescribeCommand(self):
-        return self.commandsFile['Active'][self.NameModule]['Desc']
-
-    def ListArgs(self):
-
-        List = self.commandsFile['Active'][self.NameModule]['Args'][0]
-
-        ListToMessage = [key + ': ' + List[key] for key in List.keys()]
-
-        return ListToMessage
-
-    # ================== The next functions are used to execute the correct orders depend ==================
 
     def __readMessage(self):
         while True:
@@ -125,9 +63,10 @@ class GSearch:
             'Info': [],
             'Links': [],
         }
-        Box_Links_Class = 'tF2Cxc'
 
-        for content in WebDriver.find_elements(By.CLASS_NAME, Box_Links_Class):
+        Box_Links_ID = 'rso'
+
+        for content in WebDriver.find_elements(By.ID, Box_Links_ID):
             Content['Info'].append('# '+ str(cout) + ' - ' + content.find_element(By.TAG_NAME, 'h3').text)
             Content['Links'].append(content.find_element(By.TAG_NAME, 'a'))
             cout += 1
@@ -137,7 +76,7 @@ class GSearch:
         return Content
 
     def __Rollback(self):
-        pass
+        self.InterfaceControl.close_tabs()
 
     def Search(self):
         self.Communicate.WriteMessage(self.GSearchMessages['info']['search'])
@@ -201,7 +140,7 @@ class GSearch:
 
             self.InterfaceControl.close_tabs()
 
-            return [message]
+            return message
         except AssertionError as error:
             self.log.Write("GSearch.py | AssertionError - Invalid value # " + str(error))
             self.InterfaceControl.close_tabs()
