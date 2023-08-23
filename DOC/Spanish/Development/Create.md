@@ -1,3 +1,6 @@
+## Importante 
+#### Estamos actualizando nuestros documentos de desarrollo hacia una nueva versión, por lo que recomendamos que no se siga este documento hasta que se termine de actualizar. Lamentamos las molestias.
+
 ## Desarrollar módulos para Andromeda - Whatsapp BOT
 
 En este documento se explica como desarrollar un módulo para Andromeda siguiendo los estandares requeridos por el proyecto.

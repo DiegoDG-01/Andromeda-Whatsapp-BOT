@@ -1,3 +1,6 @@
+## Important
+#### We are in the process of updating our development documents to a new version, so we recommend not to follow this document until the update is complete. We apologize for any inconvenience.
+
 ## Development module for Andromeda - Whatsapp BOT
 
 This file is a guide to developers who want to create their own modules for Andromeda - Whatsapp BOT.
