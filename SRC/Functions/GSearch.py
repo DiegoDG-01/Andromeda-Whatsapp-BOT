@@ -63,9 +63,10 @@ class GSearch(BaseModule):
             'Info': [],
             'Links': [],
         }
-        Box_Links_Class = 'tF2Cxc'
 
-        for content in WebDriver.find_elements(By.CLASS_NAME, Box_Links_Class):
+        Box_Links_ID = 'rso'
+
+        for content in WebDriver.find_elements(By.ID, Box_Links_ID):
             Content['Info'].append('# '+ str(cout) + ' - ' + content.find_element(By.TAG_NAME, 'h3').text)
             Content['Links'].append(content.find_element(By.TAG_NAME, 'a'))
             cout += 1
@@ -139,7 +140,7 @@ class GSearch(BaseModule):
 
             self.InterfaceControl.close_tabs()
 
-            return [message]
+            return message
         except AssertionError as error:
             self.log.Write("GSearch.py | AssertionError - Invalid value # " + str(error))
             self.InterfaceControl.close_tabs()
