@@ -99,28 +99,23 @@ Establezca los idiomas como llaves en el archivo de configuración, si el idioma
 
 ## 🐍 Creando el archivo de python
 
-En la siguiente ruta encontrarás un archivo llamado `Example.py` que contiene la plantilla con las funciones básicas necesarias para desarrollar un módulo.
+En la siguiente ruta encontrarás un archivo llamado `Base.py` este archivo contiene las funciones básicas que debe tener un módulo para que funcione correctamente.
+Asi que deberas importar este archivo en tu módulo para que pueda funcionar correctamente.
 
 ```bash
-SRC/Functions/Example.py
-```
-
-Copia el archivo en la misma ruta y renómbralo con el nombre que quieras para tu módulo, por ejemplo `MyModule.py` 
-
-```bash
-SRC/Functions/MyModule.py
+SRC/Functions/Base.py
 ```
 
 ### 📝 Funciones básicas
 
-En el archivo `MyModule.py` encontrarás las siguientes funciones:
+Esta es una breve explicación de las funciones que contiene el archivo `Base.py` y que son implementadas para el correcto funcionamiento.
 
 #### 📌 __init__
 
-En este apartado deberás establecer el nombre del módulo en la variable `self.NameModule` incluido el `/` al inicio.
+En este apartado se establece el nombre del módulo en la variable `self.NameModule`.
 
 ```python
-self.NameModule = "/MyModule"
+self.NameModule = f"/{self.NameModule}"
 ```
 
 **Nota:**  Este nombre tiene que ser único y no puede coincidir con el nombre de ningún otro módulo, además que tiene que ser idéntico a la llave del archivo de configuración.
@@ -130,7 +125,7 @@ self.NameModule = "/MyModule"
 ```python
 def requirements(self):
     requeriments = {
-        'CommandExecution': "/mymodule_name",
+        'CommandExecution': self.NameModule,
         'ExternalModules': [
             'commandsFile', 'Communicate'
         ],
@@ -140,21 +135,20 @@ def requirements(self):
     }
     return requeriments
 ```
-Esta función es la encargada de definir los requerimientos del módulo, en este caso se define que el comando de ejecución desde WhatsApp sea `/mymodule_name` y que se necesitan los módulos `commandsFile` y `Communicate`.
+Esta función es la encargada de definir los requerimientos del módulo, en este caso se define que el comando de ejecución desde WhatsApp sea el mismo que el nombre del módulo y los modulos que se necesitan son `commandsFile` y `Communicate`.
 además existen otros modulos externos que se pueden utilizar, estos son:
 
 - `commandsFile` - **(Obligarotio)** Permite acceder a la lista de los comandos de ejecución de los módulos.
-- `Communicate` - Permite escribir y enviar mensajes usando el chat de whatsapp.
+- `Communicate` - **(Obligarotio)** Permite escribir y enviar mensajes usando el chat de whatsapp.
 - `InterfaceController:` - Permite obtener la instancia del navegador para poder interactuar con la interfaz del navegador y hacer uso del mismo fuera de whatsapp.
 - `Schedule:` - Permite programar tareas para que se ejecuten en momentos determinados.
 
 Las dependencias es un diccionario que contiene los módulos externos que se necesitan para que el módulo funcione correctamente, en este caso se necesita el módulo `Whisper` en su versión `0.2.0`.
 
-Dependiendo de los módulos externos que se necesiten, se deberá agregar al diccionario.
+**Importante:** Esta función es puede ser sobreescrita desde el archivo del módulo para agregar más módulos o dependencias.
 
 
 #### 📌 set_commands
-Las siguientes funciones deberán existir en el módulo dependiendo los requerimientos que se definan en la función `requirements`:
 
 ```python
     def set_Communicate(self, Communicate):
@@ -167,6 +161,84 @@ Las siguientes funciones deberán existir en el módulo dependiendo los requerim
 ```
 
 Estas funciones son las encargadas de recibir las instancias de los módulos externos que se definan en la función `requirements` y almacenarlas en variables para poder usarlas en el módulo.
+
+#### 📌 CommandManager
+
+```python
+  def CommandManager(self):
+    if self.Argument == '-d':
+        return self.DescribeCommand()
+    elif self.Argument == '-l':
+        return self.ListArgs()
+    else:
+        return False
+```
+
+Esta función es la encargada de gestionar los comandos que se ejecutan desde WhatsApp, en este caso se definen dos comandos que son `-d` y `-l`, estos comandos son funciones obligatorias para que el módulo pueda ser ejecutado con las funciones básicas.
+
+Puede ser sobreescrita desde el archivo del módulo para agregar más comandos pero manteniendo los comandos `-d` y `-l` para que el módulo pueda ser ejecutado.
+
+### 🧑🏻‍💻 Creando nuestro módulo
+
+Ahora que ya entendemos como funciona el archivo `Base.py` podemos crear nuestro módulo.    
+
+Para crearlo deberemos generar un archivo con el nombre de nuestro módulo `MyModule.py` en la siguiente ruta:
+```bash 
+SRC/Modules/MyModule.py
+```
+
+Ahora deberemos importar el archivo `Base.py`, crear una clase para nuestro módulo y heredar la clase `BaseModule` y pasarle el nombre de nuestro módulo como parámetro a la clase padre.
+```python
+from Functions.Base import BaseModule
+
+class MyModule(BaseModule):
+
+    def __init__(self):
+        # Inicializamos la clase padre y le pasamos el de nuestro módulo
+        super().__init__("MyModule")
+```
+
+Si nuestro módulo necesita de otros módulos externos deberemos sobreescribir la función `requirements` y agregar los módulos que necesitamos, por ejemplo:
+```python
+def requirements(self):
+    requeriments = {
+        'CommandExecution': self.NameModule,
+        'ExternalModules': [
+            'commandsFile', 'Communicate', 'InterfaceController'
+        ],
+        'Dependencies': {
+            'Whisper':'0.2.0'
+        }
+    }
+    return requeriments
+```
+
+Tambien deberemos sobreescribir la función `CommandManager` para agregar los comandos que necesitamos, por ejemplo:
+
+```python
+  def CommandManager(self):
+    if self.Argument == '-d':
+        return self.DescribeCommand()
+    elif self.Argument == '-l':
+        return self.ListArgs()
+    elif self.Argument == '-arg':
+        return self.MyNewFunction()
+    elif self.Argument == '-arg2':
+        return self.MyNewFunction2()
+    else:
+        return False
+```
+
+De aquí en adelante ya puedes crear las funciones que necesites para tu módulo, por ejemplo:
+
+```python
+    def MyNewFunction(self):
+        self.Communicate.WriteMessage("Hello World")
+        self.Communicate.SendMessage()
+        return True
+```
+
+Asegurate de que la función se encuentre tanto en el archivo de `configuraciones` como dentro de la función `CommandManager` para que pueda ser ejecutada.
 
 ## 🏃🏽‍♂️ Ejecutando el módulo
 
