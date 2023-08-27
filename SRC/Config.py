@@ -21,10 +21,14 @@ class Config():
 
     def __init__(self, Driver):
 
+        try:
+            self.PathUser = Path(sys._MEIPASS + '/Data/Config/Config.json')
+        except Exception:
+            self.PathUser = Path(getcwd() + '/Data/Config/Config.json')
+
         self.QRCode = qrcode.QRCode()
         self.Log = Log.Generate()
         self.WebDriver = Driver
-        self.PathUser = Path(getcwd() + '/Data/Config/Config.json')
         self.Validate = None
         self.UserFileConfig = None
 

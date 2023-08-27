@@ -1,3 +1,4 @@
+import sys
 import Log
 import sqlite3
 from os import getcwd
@@ -8,7 +9,10 @@ class SQLite:
 
     def __init__(self):
 
-        self.Path = Path(getcwd() + '/Data/Database/database.db')
+        try:
+            self.Path = Path(sys._MEIPASS + '/Data/Database/database.db')
+        except Exception:
+            self.Path = Path(getcwd() + '/Data/Database/database.db')
 
         self.log = Log.Generate()
         self.conn = sqlite3.connect(self.Path)

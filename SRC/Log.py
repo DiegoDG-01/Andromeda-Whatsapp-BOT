@@ -1,3 +1,4 @@
+import sys
 import time
 from pathlib import Path
 from os import getcwd, remove
@@ -5,10 +6,14 @@ from os import getcwd, remove
 
 class Generate:
 
-    def GetLog(self, lines = None):
-        LogPath = Path(getcwd() + '/Data/Log/Log.txt')
+    def __init__(self):
+        try:
+            self.LogPath = Path(sys._MEIPASS + '/Data/Log/Log.txt')
+        except Exception:
+            self.LogPath = Path(getcwd() + '/Data/Log/Log.txt')
 
-        with open(LogPath, 'r') as File:
+    def GetLog(self, lines = None):
+        with open(self.LogPath, 'r') as File:
 
             CompleteLog = File.readlines()
 
@@ -27,10 +32,8 @@ class Generate:
     def Write(self, error):
         DateTime = self.__GetDateTime()
 
-        LogPath = Path(getcwd() + '/Data/Log/Log.txt')
-
-        with open(LogPath, 'a') as File:
-            self.__DeleteLog(LogPath)
+        with open(self.LogPath, 'a') as File:
+            self.__DeleteLog(self.LogPath)
 
             File.write(DateTime + error + '\n')
             File.close()

@@ -11,6 +11,7 @@
 ##############################################
 
 # Module imported from the main python library
+import sys
 import Log
 from re import match
 from json import load
@@ -49,7 +50,11 @@ class CommandManager:
         self.commandargs = None
         self.commandInfo = None
         self.additionalArgs = {}
-        self.Path = Path(getcwd() + '/Data/Config/Codes.json')
+
+        try:
+            self.Path = Path(sys._MEIPASS + '/Data/Config/Codes.json')
+        except Exception:
+            self.Path = Path(getcwd() + '/Data/Config/Codes.json')
 
         with open(self.Path, 'r') as File:
             try:
@@ -135,12 +140,14 @@ class CommandManager:
 
     # Function to import all modules from the Functions folder
     def __import_Modules(self):
-
         # List of modules
         Functions = []
 
         # Get all files from the Functions folder
-        path = Path(getcwd() + '/Functions/')
+        try:
+            path = Path(sys._MEIPASS + '/Functions/')
+        except Exception:
+            path = Path(getcwd() + '/Functions/')
 
         # Get all files from the Functions folder
         for file in listdir(path):
@@ -154,7 +161,6 @@ class CommandManager:
                     # Add the module to the list of available modules
                     self.AvailableModules.append(file[:-3])
                 except Exception as err:
-                    # Log error
                     self.Log.Write("Commands.py | Error importing module " + file + " | " + str(err))
                     exit(1)
 
@@ -163,7 +169,10 @@ class CommandManager:
 
     def __import_codes_of_module(self, NameFile):
 
-        ModuleCodes = Path(getcwd() + '/Data/Modules/Codes/' + NameFile + '.json')
+        try:
+            ModuleCodes = Path(sys._MEIPASS + '/Data/Modules/Codes/' + NameFile + '.json')
+        except Exception:
+            ModuleCodes = Path(getcwd() + '/Data/Modules/Codes/' + NameFile + '.json')
 
         if ModuleCodes.exists():
             with open(ModuleCodes, 'r') as File:
@@ -192,7 +201,6 @@ class CommandManager:
         Returns:
             [type]: [description]
         """
-
         # save command
         self.command = command[0]
         # remove command position

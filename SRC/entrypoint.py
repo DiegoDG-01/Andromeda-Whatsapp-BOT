@@ -22,6 +22,7 @@
 ########################################################
 
 
+import sys
 import Bot
 import Log
 import Config
@@ -52,7 +53,13 @@ def InitWebDriver():
 
 if __name__ == '__main__':
 
-    load_dotenv()
+    try:
+        # Load the environment variables
+        load_dotenv(sys._MEIPASS + '/.env')
+    except Exception:
+        # Load the environment variables
+        load_dotenv()
+
     Log = Log.Generate()
 
     try:

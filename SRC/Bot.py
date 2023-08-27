@@ -138,11 +138,11 @@ class Bot:
                         return False
 
             except TimeoutException as error:
-                self.Log.Write("Bot.py # " + str(error))
+                self.Log.Write("Bot.py # TimeoutException " + str(error))
                 return False
             except NoSuchElementException as error:
-                self.Log.Write("Bot.py # " + str(error))
+                self.Log.Write("Bot.py # NoSuchElementException " + str(error))
                 return False
             except Exception as error:
-                self.Log.Write("Bot.py # " + str(error))
+                self.Log.Write("Bot.py # GenericError " + str(error))
                 return False
