@@ -1,3 +1,4 @@
+import sys
 import requests
 from json import load
 from pathlib import Path
@@ -10,11 +11,14 @@ class F1(BaseModule):
     def __init__(self):
         super().__init__('f1')
 
+        try:
+            PathModuleMessages = Path(sys._MEIPASS + '/Data/Modules/Messages/F1.json')
+        except Exception:
+            PathModuleMessages = Path(getcwd() + '/Data/Modules/Messages/F1.json')
+
         # API Documentation:
         # https://documenter.getpostman.com/view/11586746/SztEa7bL#46c7fbee-e90f-409f-b2ff-d8b77e85e5f6
         self.API_Url = "http://ergast.com/api/f1/"
-
-        PathModuleMessages = str(Path(getcwd() + '/Data/Modules/Messages/F1.json'))
 
         with open(PathModuleMessages, 'r') as file:
             self.ModuleMessages = load(file)

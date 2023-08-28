@@ -1,3 +1,4 @@
+import sys
 import psutil
 import shutil
 from os import getpid
@@ -15,13 +16,17 @@ class Configure(BaseModule):
         super().__init__('config')
 
         self.ConfigureMessages = None
-        self.PathConfig = Path(getcwd() + '/Data/Config/Config.json')
 
-        configure_messages_path = Path(getcwd() + '/Data/Modules/Messages/Configure.json')
+        try:
+            self.PathConfig = Path(sys._MEIPASS + '/Data/Config/Config.json')
+            configure_messages_path = Path(sys._MEIPASS + '/Data/Modules/Messages/Configure.json')
+        except Exception as error:
+            self.PathConfig = Path(getcwd() + '/Data/Config/Config.json')
+            configure_messages_path = Path(getcwd() + '/Data/Modules/Messages/Configure.json')
 
         try:
 
-            with open('Data/Config/Config.json', 'r') as f:
+            with open(self.PathConfig, 'r') as f:
                 self.config = load(f)
                 self.config = self.config['main']
 

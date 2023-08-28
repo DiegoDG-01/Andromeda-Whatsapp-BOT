@@ -1,4 +1,5 @@
 import re
+import sys
 import Log
 import DataBase
 from os import getcwd
@@ -15,6 +16,12 @@ class AutomatedMessages:
 
     def __init__(self):
 
+        try:
+            PathModuleMessage = Path(sys._MEIPASS + "/Data/Modules/Messages/AutomatedMessage.json")
+        except Exception:
+            PathModuleMessage = Path(getcwd() + "/Data/Modules/Messages/AutomatedMessage.json")
+
+
         # It's used to identify the module in the database
         # Not modified this value
         self.ID_Event_In_DB = 1
@@ -27,7 +34,6 @@ class AutomatedMessages:
         self.log = Log.Generate()
         self.Communicate = None
         self.commandsFile = None
-        PathModuleMessage = Path(getcwd() + "/Data/Modules/Messages/AutomatedMessage.json")
 
         self.InterfaceControl = None
         self.Schedule = None

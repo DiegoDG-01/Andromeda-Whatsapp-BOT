@@ -1,3 +1,4 @@
+import sys
 from json import load
 from time import sleep
 from pathlib import Path
@@ -14,10 +15,14 @@ class GSearch(BaseModule):
     def __init__(self):
         super().__init__('GSearch')
 
+        try:
+            PathModuleMessage = Path(sys._MEIPASS + '/Data/Modules/Messages/GSearch.json')
+        except Exception:
+            PathModuleMessage = Path(getcwd() + '/Data/Modules/Messages/GSearch.json')
+
         self.SearchBar_Class = 'gLFyf'
         self.SearchBar_XPath = '//*[@id="APjFqb"]'
         self.Google = 'https://www.google.com/'
-        PathModuleMessage = Path(getcwd() + "/Data/Modules/Messages/GSearch.json")
 
         with open(PathModuleMessage, 'r') as file:
             self.GSearchMessages = load(file)
