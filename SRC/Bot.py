@@ -21,6 +21,7 @@ import Communicator
 
 # Module imported from the main python library
 from time import sleep
+from os import environ
 
 # Modules to import from selenium
 from selenium.common.exceptions import NoSuchElementException
@@ -28,9 +29,6 @@ from selenium.common.exceptions import TimeoutException
 
 # Module to check if exists a command automatically
 import Schedule
-
-from Data.Env import WhatsappTags as Tags
-
 
 class Bot:
 
@@ -77,7 +75,7 @@ class Bot:
 
             try:
                 # Get the message box
-                Messages = WebDriver.find_elements_by_class_name(Tags.ClassMessageBox)
+                Messages = WebDriver.find_elements_by_class_name(environ.get('ClassMessageBox'))
 
                 if Messages:
 
