@@ -1,5 +1,8 @@
 ## Install Andromeda - WhatsApp Bot
 
+**Note:** Si quieres leer esta guía en español, puedes hacerlo [aquí](Spanish/Installation.md).
+
+
 ### 📋 Table of Contents
 
 * [Requirements](#requirements)
