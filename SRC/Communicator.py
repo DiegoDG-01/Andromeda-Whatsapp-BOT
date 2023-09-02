@@ -15,12 +15,12 @@
 
 
 import Log
+from os import environ
 from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from Data.Env import WhatsappTags as Tags
 
 
 class Communicate:
@@ -73,7 +73,7 @@ class Communicate:
         try:
 
             "USE THIS METHOD TO READ ONLY LAST MESSAGE IN THE BOT file"
-            XPath = "//*[contains(@class, '" + Tags.ClassMessageBox + "')]"
+            XPath = "//*[contains(@class, '" + environ.get('ClassMessageBox') + "')]"
 
             LastMessage = self.WebDriver.find_elements_by_xpath(XPath)[-1:]
 
@@ -95,7 +95,7 @@ class Communicate:
 
         try:
             LastMessage = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located(
-                (By.CLASS_NAME, Tags.ClassMessageBox)))[-1].rect
+                (By.CLASS_NAME, environ.get('ClassMessageBox'))))[-1].rect
 
             LastMedia = WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located(
                 (By.CLASS_NAME, Class)))[-1].rect
