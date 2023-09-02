@@ -9,7 +9,7 @@ We would love for you to contribute to Andromeda and help make it even better th
 
 ## <a name="coc"></a> Code of Conduct
 
-Please read and follow our [Code of Conduct](Contributing/code_of_donduct.md) before contributing to the project.
+Please read and follow our [Code of Conduct](code_of_donduct.md) before contributing to the project.
 
 ## <a name="issue"></a> Found a Bug?
 
