@@ -37,6 +37,14 @@ y dentro de este archivo deberás colocar los mensajes que se enviarán al usuar
 ```
 Estos mensajes serán controlados completamente por su módulo, con lo cual no esta obligado a usar una estructura como la anterior, pero si es recomendable para mantener un orden en los mensajes.
 
+**Nota**: Podras acceder al legunaje que se esta usando en el bot desde la variable de entorno `Language` que se encuentra en el archivo `.env`.
+
+```python
+from os import environ
+
+lang = environ.get('Language')
+```
+
 ## ⚙️ Creando el archivo de configuración
 
 Se debera crear un archivo **json** con el nombre de tu módulo `MyModule.json` en la siguiente ruta 
@@ -44,7 +52,7 @@ Se debera crear un archivo **json** con el nombre de tu módulo `MyModule.json` 
 SRC/Data/Modules/Codes/MyModule.json
 ```
 
-Este archivo es el encargado de almacenar la configuración del módulo, como el nombre para su ejecución, descripción, argumentos o funciones, etc.
+Este archivo es el encargado de almacenar la configuración del módulo, el nombre necesario para ser llamado, descripción, argumentos o funciones, etc.
 
 Este archivo deberá tener la siguiente estructura:
 ```json
@@ -73,7 +81,6 @@ Este archivo deberá tener la siguiente estructura:
 
 **Importante:** El nombre del módulo debe ser el mismo que el nombre del archivo python que contiene la lógica del módulo.
 
-~~- **Lang**: Es el idioma por defecto del módulo, en este caso es el inglés.~~
 - **English**: Es el idioma en el que se encuentra la configuración del módulo, en este caso es el inglés.
 - **/MyModule**: Es el nombre del módulo, este nombre será el que se usará para localizar el módulo de manera interna.
 - **Desc**: Es la descripción del módulo, esta descripción será mostrada al usuario cuando ejecute el comando `/mymodule_name` or `/mymodule_name -d`.
@@ -143,9 +150,9 @@ además existen otros modulos externos que se pueden utilizar, estos son:
 - `InterfaceController:` - Permite obtener la instancia del navegador para poder interactuar con la interfaz del navegador y hacer uso del mismo fuera de whatsapp.
 - `Schedule:` - Permite programar tareas para que se ejecuten en momentos determinados.
 
-Las dependencias es un diccionario que contiene los módulos externos que se necesitan para que el módulo funcione correctamente, en este caso se necesita el módulo `Whisper` en su versión `0.2.0`.
+Las dependencias es un diccionario que contiene los módulos externos que se necesitan para que el módulo funcione correctamente, en este caso se necesita el módulo `Whisper` en su versión `0.2.0`, de no ser tener ninguna dependencia se puede omitir este apartado.
 
-**Importante:** Esta función es puede ser sobreescrita desde el archivo del módulo para agregar más módulos o dependencias.
+**Importante:** Esta función puede ser sobreescrita desde el archivo del módulo para agregar más módulos o dependencias.
 
 
 #### 📌 set_commands
@@ -207,7 +214,8 @@ def requirements(self):
             'commandsFile', 'Communicate', 'InterfaceController'
         ],
         'Dependencies': {
-            'Whisper':'0.2.0'
+            'Whisper':'0.2.0',
+            'ChatGPT':'0.1.0'  
         }
     }
     return requeriments
