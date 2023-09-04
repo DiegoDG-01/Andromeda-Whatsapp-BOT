@@ -53,14 +53,14 @@ class Config():
     def __load_chat(self):
         try:
 
-            User = WebDriverWait(self.WebDriver, 60).until(ec.presence_of_element_located(
+            User = WebDriverWait(self.WebDriver, 30).until(ec.presence_of_element_located(
                 (By.XPATH, f'//span[@title = "{environ.get("ChatName")}"]')))
             User.click()
 
             return True
 
         except Exception as error:
-            self.Log.Write("Config.py | GenericErr - Load Chat # " + str(error))
+            self.Log.Write(f"Config.py | GenericErr - Load Chat # ChatName: {environ.get('ChatName')} Not Found - Change for a valid chat name in the .env file.")
             self.Error = "Error: To initialize bot"
             return False
 

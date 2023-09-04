@@ -60,7 +60,7 @@ class Browser:
         try:
 
             # Global options
-            # _BrowserOptions.add_argument('--headless')
+            _BrowserOptions.add_argument('--headless')
 
             if self.NameBrowser == 'chrome' or self.NameBrowser == 'edge':
 
