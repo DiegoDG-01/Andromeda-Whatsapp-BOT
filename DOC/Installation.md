@@ -44,35 +44,32 @@ Compatibility with Firefox is experimental, and some issues have been found. Sup
 
 ### <a name="ExecutableInstallation"></a> 📦 Executables (Beta)
 
-We continue to work on simplifying the use of Andromeda, so we have created executables for various operating systems. These executables are in beta, so they may contain errors or not work correctly.
+We are continuously working to simplify the use of Andromeda. To facilitate this, we have created executables for various operating systems. Please note that these executables are in beta versions and may contain errors or not function correctly.
 
-1. To download the executables, go to the [GitHub Release section](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) (Executable versions are available from version 0.4.0 onwards).
+1. To download the executables, navigate to the [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) section. (Starting from version 0.4.0, the executables are available.)
 
 
 2. Download and extract the executable for your operating system.
 
 
-3. Access the **"SRC/Data/Config/Lang"** folder. This folder contains language files (currently only in Spanish and English). Copy the **Codes.json** and **Config.json** files from the language you want to use and paste them into the **"SRC/Data/Config"** folder.
+3. By default, the browser used is **Google Chrome**, and the language is **English**. If you wish to change the browser or language, open the **.env** file and modify the values of the **"Language"** and **"DefaultBrowser"** variables.
 
-     ```
-     SRC/Data/Config/Codes.json
-     SRC/Data/Config/Config.json
-     ```
+   ```plaintext
+   Language=English
+   DefaultBrowser=chrome
+    ```
+   
+   **Note:** Available values for the **"Language"** variable are **"English"** and **"Spanish"**.
 
-4. Open the **"SRC/Data/Config/Config.json"** file and go to the **"Default"** section. Replace the value of **"WhatsappName"** with the name of the chat you want to use for the bot to listen for commands.
+   **Note:** Available values for the **"DefaultBrowser"** variable are **"chrome"** and **"edge"**.
+
+
+4. In the same **.env** file, change the value of the **"ChatName"** variable to the name of the chat you want to use so that the bot waits for commands.
 
     ```
-    "Default": {
-            "WhatsappName":"MyChat",
-            "WhatsappNumber":"",
-            "WhatsappGroupName":""
-        }
+    ChatName=MiChat
     ```
-
-5. By default, the browser to use is **Google Chrome**. If you want to use Microsoft Edge or another browser, go to the project's root and open the **.env** file. Replace the value of **"DefaultBrowser"** with the name of the browser you want to use (**chrome** or **edge**).
-
-
-6. In the same **.env** file, make sure to set the language according to the language you selected in step 3 (**Spanish** or **English**).
+   
 
 ### <a name="ManualInstallation"></a> 👋🏼 Manual Installation
 
@@ -133,30 +130,26 @@ To manually install the bot, follow these steps:
    Replace **"Chosen-Path"** with the path where the project folder is located.
 
 
-9. (**obligatory**) Access the **"SRC/Data/Config/Lang"** folder. This folder contains language files (currently only in Spanish and English). Copy the **Codes.json** and **Config.json** files from the language you want to use and paste them into the **"SRC/Data/Config"** folder.
+9. (**obligatory**) 
+Open the .env file and change the value of the "ChatName" variable to the name of the chat you want to use so that the bot waits for commands.
 
      ```
-     SRC/Data/Config/Codes.json
-     SRC/Data/Config/Config.json
-     ```
-
-10. (**obligatory**) Open the **"SRC/Data/Config/Config.json"** file and go to the **"Default"** section. Replace the value of **"WhatsappName"** with the name of the chat you want to use for the bot to listen for commands.
-
-    ```
-    "Default": {
-            "WhatsappName":"MyChat",
-            "WhatsappNumber":"",
-            "WhatsappGroupName":""
-        }
+    ChatName=MyChat
     ```
 
-11. By default, the browser to use is **Google Chrome**. If you want to use Microsoft Edge or another browser, go to the project's root and open the **.env** file. Replace the value of **"DefaultBrowser"** with the name of the browser you want to use (**chrome** or **edge**).
+10. (**obligatory**) By default, the browser to be used is Google Chrome, and the language is English. If you want to change the browser or language, open the .env file and modify the values of the "Language" and "DefaultBrowser" variables.
+
+    ```
+    Language=English
+    DefaultBrowser=chrome
+    ```
+    
+   **Note:** Available values for the **"Language"** variable are **"English"** and **"Spanish"**.
+
+   **Note:** Available values for the **"DefaultBrowser"** variable are **"chrome"** and **"edge"**.
 
 
-12. In the same **.env** file, make sure to set the language according to the language you selected in step 3 (**Spanish** or **English**).
-
-
-13. Go to the [Start Bot](#init) section.
+11. Go to the [Start Bot](#init) section.
 
 ## 😎 Starting the Bot <a name="init"></a>
 

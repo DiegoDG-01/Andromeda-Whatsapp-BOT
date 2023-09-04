@@ -130,7 +130,7 @@ Para instalar el bot manualmente, siga los siguientes pasos:
     echo 'alias andromeda="cd /Ruta-Elegida/Andromeda-Whatsapp_BOT/SRC/ && source .venv/bin/activate && python3 entrypoint.py"' >> ~/.zshrc
     ```
    
-9. (**Obligatorio**) Abre el archivo .env y cambia el valor de la variable **"ChatName"** con el nombre del chat que deseas usar para que el bot esté esperando los comandos.
+9. (**Obligatorio**) Abre el archivo **.env** y cambia el valor de la variable **"ChatName"** con el nombre del chat que deseas usar para que el bot esté esperando los comandos.
 
     ```
     ChatName=MiChat
