@@ -52,26 +52,23 @@ Seguimos trabajando en simplificar el uso de andromeda, por lo que hemos creado 
 2. Descarga y descomprime el ejecutable para tu sistema operativo.
 
 
-3. Accede a la carpeta **"SRC/Data/Config/Lang"** esta carpeta contiene los archivos de lenguajes (actualmente solo en español e inglés), copia el archivo **Codes.json** y **Config.json** del lenguaje que quieres usar y pegalo en la carpeta **"SRC/Data/Config"**.
- 
-     ```
-     SRC/Data/Config/Codes.json
-     SRC/Data/Config/Config.json
-     ```
-   
-4. Abre el archivo **"SRC/Data/Config/Config.json"** y dirígete a la sección **"Default"** y reemplaza el valor de **"WhatsappName"** con el nombre del chat que deseas usar para que el bot esté esperando los comandos.
+3. Por defecto el navegador a utilizar es **Google Chrome** y el idioma **Ingles** si deseas cambiar el navegador o el idioma, abre el archivo **.env** y cambia los valores de las variables **"Language"** y **"DefaultBrowser"**.
 
     ```
-    "Default": {
-            "WhatsappName":"MiChat"
-            "WhatsappNumber":"",
-            "WhatsappGroupName":""
+    Language=English
+    DefaultBrowser=chrome
+    ```
 
+   **Nota:** Los valores disponibles para la variable **"Language"** son **"English"** y **"Spanish"**. 
 
-5. Por defecto el navegador a utilizar es **Google Chrome**, si quieres usar Microsoft Edge u otro navegador, dirígete a la raiz del proyecto y abre el archivo **.env** y reemplaza el valor de **"DefaultBrowser"** con el nombre del navegador que quieres usar (**chrome** o **edge**).
+   **Nota:** Los valores disponibles para la variable **"DefaultBrowser"** son **"chrome"** y **"edge"**.
+   
 
+4. En el mismo archivo **.env** cambia el valor de la variable **"ChatName"** con el nombre del chat que deseas usar para que el bot esté esperando los comandos.
 
-6. En el mismo archivo .env asegúrate de establecer el idioma de acuerdo al lenguaje que seleccionaste en el apartado 3 (**Spanish** o **English**).
+    ```
+    ChatName=MiChat
+    ```
       
 
 ### <a name="ManualInstallation"></a> 👋🏼 Instalación manual
@@ -121,7 +118,7 @@ Para instalar el bot manualmente, siga los siguientes pasos:
 
 
 
-8. (**Opcional Unix/Linux**) Ejecuté el siguiente comando si quiere crear un alias para ejecutar el bot de manera más fácil desde la terminal.
+8. (**Opcional Unix/Linux**) Ejecuté el siguiente comando si quiere crear un alias para ejecutar el bot de manera más fácil desde la terminal, **Ruta-Elegida** es la ruta donde se encuentra el folder del proyecto.
     
     **Si usas bash:**
     ```
@@ -133,25 +130,22 @@ Para instalar el bot manualmente, siga los siguientes pasos:
     echo 'alias andromeda="cd /Ruta-Elegida/Andromeda-Whatsapp_BOT/SRC/ && source .venv/bin/activate && python3 entrypoint.py"' >> ~/.zshrc
     ```
    
-   Reemplaza **"Ruta-Elegida"** por la ruta donde se encuentra el folder del proyecto.
-
-   
-9. (**Obligatorio**) Accede a la carpeta **"SRC/Data/Config/Lang"** esta carpeta contiene los archivos de lenguajes (actualmente solo en español e inglés), copia el archivo **Codes.json** y **Config.json** del lenguaje que quieres usar y pegalo en la carpeta **"SRC/Data/Config"**.
- 
-     ```
-     SRC/Data/Config/Codes.json
-     SRC/Data/Config/Config.json
-     ```
-   
-10. (**Obligatorio**) Abre el archivo **"SRC/Data/Config/Config.json"** y dirígete a la sección **"Default"** y reemplaza el valor de **"WhatsappName"** con el nombre del chat que deseas usar para que el bot esté esperando los comandos.
+9. (**Obligatorio**) Abre el archivo **.env** y cambia el valor de la variable **"ChatName"** con el nombre del chat que deseas usar para que el bot esté esperando los comandos.
 
     ```
-    "Default": {
-            "WhatsappName":"MiChat"
-            "WhatsappNumber":"",
-            "WhatsappGroupName":""
-        }
+    ChatName=MiChat
     ```
+
+10. (**Obligatorio**) Por defecto el navegador a utilizar es **Google Chrome** y el idioma **Ingles** si deseas cambiar el navegador o el idioma, abre el archivo **.env** y cambia los valores de las variables **"Language"** y **"DefaultBrowser"**.
+
+    ```
+    Language=English
+    DefaultBrowser=chrome
+    ```
+
+   **Nota:** Los valores disponibles para la variable **"Language"** son **"English"** y **"Spanish"**. 
+
+   **Nota:** Los valores disponibles para la variable **"DefaultBrowser"** son **"chrome"** y **"edge"**.
     
 11. Dirígete a la sección [Iniciar Bot](#init).
 
