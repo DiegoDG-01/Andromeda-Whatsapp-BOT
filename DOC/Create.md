@@ -1,5 +1,7 @@
 ## Developing Modules for Andromeda - Whatsapp BOT
 
+Si deseas leer este documento en español, puedes hacerlo [aquí](Spanish/Create.md).
+
 This document explains how to develop a module for Andromeda following the project's required standards.
 
 ## 💡 Understanding Module Development

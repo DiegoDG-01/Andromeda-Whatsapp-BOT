@@ -28,7 +28,7 @@ Andromeda is a versatile bot capable of performing various functions, using What
 
 - [Installation](/DOC/Installation.md)
 - [Contributing](/DOC/Contributing.md)
-- [Development](/DOC/Development/Create.md)
+- [Development](/DOC/Create.md)
 
 ## 📝 Modules <a name = "modules"></a>
 

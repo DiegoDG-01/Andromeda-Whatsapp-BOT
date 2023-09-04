@@ -1,5 +1,8 @@
 ## Install Andromeda - WhatsApp Bot
 
+**Note:** Si quieres leer esta guía en español, puedes hacerlo [aquí](Spanish/Installation.md).
+
+
 ### 📋 Table of Contents
 
 * [Requirements](#requirements)
@@ -9,7 +12,7 @@
     * [Manual Installation](#ManualInstallation)
     * Docker (deprecated)
     * Installer (deprecated)
-      * Windows Installer (deprecated)
+    * Windows Installer (deprecated)
 * [Starting the Bot](#init)
     * [Executables](#ExeInit)
     * [Manual Installation](#ManualInit)
@@ -156,9 +159,6 @@ To manually install the bot, follow these steps:
 13. Go to the [Start Bot](#init) section.
 
 ## 😎 Starting the Bot <a name="init"></a>
-
-* [Executables](#ExeInit)
-* [Manual Installation](#ManualInit)
 
 ### <a name="ExeInit"></a> ⚙️ Executables (Beta)
 
