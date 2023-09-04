@@ -1,15 +1,14 @@
 import Log
-import sys
 import qrcode
 import base64
 import platform
 import tkinter as tk
-from os import getcwd
 from json import load
 from io import BytesIO
 from time import sleep
 from pathlib import Path
 from PIL import Image, ImageTk
+from os import getcwd, environ
 from pyzbar.pyzbar import decode
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -24,14 +23,12 @@ class Config():
         self.QRCode = qrcode.QRCode()
         self.Log = Log.Generate()
         self.WebDriver = Driver
-        self.PathUser = Path(getcwd() + '/Data/Config/Config.json')
+        self.PathConfig = Path(getcwd() + f'/Data/Config/Lang/{environ.get("Language")}/Config.json')
         self.Validate = None
         self.UserFileConfig = None
 
-        with open(self.PathUser, 'r') as UserFileConfig:
+        with open(self.PathConfig, 'r') as UserFileConfig:
             self.AllConfig = load(UserFileConfig)
-
-            self.UFC = self.AllConfig['main']
             self.Welcome = self.AllConfig['welcome']
 
             UserFileConfig.close()
@@ -57,7 +54,7 @@ class Config():
         try:
 
             User = WebDriverWait(self.WebDriver, 60).until(ec.presence_of_element_located(
-                (By.XPATH, '//span[@title = "{}"]'.format(self.UFC['Default']["WhatsappName"]))))
+                (By.XPATH, f'//span[@title = "{environ.get("ChatName")}"]')))
             User.click()
 
             return True

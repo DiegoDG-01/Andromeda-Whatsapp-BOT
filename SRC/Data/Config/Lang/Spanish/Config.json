@@ -20,24 +20,5 @@
         "third": ">> Para saber los comandos disponibles escribe (/help -c)",
         "fourth": ">> Para más información puedes visitar mi página web.",
         "fifth": ">> Si tienes alguna duda, puedes mandar un mensaje a mi desarrollador."
-    },
-
-    "main":{
-
-        "Local": {
-            "name": "",
-            "description": "",
-            "username": "",
-            "email": "diego",
-            "password": "Password_Hash",
-            "permissions": "admin",
-            "telephone": "1022453265"
-        },
-
-        "Default": {
-            "WhatsappName":"Chat_Name",
-            "WhatsappNumber":"",
-            "WhatsappGroupName":""
-        }
     }
 }

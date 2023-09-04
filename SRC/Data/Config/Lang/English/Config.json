@@ -10,34 +10,11 @@
         "license": "GPL-3.0"
     },
 
-    "config":{
-        "language": "English"
-    },
-
     "welcome": {
         "first": "## WELCOME, I'M Andromeda!!! ヽ(´▽`)/",
         "second": ">> Here you can find all the functions you need.",
         "third": ">> To know the available commands type (/help -c)",
         "fourth": ">> For more information, you can visit my website.",
         "fifth": ">> If you have any questions, you can send a message to my developer."
-    },
-
-    "main":{
-
-        "Local": {
-            "name": "",
-            "description": "",
-            "username": "",
-            "email": "diego",
-            "password": "Password_Hash",
-            "permissions": "admin",
-            "telephone": "1022453265"
-        },
-
-        "Default": {
-            "WhatsappName":"Chat_Name",
-            "WhatsappNumber":"",
-            "WhatsappGroupName":""
-        }
     }
 }

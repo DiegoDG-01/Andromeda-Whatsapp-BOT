@@ -49,7 +49,7 @@ class CommandManager:
         self.commandargs = None
         self.commandInfo = None
         self.additionalArgs = {}
-        self.Path = Path(getcwd() + '/Data/Config/Codes.json')
+        self.Path = Path(getcwd() + f'/Data/Config/Lang/{environ.get("Language")}/Codes.json')
 
         with open(self.Path, 'r') as File:
             try:

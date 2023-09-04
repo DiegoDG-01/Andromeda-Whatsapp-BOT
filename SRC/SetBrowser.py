@@ -3,7 +3,7 @@ from os import getcwd
 from pathlib import Path
 
 
-class Browser():
+class Browser:
 
     NameBrowser = None
 
