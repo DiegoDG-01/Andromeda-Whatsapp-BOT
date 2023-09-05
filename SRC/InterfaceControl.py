@@ -12,12 +12,11 @@
 import sys
 import Log
 import Tabs
-from os import getcwd
 from json import load
 from time import sleep
 from pathlib import Path
 from random import randint
-from Data.Env import WhatsappTags as Tags
+from os import getcwd, environ
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -32,12 +31,7 @@ class Interface:
             self.Path_Config = Path(sys._MEIPASS + '/Data/Config/Config.json')
         except Exception:
             self.Path_Config = Path(getcwd() + '/Data/Config/Config.json')
-
-        with open(self.Path_Config, 'r') as f:
-            config = load(f)
-            self.Name_Bot = config['main']['Default']['WhatsappName']
-
-            f.close()
+        self.Name_Bot = environ.get('ChatName')
 
         self.Log = Log.Generate()
 
@@ -73,7 +67,7 @@ class Interface:
 
             for Chat in Chat_List:
 
-                user = Chat.find_element(By.CLASS_NAME, Tags.ClassChat_List).text
+                user = Chat.find_element(By.CLASS_NAME, environ.get('ClassChat_List')).text
 
                 if user == Tag:
                     Chat.click()
@@ -191,12 +185,12 @@ class Interface:
         try:
             self.MouseAction.move_to_element(
                 WebDriverWait(self.WebDriver, 5).until(
-                    EC.presence_of_all_elements_located((By.CLASS_NAME, Tags.ClassMenuHover)))[-1]
+                    EC.presence_of_all_elements_located((By.CLASS_NAME, environ.get('ClassMenuHover'))))[-1]
             ).click().perform()
 
             sleep(0.06)
 
-            WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, Tags.ClassButtonHover)))[-1].click()
+            WebDriverWait(self.WebDriver, 5).until(EC.presence_of_all_elements_located((By.CLASS_NAME, environ.get('ClassButtonHover'))))[-1].click()
 
             sleep(0.06)
 

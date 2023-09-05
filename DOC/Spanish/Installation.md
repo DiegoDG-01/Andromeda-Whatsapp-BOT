@@ -1,113 +1,92 @@
 ## Instalar Andromeda - WhatsApp Bot
 
-Este bot se está probando actualmente en Mac OS, Linux y Windows, pero el instalador solo funciona en Unix o sistemas operativos derivados y para los sistemas operativos Windows se desarrolló un instalador básico alternativo, o se puede instalar manualmente siguiendo las instrucciones.
+### 📋 Tabla de contenidos
 
-## 📕 Requerimientos
+* [Requerimientos](#requirements)
+* [Navegadores compatibles](#browsers)
+* [Instalación](#installation)
+    * [Ejecutables](#ExecutableInstallation)
+    * [Instalación manual](#ManualInstallation)
+    * Docker (descontinuado)
+    * Instalador (descontinuado)
+    * Instalador windows (descontinuado)
+* [Iniciar el bot](#init)
+    * [Ejecutables](#ExeInit)
+    * [Instalación manual](#ManualInit)
 
-Actualmente, el bot es compatible con los siguientes sistemas operativos:
 
-- Windows (solo probado en Windows 10)
-- Linux (se requiere el administrador de paquetes APT)
-- Mac OS Big Sur o posterior (se requiere el administrador de paquetes Brew)
+## <a name="requirements"></a> 📝 Requerimientos
+
+Compatibilidad con sistemas operativos:
+
+- Linux
+- Mac OS
+- Windows 10/11
 
 Necesitas tener instalado los siguientes programas:
 
 - Git
+- Python 3.8 o superior
 - Google Chrome o Microsoft Edge
-- Python 3.8 o posterior
 
-## 🌐 Navegadores compatibles
+## <a name="browsers"></a> 🌐 Navegadores compatibles
 
-Actualmente, el bot se prueba en los siguientes navegadores:
+Actualmente, el bot es compatible con los siguientes navegadores:
 
- - Google Chrome 98.X o posterior
+ - Google Chrome 98 o posterior
  - Microsoft Edge 115 o posterior
 
-## 💻 Instalación
+La compatibilidad con Firefox es experimental, se encontraron algunos problemas que se están solucionando, en proximas versiones se agregará soporte.
 
-* [Instalador Linux](#LinuxInstaller)
-* [Instalador Windows](#WinInstaller)
-* [Docker](#Docker)
-* [Instalación manual](#ManualInstallation)
+## <a name="installation"></a> 💻 Instalación
 
-### <a name="LinuxInstaller"></a> Usar el instalador para Unix/Linux
 
-1. Descarga la última versión del bot desde [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) o usando **Git** en tu terminal:
-     ```
-    git clone "https://github.com/DiegoDG-01/Andromeda-Whatsapp_BOT.git"
+### <a name="ExecutableInstallation"></a> 📦 Ejecutables (Beta)
+
+Seguimos trabajando en simplificar el uso de andromeda, por lo que hemos creado ejecutables para los distintos tipos de sistemas operativos, estos ejecutables son versiones beta, por lo que pueden contener errores o no trabajar correctamente.
+
+
+1. Para descargar los ejecutables, dirígete a la sección [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) (Apartir de la versión 0.4.0 están disponibles los ejecutables)
+
+
+2. Descarga y descomprime el ejecutable para tu sistema operativo.
+
+
+3. Por defecto el navegador a utilizar es **Google Chrome** y el idioma **Ingles** si deseas cambiar el navegador o el idioma, abre el archivo **.env** y cambia los valores de las variables **"Language"** y **"DefaultBrowser"**.
+
     ```
-2. En tu terminal abre la carpeta con el bot y ejecuta el siguiente comando:
-    ```
-    python3 install.py
-    ```
-    El instalador muestra el progreso e información importante, espere hasta que la instalación finalice.
-
-
-3. El instalador solicitará el nombre del chat para usarlo para escuchar los mensajes (se recomienda crear previamente un grupo donde te encuentres **solo tú**.
-
-
-4. El instalador creará una nueva carpeta con el nombre "Andromeda-Whatsapp_BOT" en tu directorio de inicio.
-
-
-5. Dirígete al apartado [Inicializar el bot](#init) para continuar.
-
-### <a name="WinInstaller"></a> Usar el instalador para Windows
-
-1. Descarga la última versión del bot desde [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) o usando **Git** en tu terminal:
-     ```
-    git clone "https://github.com/DiegoDG-01/Andromeda-Whatsapp_BOT.git"
-    ```
-2. En tu terminal abre la carpeta con el bot y ejecuta el siguiente comando:
-    ```
-    python3 windows_install.py
-    ```
-    El instalador muestra el progreso e información importante, espere hasta que la instalación finalice.
-
-
-4. El instalador solicitará el nombre del chat para usarlo para escuchar los mensajes (se recomienda crear previamente un grupo donde te encuentres **solo tú**.
-
-
-5. Dirígete al apartado [Inicializar el bot](#init) para continuar.
-
-### <a name="Docker"></a> Instalación desde docker (En desarrollo)
-
-1. Asegurate de tener instalado docker en tu sistema operativo.
-
-
-2. Descarga la última versión del bot desde [GitHub Release]((https://github.com/DiegoDG-01/Whatsapp_BOT/releases)) o usando **Git** en tu terminal:
-    ```
-    git clone "https://github.com/DiegoDG-01/Andromeda-Whatsapp_BOT.git"
+    Language=English
+    DefaultBrowser=chrome
     ```
 
-3. En un editor de texto, abre el archivo "Dockerfile"
+   **Nota:** Los valores disponibles para la variable **"Language"** son **"English"** y **"Spanish"**. 
 
-
-4. En la línea 9 (**ENV Language English**) asegurate de establecer el lenguage para el bot, actualmente solo se soporta el inglés y el español.
-
-
-5. En la línea 10 (**ENV Username "ChatName"**) establece el nombre del chat donde quieres que el bot escuche los mensajes.
-
-
-6. Abre una terminal en la carpeta donde se encuentra el archivo "Dockerfile" y ejecuta el siguiente comando:
-    ```
-    docker build -t "andromeda" .
-    ```
+   **Nota:** Los valores disponibles para la variable **"DefaultBrowser"** son **"chrome"** y **"edge"**.
    
-7. Una vez finalizada la construcción de la imagen, dirígete al apartado [Inicializar el bot](#init) para continuar.
 
-### <a name="ManualInstallation"></a> Instalación manual
+4. En el mismo archivo **.env** cambia el valor de la variable **"ChatName"** con el nombre del chat que deseas usar para que el bot esté esperando los comandos.
 
-Si no quieres usar el instalador, puedes instalar el bot manualmente siguiendo las siguientes instrucciones:
+    ```
+    ChatName=MiChat
+    ```
+      
 
-1. Descarga la última versión del bot desde [GitHub Release]((https://github.com/DiegoDG-01/Whatsapp_BOT/releases)) o usando **Git** en tu terminal:
+### <a name="ManualInstallation"></a> 👋🏼 Instalación manual
+
+Para instalar el bot manualmente, siga los siguientes pasos:
+
+1. Descarga la última versión del bot desde [GitHub Release](https://github.com/DiegoDG-01/Whatsapp_BOT/releases) o usando **Git** en tu terminal:
     ```
     git clone "https://github.com/DiegoDG-01/Andromeda-Whatsapp_BOT.git"
     ```
 
-2. Copia el folder del bot al directorio que elijas.
+2. Copia el folder descargado al directorio que mejor te convenga.
 
 
-3. Accede a la carpeta del proyecto
+3. Accede a la carpeta del proyecto desde la terminal:
+    ```
+    cd Ruta-Elegida/Andromeda-Whatsapp_BOT
+    ```
 
 
 4. (**Opcional**) Instala el paquete para generar entornos virtuales de Python
@@ -122,12 +101,12 @@ Si no quieres usar el instalador, puedes instalar el bot manualmente siguiendo l
    
 6. (**Optional**) Activa el entorno virtual
 
-    Unix/Linux:
+    **Unix/Linux:**
     ```
     source .venv/bin/activate
     ```
    
-    Windows:
+    **Windows:**
     ```
     .venv\\Scripts\\activate.bat
     ```
@@ -139,64 +118,91 @@ Si no quieres usar el instalador, puedes instalar el bot manualmente siguiendo l
 
 
 
-8. (**Opcional Unix/Linux**) Ejecuté el siguiente comando si quiere crear una alias para ejecutar el bot de manera más fácil
-    "Ruta-Elegida" es la ruta donde se encuentra el folder del proyecto y es la ruta del paso 2.
+8. (**Opcional Unix/Linux**) Ejecuté el siguiente comando si quiere crear un alias para ejecutar el bot de manera más fácil desde la terminal, **Ruta-Elegida** es la ruta donde se encuentra el folder del proyecto.
     
-    Si usas bash:
+    **Si usas bash:**
     ```
     echo 'alias andromeda="cd /Ruta-Elegida/Andromeda-Whatsapp_BOT/SRC/ && source .venv/bin/activate && python3 entrypoint.py"' >> ~/.bashrc
     ```
     
-    Si usas zsh:
+    **Si usas zsh:**
     ```
     echo 'alias andromeda="cd /Ruta-Elegida/Andromeda-Whatsapp_BOT/SRC/ && source .venv/bin/activate && python3 entrypoint.py"' >> ~/.zshrc
     ```
    
-9. (**Obligatorio**) Accede a la carpeta **"SRC/Data/Config/Lang"** esta carpeta contiene los archivos de lenguajes (actualmente solo en español e inglés), copia el archivo **Codes.json** y **Config.json** pégalo en la carpeta **"SRC/Data/Config"**
- 
-     ```
-     SRC/Data/Config/Codes.json
-     SRC/Data/Config/Config.json
-     ```
-   
-10. (**Obligatorio**) Abre el archivo **"SRC/Data/Config/Config.json"** y busca y remplaza el valor de "**WhatsappName**" por el nombre del chat que quieres usar para escuchar los mensajes (se recomienda crear previamente un grupo donde te encuentres **solo tú**).
+9. (**Obligatorio**) Abre el archivo **.env** y cambia el valor de la variable **"ChatName"** con el nombre del chat que deseas usar para que el bot esté esperando los comandos.
 
     ```
-    "Default": {
-            "WhatsappName":"(CHOSEN_NAME)"
-            "WhatsappNumber":"",
-            "WhatsappGroupName":""
-        }
+    ChatName=MiChat
     ```
+
+10. (**Obligatorio**) Por defecto el navegador a utilizar es **Google Chrome** y el idioma **Ingles** si deseas cambiar el navegador o el idioma, abre el archivo **.env** y cambia los valores de las variables **"Language"** y **"DefaultBrowser"**.
+
+    ```
+    Language=English
+    DefaultBrowser=chrome
+    ```
+
+   **Nota:** Los valores disponibles para la variable **"Language"** son **"English"** y **"Spanish"**. 
+
+   **Nota:** Los valores disponibles para la variable **"DefaultBrowser"** son **"chrome"** y **"edge"**.
+    
+11. Dirígete a la sección [Iniciar Bot](#init).
+
 
 ## 😎 Iniciar el bot <a name = "init"></a>
 
-Para iniciar el bot ejecuta el siguiente comando:
+* [Ejecutables](#ExeInit)
+* [Instalación manual](#ManualInit)
 
-Si usas el instalador o creaste un alias:
-```
-ANDROMEDA
-```
 
-Si instalaste el bot manualmente y no creaste un alias ("Ruta-Elegida" es la ruta donde se encuentra el folder del proyecto y es la ruta del paso 2):
-```
-python3 /Ruta-Elegida/Andromeda-Whatsapp_BOT/SRC/entrypoint.py
-```
+### <a name="ExeInit"></a> ⚙️ Ejecutables (Beta)
 
-o si está utilizando Docker, la primera vez que ejecuta el bot, debe ejecutar el siguiente comando para iniciar sesión:
-```
-docker run -it --name andromeda andromeda
-```
+Si descargaste el ejecutable para tu sistema operativo, solo debes iniciar el archivo **"Andromeda"**
+y escanear el código QR con tu teléfono y esperar a que el bot inicie sesión.
 
-Si ha iniciado sesión, debe ejecutar el siguiente comando:  
-```
-docker start andromeda
-```
+Windows y Linux:
 
-En sistemas operativos Linux y Windows, el bot abrirá una ventana donde podras escanear el código QR.
+<img src="../IMG/UI-Whatsapp_Init_Page.png" width="30%">
 
-<img src="../IMG/UI-Whatsapp_Init_Page.png" width="70%">
+Mac OS:
 
-En sistemas operativos Mac OS, el bot mostrará el codigo QR en la terminal, escanea el código QR con tu teléfono y espera a que el bot inicie sesión.
+<img src="../IMG/Whatsapp_Init_Page.png" width="30%">
 
-<img src="../IMG/Whatsapp_Init_Page.png" width="70%">
+**Nota:** Si usas Mac OS, el codigo QR se mostrará en la terminal ya que existe un problema que se está solucionando, en proximas versiones se agregará soporte.
+
+### <a name=""></a> 📝 Iniciar el bot manualmente
+
+
+1. Desde la terminal, accede a la carpeta **"SRC"** del proyecto:
+
+    **Unix/Linux:**
+    ```
+    cd Ruta-Elegida/Andromeda-Whatsapp_BOT/SRC/
+    ```
+    
+    **Windows:**
+    ```
+    cd Ruta-Elegida\Andromeda-Whatsapp_BOT\SRC\
+    ```
+
+   Reemplaza **"Ruta-Elegida"** por la ruta donde se encuentra el folder del proyecto.
+
+
+2. Ejecuta el siguiente comando para iniciar el bot:
+    
+   ```
+    python3 entrypoint.py
+    ```
+   
+3. Escanea el código QR con tu teléfono y espera a que el bot inicie sesión.
+
+    Windows y Linux:
+
+   <img src="../IMG/UI-Whatsapp_Init_Page.png" width="30%">
+   
+   Mac OS:
+   
+   <img src="../IMG/Whatsapp_Init_Page.png" width="30%">
+   
+   **Nota:** Si usas Mac OS, el codigo QR se mostrará en la terminal ya que existe un problema que se está solucionando, en proximas versiones se agregará soporte.

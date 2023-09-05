@@ -52,9 +52,9 @@ class CommandManager:
         self.additionalArgs = {}
 
         try:
-            self.Path = Path(sys._MEIPASS + '/Data/Config/Codes.json')
+            self.Path = Path(sys._MEIPASS + f'/Data/Config/Lang/{environ.get("Language")}/Codes.json')
         except Exception:
-            self.Path = Path(getcwd() + '/Data/Config/Codes.json')
+            self.Path = Path(getcwd() + f'/Data/Config/Lang/{environ.get("Language")}/Codes.json')
 
         with open(self.Path, 'r') as File:
             try:

@@ -1,6 +1,5 @@
 import sys
 import psutil
-import shutil
 from os import getpid
 from time import sleep
 from pathlib import Path
@@ -25,13 +24,6 @@ class Configure(BaseModule):
             configure_messages_path = Path(getcwd() + '/Data/Modules/Messages/Configure.json')
 
         try:
-
-            with open(self.PathConfig, 'r') as f:
-                self.config = load(f)
-                self.config = self.config['main']
-
-                f.close()
-
             with open(configure_messages_path, 'r') as f:
                 self.ConfigureMessages = load(f)
                 self.ConfigureMessages = self.ConfigureMessages['messages'][environ.get('Language')]
@@ -61,7 +53,7 @@ class Configure(BaseModule):
         # Temporary implementation to get the error log
         admin = False
 
-        if (admin == None):
+        if (admin == False):
             return "Your are not an admin"
         else:
             return self.log.GetLog(3)
@@ -76,7 +68,7 @@ class Configure(BaseModule):
         message = []
 
         try:
-            if (admin == None):
+            if (admin == False):
                 return "Your are not an admin"
             else:
                 message.append("Current Configuration: \n")
@@ -99,9 +91,6 @@ class Configure(BaseModule):
 
     def Change_Language(self, ):
 
-        Path = getcwd()
-        PathLang = Path + '/Data/Config/Lang/'
-        Pathdst = Path + '/Data/Config/'
         Language = environ.get('Language')
 
         Browser_PID = None
@@ -132,19 +121,10 @@ class Configure(BaseModule):
                     self.Communicate.SendMessage()
 
                     if Language == 'Spanish':
-                        PathLang = PathLang + 'English/'
                         set_key('.env', 'Language', 'English')
 
                     elif Language == 'English':
-                        PathLang = PathLang + 'Spanish/'
                         set_key('.env', 'Language', 'Spanish')
-
-
-                    # Copy the new language files to the current directory
-                    shutil.copyfile(PathLang + 'Codes.json', Pathdst + 'Codes.json')
-                    shutil.copyfile(PathLang + 'Config.json', Pathdst + 'Config.json')
-
-                    sleep(2)
 
                     call(['python3', 'Reset.py', BrowserDriverPID, Browser_PID])
 

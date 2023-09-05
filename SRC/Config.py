@@ -1,15 +1,14 @@
 import Log
-import sys
 import qrcode
 import base64
 import platform
 import tkinter as tk
-from os import getcwd
 from json import load
 from io import BytesIO
 from time import sleep
 from pathlib import Path
 from PIL import Image, ImageTk
+from os import getcwd, environ
 from pyzbar.pyzbar import decode
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -22,9 +21,9 @@ class Config():
     def __init__(self, Driver):
 
         try:
-            self.PathUser = Path(sys._MEIPASS + '/Data/Config/Config.json')
+            self.PathUser = Path(sys._MEIPASS +  f'/Data/Config/Lang/{environ.get("Language")}/Config.json')
         except Exception:
-            self.PathUser = Path(getcwd() + '/Data/Config/Config.json')
+            self.PathUser = Path(getcwd() +  f'/Data/Config/Lang/{environ.get("Language")}/Config.json')
 
         self.QRCode = qrcode.QRCode()
         self.Log = Log.Generate()
@@ -32,10 +31,8 @@ class Config():
         self.Validate = None
         self.UserFileConfig = None
 
-        with open(self.PathUser, 'r') as UserFileConfig:
+        with open(self.PathConfig, 'r') as UserFileConfig:
             self.AllConfig = load(UserFileConfig)
-
-            self.UFC = self.AllConfig['main']
             self.Welcome = self.AllConfig['welcome']
 
             UserFileConfig.close()
@@ -60,14 +57,14 @@ class Config():
     def __load_chat(self):
         try:
 
-            User = WebDriverWait(self.WebDriver, 60).until(ec.presence_of_element_located(
-                (By.XPATH, '//span[@title = "{}"]'.format(self.UFC['Default']["WhatsappName"]))))
+            User = WebDriverWait(self.WebDriver, 30).until(ec.presence_of_element_located(
+                (By.XPATH, f'//span[@title = "{environ.get("ChatName")}"]')))
             User.click()
 
             return True
 
         except Exception as error:
-            self.Log.Write("Config.py | GenericErr - Load Chat # " + str(error))
+            self.Log.Write(f"Config.py | GenericErr - Load Chat # ChatName: {environ.get('ChatName')} Not Found - Change for a valid chat name in the .env file.")
             self.Error = "Error: To initialize bot"
             return False
 
