@@ -12,7 +12,6 @@
 import sys
 import Log
 import Tabs
-from json import load
 from time import sleep
 from pathlib import Path
 from random import randint

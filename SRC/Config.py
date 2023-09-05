@@ -1,3 +1,4 @@
+import sys
 import Log
 import qrcode
 import base64
@@ -21,9 +22,9 @@ class Config():
     def __init__(self, Driver):
 
         try:
-            self.PathUser = Path(sys._MEIPASS +  f'/Data/Config/Lang/{environ.get("Language")}/Config.json')
+            self.PathConfig = Path(sys._MEIPASS +  f'/Data/Config/Lang/{environ.get("Language")}/Config.json')
         except Exception:
-            self.PathUser = Path(getcwd() +  f'/Data/Config/Lang/{environ.get("Language")}/Config.json')
+            self.PathConfig = Path(getcwd() +  f'/Data/Config/Lang/{environ.get("Language")}/Config.json')
 
         self.QRCode = qrcode.QRCode()
         self.Log = Log.Generate()
