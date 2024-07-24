@@ -1,4 +1,4 @@
-Pillow == 10.0.1
+Pillow == 10.3.0
 selenium == 4.0.0
 virtualenv == 20.13.0
 psutil == 5.9.0
