@@ -122,7 +122,7 @@ class Config():
             # Convert image to PIL
             IMG = Image.open(BytesIO(QRCode64))
             # Resize image
-            IMG = IMG.resize((300, 300), Image.ANTIALIAS)
+            IMG = IMG.resize((300, 300), Image.Resampling.LANCZOS)
 
             self.IMG = ImageTk.PhotoImage(IMG)
             self.CanvasQR.create_image(0, 0, anchor=tk.NW, image=self.IMG)
