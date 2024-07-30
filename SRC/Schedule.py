@@ -26,7 +26,7 @@ class Schedule:
         self.DB = DataBase.SQLite()
         self.ListAction = None
         self.Busy_Thread = {}
-
+        self.stop_thread = False
 
     # Iinit function is used to load all the modules
     def init(self, list_action):
@@ -42,6 +42,8 @@ class Schedule:
         else:
             self.Log.Write("Schedule.py | Warning # Not data found in database to enable events")
 
+    def kill_background_process(self):
+        self.stop_thread = True
 
     def background_set(self, interval=1):
 
@@ -73,6 +75,8 @@ class Schedule:
                                             "executed": job
                                         }
                         except TypeError as e:
+                            if self.stop_thread:
+                                exit(1)
                             pass
                         except Exception as e:
                             self.Log.Write("Schedule.py | Background_Set # " + str(e))
