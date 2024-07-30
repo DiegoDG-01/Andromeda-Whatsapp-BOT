@@ -30,6 +30,9 @@ from selenium.common.exceptions import TimeoutException
 # Module to check if exists a command automatically
 import Schedule
 
+from Whatsapp_Utils import Whatsapp_Utils
+
+
 class Bot:
 
     def __init__(self, WebDriver):
@@ -62,7 +65,6 @@ class Bot:
     def SetWelcomeMessage(self, Message):
         self.MessageWelcome = [Message[i] for i in Message.keys()]
 
-
     def Welcome(self):
         self.Communicate.WriteMessage(self.MessageWelcome)
 
@@ -70,6 +72,14 @@ class Bot:
             return True
 
     def ReadMessage(self, WebDriver):
+
+        whatsapp_utils = Whatsapp_Utils(WebDriver)
+
+        if not whatsapp_utils.check_messagebox():
+            self.Log.Write("Bot.py | Check IDs from Whatsapp failed, the bot will be stopped")
+            self.Schedule.kill_background_process()
+            self.BackgroundSchedule.set()
+            return False
 
         while True:
 
@@ -83,7 +93,7 @@ class Bot:
                     Message = Messages.pop().text.split('\n')
 
                     # Obtiene una lista con el comando y posibles argumentos a ejecutar
-                    Message = Message[0].split(" ")
+                    Message = Message[-2].split(" ")
 
                     # Send the command to the CommandManager
                     Command = self.CommandManager.Read(Message)
@@ -144,3 +154,6 @@ class Bot:
             except Exception as error:
                 self.Log.Write("Bot.py # " + str(error))
                 return False
+            finally:
+                self.Schedule.kill_background_process()
+                self.BackgroundSchedule.set()
